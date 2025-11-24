@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KI Marketing Orakel 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Outfit:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-navy: #0f172a;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Deep Space Winter Gradient base */
+            background: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
+            overflow: hidden;
+        }
+
+        h1 { font-family: 'Outfit', sans-serif; }
+
+        /* Glass Globe with CI Gold Tint */
+        .globe-glass {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                inset 0 0 40px rgba(255, 255, 255, 0.1),
+                0 0 60px rgba(255, 179, 0, 0.15); /* Gold outer glow */
+            backdrop-filter: blur(3px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 179, 0, 0.3); /* Gold hint at bottom */
+        }
+
+        .globe-highlight {
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 25%);
+        }
+
+        /* Advanced Snow Particles */
+        .snow-particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite, twinkle 3s ease-in-out infinite;
+        }
+
+        .gold-dust {
+            position: absolute;
+            background: var(--ci-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(120%); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 5px white; }
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .shake-animation {
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-1deg); }
+            20%, 80% { transform: translate3d(4px, 0, 0) rotate(2deg); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0) rotate(-3deg); }
+            40%, 60% { transform: translate3d(8px, 0, 0) rotate(3deg); }
+        }
+
+        /* Text Animations */
+        .float-in { animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        
+        .oracle-glow {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Gold Button Hover Glow */
+        .btn-gold-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 179, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex flex-col items-center justify-center text-white relative overflow-hidden">
+
+    <!-- Ambient Background Light -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-[#FFB300]/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+    <header class="z-20 text-center mb-2 absolute top-6 w-full px-4">
+        <div class="inline-block mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase">Tag 1 • Vibecoding</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold tracking-wide mb-1 text-white drop-shadow-lg">KI ORAKEL <span class="text-[#FFB300]">2026</span></h1>
+        <!-- Dr. Titel entfernt -->
+        <p class="text-blue-200 text-sm font-light tracking-wide opacity-90">Vroni Hackl • KI Marketing Bootcamp</p>
+    </header>
+
+    <!-- Main Globe Container -->
+    <div class="relative z-20 flex flex-col items-center justify-center mt-12">
+        
+        <!-- The Snow Globe -->
+        <div id="globe" class="w-72 h-72 md:w-96 md:h-96 rounded-full globe-glass relative flex items-center justify-center overflow-hidden transition-all cursor-pointer group hover:scale-[1.02] duration-500 hover:shadow-[0_0_60px_rgba(255,179,0,0.2)]">
+            
+            <!-- Reflection Highlight -->
+            <div class="absolute inset-0 globe-highlight pointer-events-none z-20 rounded-full opacity-60"></div>
+
+            <!-- Snow Container inside Globe -->
+            <div id="globe-snow" class="absolute inset-0 z-10 pointer-events-none"></div>
+            
+            <!-- Gold Dust Container (for explosion) -->
+            <div id="gold-dust-container" class="absolute inset-0 z-15 pointer-events-none flex items-center justify-center"></div>
+
+            <!-- Inner Content (The Prediction) -->
+            <div class="relative z-30 w-4/5 text-center p-4">
+                <!-- Initial State Icon -->
+                <div id="placeholder-icon" class="transition-all duration-500 flex flex-col items-center">
+                    <div class="text-7xl mb-4 drop-shadow-[0_0_15px_rgba(255,179,0,0.5)] animate-pulse">🔮</div>
+                    <p class="text-lg font-light text-blue-50">Schüttle mich für<br>deinen Marketing-Trend</p>
+                </div>
+
+                <!-- Prediction Text (Hidden initially) -->
+                <div id="prediction-text" class="hidden">
+                    <p class="text-xl md:text-2xl font-bold leading-snug oracle-glow text-white"></p>
+                    <div class="mt-6 flex justify-center">
+                        <span class="px-3 py-1 border border-[#FFB300]/50 rounded-full text-[#FFB300] text-[10px] font-bold uppercase tracking-widest bg-[#FFB300]/10">
+                            Trend 2026
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base of the Globe -->
+        <div class="w-56 h-14 bg-gradient-to-b from-gray-800 to-gray-900 rounded-[100%] -mt-8 shadow-2xl z-10 border-t border-gray-600 relative flex justify-center">
+            <div class="w-40 h-1 bg-gradient-to-r from-transparent via-[#FFB300] to-transparent opacity-50 mt-1"></div>
+        </div>
+
+        <!-- Action Button -->
+        <button onclick="shakeGlobe()" class="mt-12 px-10 py-4 bg-[#FFB300] text-[#0f172a] rounded-full font-bold tracking-wide shadow-[0_0_20px_rgba(255,179,0,0.4)] btn-gold-glow transition-all active:scale-95 hover:-translate-y-1 flex items-center gap-2 group">
+            <span>✨</span>
+            <span>Zukunft vorhersagen</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v3.2a1 1 0 11-2 0V13.07a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+    </div>
+
+    <footer class="absolute bottom-4 w-full text-center z-10">
+        <a href="https://www.marketing-ki.de" target="_blank" class="text-[#FFB300]/80 hover:text-[#FFB300] text-xs tracking-widest uppercase hover:underline transition-colors">
+            www.marketing-ki.de
+        </a>
+    </footer>
+
+    <script>
+        // Erweiterte Datenbank (Jetzt inkl. satirischer Job-Titel 2026)
+        const predictions = [
+            // --- Bestehende Marketing Trends ---
+            "Hyper-personalisierte Video-Ads werden der neue Standard.",
+            "KI-Agenten verhandeln eigenständig Medien-Budgets.",
+            "Websites sterben aus – Chat-Interfaces übernehmen 80% des Traffics.",
+            "Menschengemachter Content wird zum exklusiven Luxusgut.",
+            "Emotion AI misst Kundenreaktionen live über die Webcam.",
+            "SEO ist tot. Lang lebe AIO (Artificial Intelligence Optimization).",
+            "Deine nächste Marketing-Kampagne wird von einer KI geträumt.",
+            "Marken zahlen Kunden für ihre Trainingsdaten direkt in Krypto.",
+            "Der erste KI-Influencer gewinnt einen Oscar.",
+            "Datenschutz wird durch lokale LLMs auf dem Endgerät gelöst.",
+            "Copywriter werden zu 'Prompt-Psychologen'.",
+            "Newsletter passen sich beim Öffnen an deine aktuelle Laune an.",
+            "Virtuelle VR-Stores ersetzen den klassischen E-Commerce.",
+            "Marketing-Teams bestehen zu 50% aus autonomen Bots.",
+            "Community wird der einzige Burggraben gegen KI-Content-Flut.",
+            "B2B-Vertrieb wird zu 90% durch Avatar-Agenten abgewickelt.",
+            "Marken, die keine eigene KI-Stimme haben, werden unsichtbar.",
+            "Der 'Uncanny Valley' Effekt wird zum Stilmittel im Design.",
+            "Print-Marketing erlebt ein massives Revival als 'Premium-Touchpoint'.",
+            "KI-Detektoren sind gesetzlich auf allen Social Plattformen vorgeschrieben.",
+            "Dynamic Pricing passt sich deinem Akkustand und Standort an.",
+            "User Generated Content wird durch 'User Directed AI Content' ersetzt.",
+            "Deine Smart Glasses blenden Werbung in der realen Welt aus.",
+            "LinkedIn verbietet reine KI-Posts ohne Kennzeichnung.",
+            "KI-Modelle werden für Nischen-Branchen kleiner und spezialisierter.",
+            "Voice Commerce überholt Mobile Commerce.",
+            "Ethisches 'Fair-Trade-Data' Siegel wird Kaufkriterium.",
+            "Neuro-Marketing wird durch Wearables für KMUs bezahlbar.",
+            "Der CMO wird zum CAO (Chief AI Officer).",
+            "Live-Shopping wird vollautomatisch von KI-Hosts moderiert.",
+            "Retargeting funktioniert nicht mehr – Prediction-Targeting übernimmt.",
+            "Marken branden ihre eigenen LLMs für Kunden-Interaktion.",
+            "Corporate Influencer nutzen digitale Zwillinge für Skalierung.",
+            "Podcasts werden in Echtzeit in die Sprache des Hörers übersetzt.",
+            "Kunden-Service unter 1 Sekunde Antwortzeit ist die Norm.",
+            "Kreativität wird an der Qualität der Fragen gemessen, nicht der Antworten.",
+            "Zero-Click-Searches dominieren 70% aller Suchanfragen.",
+            "Authentizitäts-Zertifikate auf der Blockchain für echte Fotos.",
+            "Daten-Silos werden durch föderiertes Lernen aufgebrochen.",
+            "Hyper-lokales Marketing wird durch Geodaten-KI extrem präzise.",
+            "Werbung in Träumen? Tech-Startups arbeiten daran (leider).",
+            "KI schreibt nicht nur E-Mails, sondern beantwortet sie auch autonom.",
+            "CRM-Systeme sagen den Churn voraus, bevor der Kunde es weiß.",
+            "Storytelling wird interaktiv: Der Kunde bestimmt das Ende des Spots.",
+            "Agenturen werden zu Software-Häusern mit Kreativ-Abteilung.",
+            "Social Media Manager kuratieren nur noch, was die KI produziert.",
+            "Markenbindung funktioniert rein über emotionale Resonanz, nicht Features.",
+
+            // --- Neue Hype-Jobs 2026 (Satirisch & Futuristisch) ---
+            "Neuer Job-Trend 2026: 'Chief Vibe Officer' für LLMs (m/w/d).",
+            "Gesucht: 'Prompt-Archäologe' zum Entschlüsseln von 2023er Code.",
+            "Karriere-Tipp: Umschulung zum 'KI-Halluzinations-Therapeuten'.",
+            "Top-Gehalt für 'Digital-Twin-Stylisten' (Avatar-Mode).",
+            "Ausbildungsberuf: 'Synthetischer Daten-Farmer' (Bio-Zertifiziert).",
+            "Dringend gesucht: 'Bot-Empathie-Trainer' für depressive KIs.",
+            "Freelance-Gig: 'Algorithmischer Bias-Jäger' (Bounty Hunter).",
+            "Influencer-Nische: 'Smart-Fridge-Content-Creator'.",
+            "High-Ticket Sales: 'VR-Immobilienmakler' für Luftschlösser.",
+            "IT-Security: 'Neuro-Link-Werbeblocker-Admin'.",
+            "Geisteswissenschaft: 'Generative-Meme-Historiker'.",
+            "Recht: 'Deepfake-Forensiker' für Familien-Chats.",
+            "Assistenz: 'Persönlicher Algorithmus-Optimierer' (PAO).",
+            "Spezial-Anwalt für 'Toaster-Urheberrecht' gesucht.",
+            "Entry-Level Job: 'Kontext-Fenster-Reiniger'.",
+            "Gastro-Trend: 'LoRA-Sommelier' – empfiehlt Modelle zum Wein.",
+            "Soziales: 'KI-Flüsterer' für missverstandene Chatbots.",
+            "Behörde: 'Post-Truth-Verifikations-Beauftragter' A13.",
+            "QA: 'Human-in-the-Loop-Zertifizierer' (Darf echte Knöpfe drücken).",
+            "Handwerk 4.0: 'GPU-Kühlungssystem-Barista'."
+        ];
+
+        const globe = document.getElementById('globe');
+        const placeholder = document.getElementById('placeholder-icon');
+        const predictionContainer = document.getElementById('prediction-text');
+        const predictionText = predictionContainer.querySelector('p');
+        const snowContainer = document.getElementById('globe-snow');
+        const dustContainer = document.getElementById('gold-dust-container');
+
+        function createSnow() {
+            for(let i=0; i<60; i++) {
+                const flake = document.createElement('div');
+                flake.classList.add('snow-particle');
+                resetFlake(flake);
+                snowContainer.appendChild(flake);
+            }
+        }
+
+        function resetFlake(flake) {
+            const size = Math.random() * 3 + 1;
+            flake.style.width = `${size}px`;
+            flake.style.height = `${size}px`;
+            flake.style.left = `${Math.random() * 100}%`;
+            flake.style.top = `-${Math.random() * 20}%`;
+            flake.style.opacity = Math.random() * 0.7 + 0.3;
+            flake.style.boxShadow = `0 0 ${size}px rgba(255,255,255,0.8)`;
+            
+            const duration = Math.random() * 3 + 3;
+            flake.style.animationDuration = `${duration}s, 3s`; // fall, twinkle
+            flake.style.animationDelay = `-${Math.random() * 5}s, -${Math.random() * 3}s`;
+            
+            flake.addEventListener('animationiteration', () => {
+                if(flake.style.animationName.includes('fall')) {
+                     flake.style.left = `${Math.random() * 100}%`;
+                     flake.style.top = `-${Math.random() * 20}%`;
+                }
+            });
+        }
+
+        function createGoldExplosion() {
+            // Create 40 gold particles bursting from center
+            for(let i=0; i<40; i++) {
+                const p = document.createElement('div');
+                p.classList.add('gold-dust');
+                
+                // Random size
+                const s = Math.random() * 4 + 2;
+                p.style.width = s + 'px';
+                p.style.height = s + 'px';
+                
+                // Random direction
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 150 + 50; 
+                const tx = Math.cos(angle) * velocity + 'px';
+                const ty = Math.sin(angle) * velocity + 'px';
+                
+                p.style.setProperty('--tx', tx);
+                p.style.setProperty('--ty', ty);
+                
+                p.style.animation = `explode 0.8s ease-out forwards`;
+                
+                dustContainer.appendChild(p);
+                
+                // Cleanup
+                setTimeout(() => p.remove(), 800);
+            }
+        }
+
+        function shakeGlobe() {
+            // Prevent double clicking
+            if(globe.classList.contains('shake-animation')) return;
+
+            // 1. Start Shake & Reset UI
+            globe.classList.add('shake-animation');
+            placeholder.style.opacity = '0';
+            predictionContainer.classList.add('hidden');
+            predictionContainer.classList.remove('float-in');
+
+            // 2. Accelerate Snow
+            const particles = document.querySelectorAll('.snow-particle');
+            particles.forEach(p => {
+                p.style.transition = 'top 0.5s ease';
+                p.style.top = Math.random() * 100 + '%'; // Random scramble
+            });
+
+            // 3. After Shake...
+            setTimeout(() => {
+                globe.classList.remove('shake-animation');
+                
+                // MAGIC MOMENT: Explosion & Prediction
+                createGoldExplosion();
+                
+                const randomTxt = predictions[Math.floor(Math.random() * predictions.length)];
+                predictionText.innerText = `"${randomTxt}"`;
+
+                placeholder.style.display = 'none';
+                predictionContainer.classList.remove('hidden');
+                predictionContainer.classList.add('float-in');
+
+                // Reset Snow speed
+                particles.forEach(p => resetFlake(p));
+
+            }, 800);
+        }
+
+        createSnow();
+        globe.addEventListener('click', shakeGlobe);
+    </script>
+</body>
+</html>
