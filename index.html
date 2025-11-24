@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibecoding Adventskalender - KI Marketing Bootcamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-navy: #0f172a;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-navy);
+            background-image: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
+            color: white;
+        }
+        .door {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .door:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.3);
+            border-color: var(--ci-gold);
+        }
+        .door-open {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid var(--ci-gold);
+        }
+        .door-locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .gold-text { color: var(--ci-gold); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- Header -->
+    <header class="text-center mb-12 max-w-2xl">
+        <div class="inline-block mb-4 px-4 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase">Wir präsentieren</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">Vibecoding <span class="gold-text">Adventskalender</span></h1>
+        <p class="text-blue-200 text-lg font-light">24 Tage. 24 Apps.</p>
+        <p class="text-sm text-gray-400 mt-2">Ein Experiment für mehr AI Literacy.</p>
+    </header>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full max-w-5xl mb-12">
+        
+        <!-- Tür 1 (AKTIV) -->
+        <a href="tag1.html" class="door door-open group relative aspect-square rounded-xl flex flex-col items-center justify-center cursor-pointer overflow-hidden">
+            <div class="absolute inset-0 bg-[#FFB300]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <span class="text-4xl mb-2 group-hover:scale-110 transition-transform">🔮</span>
+            <span class="text-2xl font-bold">1</span>
+            <span class="text-xs text-[#FFB300] mt-1 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-4">Orakel</span>
+        </a>
+
+        <!-- Tür 2 bis 24 (GENERATOR) -->
+        <script>
+            // Wir generieren die restlichen Türen automatisch als "Locked"
+            for(let i=2; i<=24; i++) {
+                document.write(`
+                    <div class="door door-locked relative aspect-square rounded-xl flex flex-col items-center justify-center">
+                        <span class="text-2xl font-bold text-gray-600">${i}</span>
+                        <span class="text-xs text-gray-700 mt-1 absolute bottom-4">Locked</span>
+                    </div>
+                `);
+            }
+        </script>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-gray-500 text-sm mt-auto">
+        <a href="https://www.marketing-ki.de" target="_blank" class="hover:text-[#FFB300] transition-colors">www.marketing-ki.de</a>
+        <span class="mx-2">•</span>
+        <span>KI Marketing Bootcamp</span>
+    </footer>
+
+</body>
+</html>
