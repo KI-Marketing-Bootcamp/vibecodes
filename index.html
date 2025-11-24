@@ -5,83 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibecoding Adventskalender - KI Marketing Bootcamp</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Dein Marketing Gold */
             --ci-gold: #FFB300;
-            --ci-navy: #0f172a;
+            /* Das dunkle Website-Navy */
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
         }
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--ci-navy);
-            background-image: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
+            background-color: var(--ci-darker);
+            /* Subtiler, professioneller Verlauf wie auf der Website */
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
             color: white;
+            min-height: 100vh;
         }
+        
+        /* Karten-Design (Clean & Flat) */
         .door {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        
+        /* Hover Effekt: Goldener Rand & leichtes Leuchten */
         .door:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.3);
+            transform: translateY(-4px);
             border-color: var(--ci-gold);
+            box-shadow: 0 10px 40px -10px rgba(255, 179, 0, 0.2);
+            z-index: 10;
         }
-        .door-open {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border: 1px solid var(--ci-gold);
+
+        /* Aktive Türen bekommen den "Button-Look" beim Hover */
+        .door-open:hover .door-number {
+            color: var(--ci-gold);
         }
+
         .door-locked {
-            opacity: 0.5;
+            opacity: 0.3;
             cursor: not-allowed;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.05);
         }
+        
         .gold-text { color: var(--ci-gold); }
+        
+        /* Der gelbe Call-to-Action Style eurer Website */
+        .badge-gold {
+            background-color: var(--ci-gold);
+            color: #020617; /* Dunkler Kontrast-Text */
+            font-weight: 700;
+        }
+
+        /* Logo Glow dezent */
+        .logo-glow {
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10 px-4">
+<body class="flex flex-col items-center py-12 px-4 relative">
 
-    <!-- Header -->
-    <header class="text-center mb-12 max-w-2xl">
-        <div class="inline-block mb-4 px-4 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-            <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase">Das zauberhaft-weihnachtliche KI Marketing Bootcamp präsentiert seinen ersten</span>
+    <!-- Header Area -->
+    <header class="text-center mb-16 max-w-5xl relative z-10 flex flex-col items-center mt-4">
+        
+        <!-- LOGO -->
+        <a href="https://www.marketing-ki.de" target="_blank">
+            <img src="logo.png" alt="KI Marketing Bootcamp" class="h-16 md:h-20 mb-10 object-contain logo-glow hover:scale-105 transition-transform duration-300">
+        </a>
+
+        <!-- Titel Sektion -->
+        <div class="relative inline-block text-center">
+            
+            <!-- Karl (optional, falls Bild vorhanden) -->
+            <img src="karl-schlau.jpg" class="absolute -right-20 -top-10 w-24 h-24 rounded-full border-4 border-[#0f172a] shadow-2xl transform rotate-12 hidden md:block hover:rotate-6 transition-transform duration-300 object-cover z-20" alt="Karl Schlau">
+            
+            <div class="inline-block mb-4 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase leading-relaxed">
+                    Das zauberhaft-weihnachtliche KI Marketing Bootcamp präsentiert seinen ersten
+                </span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight leading-tight">
+                Vibecoding<br>
+                <span class="gold-text">Adventskalender</span>
+            </h1>
         </div>
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">Vibecoding <span class="gold-text">Adventskalender</span></h1>
-        <p class="text-blue-200 text-lg font-light">24 Tage. 24 Apps.</p>
-        <p class="text-sm text-gray-400 mt-2">Ein Experiment für mehr AI Literacy.</p>
+        
+        <p class="text-slate-300 text-lg md:text-xl font-light mt-2 max-w-2xl leading-relaxed">
+            24 Tage. 24 Apps. <span class="text-white font-medium">0 Zeilen Code selbst geschrieben.</span><br>
+            Ein Experiment von Dr. Vroni Hackl für mehr AI Literacy.
+        </p>
     </header>
 
     <!-- Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full max-w-5xl mb-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full max-w-6xl mb-20 px-2 md:px-0">
         
-        <!-- Tür 1 (AKTIV) -->
-        <a href="tag1.html" class="door door-open group relative aspect-square rounded-xl flex flex-col items-center justify-center cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-[#FFB300]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <span class="text-4xl mb-2 group-hover:scale-110 transition-transform">🔮</span>
-            <span class="text-2xl font-bold">1</span>
-            <span class="text-xs text-[#FFB300] mt-1 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-4">Orakel</span>
-        </a>
-        
-        <!-- Tür 2 (AKTIV - Externer Link zu Netlify) -->
-        <!-- WICHTIG: Tausche unten 'DEINE-NETLIFY-URL' gegen deinen echten Link -->
-        <a href="https://kontext-baby.netlify.app/" target="_blank" class="door door-open group relative aspect-square rounded-xl flex flex-col items-center justify-center cursor-pointer overflow-hidden border-blue-400/30">
-            <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <!-- Kleines Icon für "Externer Link" -->
-            <div class="absolute top-2 right-2 text-xs text-blue-300 opacity-50">↗</div>
+        <!-- Tür 1 (Orakel - Lokal) -->
+        <a href="tag1.html" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
+            <!-- Hover Background Fill -->
+            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
             
-            <span class="text-4xl mb-2 group-hover:scale-110 transition-transform">🤖</span>
-            <span class="text-2xl font-bold">2</span>
-            <span class="text-xs text-blue-300 mt-1 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-4">Kontext Baby</span>
+            <div class="absolute top-4 right-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300 door-number">1</div>
+            
+            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">🔮</span>
+            
+            <div class="text-center px-2 relative z-10">
+                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 1</span>
+                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Das Orakel</span>
+            </div>
         </a>
 
-        <!-- Tür 2 bis 24 (GENERATOR) -->
+        <!-- Tür 2 (Kontext Baby - Extern) -->
+        <a href="https://kontext-baby.netlify.app/" target="_blank" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
+            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            
+            <!-- Extern Badge -->
+            <div class="absolute top-3 right-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </div>
+
+            <div class="absolute top-4 left-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300">2</div>
+            
+            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">👶</span>
+            
+            <div class="text-center px-2 relative z-10">
+                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 2</span>
+                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Kontext Baby</span>
+            </div>
+        </a>
+
+        <!-- Tür 3 bis 24 (Locked Script) -->
         <script>
-            // Wir generieren die restlichen Türen automatisch als "Locked"
-            for(let i=2; i<=24; i++) {
+            // Wir generieren die restlichen Türen automatisch im "Locked" Design
+            // START BEI 3, DA TÜR 1 & 2 SCHON DA SIND
+            for(let i=3; i<=24; i++) {
                 document.write(`
-                    <div class="door door-locked relative aspect-square rounded-xl flex flex-col items-center justify-center">
-                        <span class="text-2xl font-bold text-gray-600">${i}</span>
-                        <span class="text-xs text-gray-700 mt-1 absolute bottom-4">Locked</span>
+                    <div class="door door-locked relative aspect-square rounded-2xl flex flex-col items-center justify-center">
+                        <span class="text-4xl font-black text-slate-800">${i}</span>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest border border-slate-700 px-2 py-1 rounded">Soon</span>
+                        </div>
                     </div>
                 `);
             }
@@ -89,15 +156,18 @@
 
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-gray-500 text-sm mt-auto">
-        <a href="https://www.marketing-ki.de" target="_blank" class="hover:text-[#FFB300] transition-colors">www.marketing-ki.de</a>
-        <span class="mx-2">•</span>
-        <span>KI Marketing Bootcamp</span>
+    <!-- Footer im CI Style -->
+    <footer class="text-center text-slate-500 text-sm mt-auto py-10 border-t border-white/5 w-full max-w-5xl flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-3">
+            <span class="h-2 w-2 rounded-full badge-gold"></span>
+            <span class="tracking-wide">Vibecoding Experiment 2025</span>
+        </div>
+        
+        <a href="https://www.marketing-ki.de" target="_blank" class="hover:text-[#FFB300] transition-colors flex items-center gap-3 group opacity-80 hover:opacity-100">
+            <img src="logo.png" class="h-5 opacity-60 group-hover:opacity-100 transition-opacity" alt="Logo Small">
+            <span class="group-hover:translate-x-1 transition-transform font-medium">KI Marketing Bootcamp</span>
+        </a>
     </footer>
 
 </body>
-
 </html>
-
-
