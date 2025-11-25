@@ -128,6 +128,21 @@
                 </svg>
             </div>
 
+        <!-- Tür 3 (Prompt Roulette) -->
+        <a href="tag3.html" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
+            <!-- Hover Background Fill -->
+            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            
+            <div class="absolute top-4 right-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300 door-number">1</div>
+            
+            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">🔮</span>
+            
+            <div class="text-center px-2 relative z-10">
+                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 1</span>
+                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Das Orakel</span>
+            </div>
+        </a>
+
             <div class="absolute top-4 left-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300">2</div>
             
             <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">👶</span>
@@ -140,8 +155,6 @@
 
         <!-- Tür 3 bis 24 (Locked Script) -->
         <script>
-            // Wir generieren die restlichen Türen automatisch im "Locked" Design
-            // START BEI 3, DA TÜR 1 & 2 SCHON DA SIND
             for(let i=3; i<=24; i++) {
                 document.write(`
                     <div class="door door-locked relative aspect-square rounded-2xl flex flex-col items-center justify-center">
@@ -171,6 +184,7 @@
 
 </body>
 </html>
+
 
 
 
