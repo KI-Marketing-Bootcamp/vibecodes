@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt-Roulette | Vibecoding Adventskalender</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Marketing Gold */
+            --ci-gold: #FFB300;
+            
+            /* Navy Abstufungen */
+            --ci-dark: #0f172a;
+            --ci-darker: #020617;
+            
+            /* Text */
+            --text-main: #ffffff;
+            --text-sub: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge-gold {
+            display: inline-block;
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .roulette-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 179, 0, 0.2);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .roulette-display.spinning {
+            border-color: var(--ci-gold);
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .prompt-label {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .prompt-parts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .prompt-part {
+            background: rgba(255, 179, 0, 0.1);
+            border: 1px solid rgba(255, 179, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-sub);
+        }
+
+        .btn-primary {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 179, 0, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .info-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .info-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-text {
+            color: var(--text-sub);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .roulette-display {
+                padding: 2rem 1rem;
+                min-height: 200px;
+            }
+
+            .prompt-text {
+                font-size: 1.25rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge-gold">🎄 Tag 6</div>
+            <h1>🎲 Prompt-Roulette</h1>
+            <p class="subtitle">Dreh am Rad der absurden KI-Kombinationen</p>
+        </div>
+
+        <div class="card">
+            <div class="roulette-display" id="rouletteDisplay">
+                <div class="prompt-label">Dein absurder Prompt</div>
+                <div class="prompt-text" id="promptText">
+                    Klick auf "Drehen", um eine zufällige Kombination zu generieren!
+                </div>
+                <div class="prompt-parts" id="promptParts"></div>
+            </div>
+
+            <button class="btn-primary" id="spinBtn" onclick="spin()">
+                🎰 Drehen!
+            </button>
+
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="copyPrompt()">
+                    📋 Kopieren
+                </button>
+                <button class="btn-secondary" onclick="sharePrompt()">
+                    🔗 Teilen
+                </button>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">💡 Über diese App</div>
+                <p class="info-text">
+                    Das Prompt-Roulette kombiniert zufällig Aufgaben, Stile und Themen zu absurden – aber oft überraschend kreativen – KI-Prompts. Perfekt, um Writer's Block zu überwinden oder einfach zu lachen. Probier deinen generierten Prompt doch mal wirklich aus!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tasks = [
+            "Schreib einen Werbebrief",
+            "Verfasse ein Gedicht",
+            "Erstelle eine Produktbeschreibung",
+            "Schreib eine LinkedIn-Nachricht",
+            "Formuliere einen Newsletter",
+            "Entwickle einen Elevator Pitch",
+            "Erstelle einen Social Media Post",
+            "Schreib eine Pressemitteilung",
+            "Verfasse einen Blogpost",
+            "Entwirf eine Job-Anzeige"
+        ];
+
+        const topics = [
+            "für Käse",
+            "über Quantenphysik",
+            "für Hausschuhe",
+            "über Zeitreisen",
+            "für ein Wellness-Hotel",
+            "über Künstliche Intelligenz",
+            "für Staubsauger",
+            "über Meditation",
+            "für Steuersoftware",
+            "über Prokrastination"
+        ];
+
+        const styles = [
+            "im Stil von Goethe",
+            "wie ein Gen Z TikToker",
+            "als Shakespeares Sonett",
+            "wie ein Pirat",
+            "als Behördenbrief",
+            "wie ein Rapper",
+            "im Märchenton",
+            "als Nachrichtensprecher",
+            "wie ein Motivationscoach",
+            "im Stil einer Kochsendung"
+        ];
+
+        let currentPrompt = "";
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function spin() {
+            const btn = document.getElementById('spinBtn');
+            const display = document.getElementById('rouletteDisplay');
+            const promptText = document.getElementById('promptText');
+            const promptParts = document.getElementById('promptParts');
+            
+            btn.disabled = true;
+            display.classList.add('spinning');
+            
+            // Simulate spinning animation
+            let counter = 0;
+            const spinInterval = setInterval(() => {
+                const tempTask = getRandomElement(tasks);
+                const tempTopic = getRandomElement(topics);
+                const tempStyle = getRandomElement(styles);
+                promptText.textContent = `${tempTask} ${tempTopic} ${tempStyle}`;
+                counter++;
+                
+                if (counter > 15) {
+                    clearInterval(spinInterval);
+                    finalizePrompt();
+                }
+            }, 100);
+        }
+
+        function finalizePrompt() {
+            const display = document.getElementById('rouletteDisplay');
+            const promptText = document.getElementById('promptText');
+            const promptParts = document.getElementById('promptParts');
+            const btn = document.getElementById('spinBtn');
+            
+            const task = getRandomElement(tasks);
+            const topic = getRandomElement(topics);
+            const style = getRandomElement(styles);
+            
+            currentPrompt = `${task} ${topic} ${style}`;
+            
+            promptText.textContent = currentPrompt;
+            
+            promptParts.innerHTML = `
+                <div class="prompt-part">📝 ${task}</div>
+                <div class="prompt-part">🎯 ${topic}</div>
+                <div class="prompt-part">🎨 ${style}</div>
+            `;
+            
+            display.classList.remove('spinning');
+            btn.disabled = false;
+        }
+
+        function copyPrompt() {
+            if (!currentPrompt) {
+                alert('Dreh erst das Roulette!');
+                return;
+            }
+            
+            navigator.clipboard.writeText(currentPrompt).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Kopiert!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        function sharePrompt() {
+            if (!currentPrompt) {
+                alert('Dreh erst das Roulette!');
+                return;
+            }
+            
+            const text = `Mein absurder KI-Prompt vom #VibecodeingAdventskalender:\n\n"${currentPrompt}"\n\n🎲 Probier's selbst: [DEINE-URL]`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Prompt-Roulette',
+                    text: text
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Zum Teilen in die Zwischenablage kopiert!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
