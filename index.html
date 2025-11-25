@@ -170,10 +170,39 @@
             .meta-content { font-size: 0.9rem; }
             .meta-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
+        /* --- SCHNEE EFFEKT (NEU) --- */
+        #snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* WICHTIG: Damit man durchklicken kann */
+            z-index: 0; /* Liegt hinter dem Inhalt */
+            overflow: hidden;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0); opacity: 0.8; }
+            100% { transform: translateY(110vh) translateX(20px); opacity: 0.2; }
+        }
     </style>
 </head>
 <body class="flex flex-col items-center py-12 px-4 relative">
-
+    
+    <!-- SCHNEE CONTAINER (Hier wird der Schnee reingeworfen) -->
+    <div id="snow-container"></div>
+    
     <!-- Header Area -->
     <header class="text-center mb-16 max-w-5xl relative z-10 flex flex-col items-center mt-4">
         
@@ -406,7 +435,35 @@
                 closeImpressum();
             }
         });
-
+        // --- SNOW EFFECT ENGINE (NEU) ---
+        function createSnowflake() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // Zufällige Größe
+            const size = Math.random() * 4 + 2 + 'px';
+            snowflake.style.width = size;
+            snowflake.style.height = size;
+            
+            // Zufällige Position
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            
+            // Zufällige Fallgeschwindigkeit
+            const duration = Math.random() * 5 + 5 + 's'; // 5 bis 10 Sekunden
+            snowflake.style.animationDuration = duration;
+            
+            snowContainer.appendChild(snowflake);
+            
+            // Nach Animation entfernen
+            setTimeout(() => {
+                snowflake.remove();
+            }, parseFloat(duration) * 1000);
+        }
+        
+        // Starte den Schneefall
+        setInterval(createSnowflake, 200); // Alle 200ms eine neue Flocke
+        
         // 2. KALENDER DATEN (Hier eintragen!)
         const calendarData = [
             { 
@@ -532,6 +589,7 @@
 
 </body>
 </html>
+
 
 
 
