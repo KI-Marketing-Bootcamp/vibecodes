@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikolaus Stiefel-Füller | Vibecoding Adventskalender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a;
+            --ci-darker: #020617;
+            --text-main: #ffffff;
+            --text-sub: #cbd5e1;
+            --green: #22c55e;
+            --red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .badge-gold {
+            display: inline-block;
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .game-canvas {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 179, 0, 0.2);
+            border-radius: 1rem;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.1s ease-out;
+            filter: drop-shadow(0 4px 12px rgba(255, 179, 0, 0.4));
+        }
+
+        .falling-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: fall linear;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(500px);
+            }
+        }
+
+        .good-prompt {
+            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+        }
+
+        .hallucination {
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+        }
+
+        .game-over-screen,
+        .start-screen {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            border-radius: 1rem;
+        }
+
+        .game-over-screen.hidden,
+        .start-screen.hidden {
+            display: none;
+        }
+
+        .game-over-title,
+        .start-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--ci-gold);
+            margin-bottom: 1rem;
+        }
+
+        .final-score {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 179, 0, 0.3);
+        }
+
+        .instructions {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            color: var(--ci-gold);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .instructions ul {
+            list-style: none;
+            color: var(--text-sub);
+            line-height: 1.8;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions li::before {
+            content: "→ ";
+            color: var(--ci-gold);
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .good-item {
+            color: var(--green);
+        }
+
+        .bad-item {
+            color: var(--red);
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: 900;
+            pointer-events: none;
+            z-index: 50;
+            animation: scoreFloat 1s ease-out forwards;
+        }
+
+        @keyframes scoreFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(1.5);
+            }
+        }
+
+        .paused {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--ci-gold);
+            z-index: 90;
+            display: none;
+        }
+
+        .paused.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .game-canvas {
+                height: 400px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .player {
+                width: 60px;
+                height: 60px;
+                font-size: 3rem;
+            }
+
+            .falling-item {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge-gold">🎄 Tag 6</div>
+            <h1>🎅 Nikolaus Stiefel-Füller</h1>
+            <p class="subtitle">Fang die guten Prompts, weiche den Halluzinationen aus!</p>
+        </div>
+
+        <div class="game-container">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="scoreDisplay">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Leben</div>
+                    <div class="stat-value" id="livesDisplay">❤️❤️❤️</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Level</div>
+                    <div class="stat-value" id="levelDisplay">1</div>
+                </div>
+            </div>
+
+            <div class="game-canvas" id="gameCanvas">
+                <div class="player" id="player">🥾</div>
+                <div class="paused" id="pausedText">PAUSE</div>
+
+                <div class="start-screen" id="startScreen">
+                    <div class="start-title">🎅 Bereit?</div>
+                    <p style="color: var(--text-sub); margin-bottom: 2rem; text-align: center; max-width: 400px;">
+                        Bewege den Stiefel mit ← → oder der Maus.<br>
+                        Fang die <span class="good-item">✨ guten Prompts</span>,<br>
+                        weiche den <span class="bad-item">💥 Halluzinationen</span> aus!
+                    </p>
+                    <button class="btn-primary" onclick="startGame()">🎮 Spiel starten</button>
+                </div>
+
+                <div class="game-over-screen hidden" id="gameOverScreen">
+                    <div class="game-over-title">🎄 Game Over!</div>
+                    <div class="final-score">
+                        Dein Score: <span id="finalScore" style="color: var(--ci-gold); font-weight: 900;">0</span>
+                    </div>
+                    <button class="btn-primary" onclick="resetGame()">🔄 Nochmal spielen</button>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>📜 Spielregeln</h3>
+                <ul>
+                    <li><span class="good-item">✨ Gute Prompts</span> geben +10 Punkte</li>
+                    <li><span class="bad-item">💥 Halluzinationen</span> kosten 1 Leben</li>
+                    <li>3 Leben verloren = Game Over</li>
+                    <li>Alle 100 Punkte → neues Level (schneller!)</li>
+                    <li>Steuerung: Pfeiltasten ← → oder Maus</li>
+                    <li>Pause: Leertaste</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            score: 0,
+            lives: 3,
+            level: 1,
+            isPlaying: false,
+            isPaused: false,
+            playerX: 50, // Prozent
+            items: [],
+            spawnInterval: null,
+            gameLoop: null
+        };
+
+        // Game Config
+        const config = {
+            playerSpeed: 5,
+            baseSpawnRate: 1000,
+            baseFallSpeed: 3,
+            goodPrompts: ['✨', '💡', '🎯', '🚀', '⭐', '🔥', '💎', '🎨'],
+            hallucinations: ['💥', '❌', '⚠️', '🔴', '💀', '👻', '🌀', '⛔'],
+            goodProbability: 0.6
+        };
+
+        // DOM Elements
+        const player = document.getElementById('player');
+        const gameCanvas = document.getElementById('gameCanvas');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const livesDisplay = document.getElementById('livesDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalScore = document.getElementById('finalScore');
+        const pausedText = document.getElementById('pausedText');
+
+        // Player Movement
+        document.addEventListener('keydown', (e) => {
+            if (!gameState.isPlaying || gameState.isPaused) return;
+
+            if (e.key === 'ArrowLeft') {
+                gameState.playerX = Math.max(0, gameState.playerX - config.playerSpeed);
+            } else if (e.key === 'ArrowRight') {
+                gameState.playerX = Math.min(100, gameState.playerX + config.playerSpeed);
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                togglePause();
+            }
+
+            updatePlayerPosition();
+        });
+
+        // Mouse Movement
+        gameCanvas.addEventListener('mousemove', (e) => {
+            if (!gameState.isPlaying || gameState.isPaused) return;
+
+            const rect = gameCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            gameState.playerX = Math.max(0, Math.min(100, percentage));
+            updatePlayerPosition();
+        });
+
+        function updatePlayerPosition() {
+            player.style.left = `calc(${gameState.playerX}% - 40px)`;
+        }
+
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameState.isPlaying = true;
+            gameState.score = 0;
+            gameState.lives = 3;
+            gameState.level = 1;
+            gameState.items = [];
+            
+            updateUI();
+            startSpawning();
+            startGameLoop();
+        }
+
+        function startSpawning() {
+            const spawnRate = config.baseSpawnRate / gameState.level;
+            
+            gameState.spawnInterval = setInterval(() => {
+                if (gameState.isPaused) return;
+                spawnItem();
+            }, spawnRate);
+        }
+
+        function spawnItem() {
+            const isGood = Math.random() < config.goodProbability;
+            const emoji = isGood 
+                ? config.goodPrompts[Math.floor(Math.random() * config.goodPrompts.length)]
+                : config.hallucinations[Math.floor(Math.random() * config.hallucinations.length)];
+
+            const item = {
+                id: Date.now() + Math.random(),
+                x: Math.random() * 90 + 5, // 5-95%
+                y: -5,
+                isGood: isGood,
+                emoji: emoji,
+                speed: config.baseFallSpeed * (1 + (gameState.level - 1) * 0.2)
+            };
+
+            gameState.items.push(item);
+            createItemElement(item);
+        }
+
+        function createItemElement(item) {
+            const el = document.createElement('div');
+            el.className = `falling-item ${item.isGood ? 'good-prompt' : 'hallucination'}`;
+            el.textContent = item.emoji;
+            el.style.left = `${item.x}%`;
+            el.style.top = `${item.y}%`;
+            el.dataset.itemId = item.id;
+            gameCanvas.appendChild(el);
+        }
+
+        function startGameLoop() {
+            gameState.gameLoop = setInterval(() => {
+                if (gameState.isPaused) return;
+                updateGame();
+            }, 1000 / 60); // 60 FPS
+        }
+
+        function updateGame() {
+            gameState.items.forEach((item, index) => {
+                item.y += item.speed / 10;
+
+                const el = document.querySelector(`[data-item-id="${item.id}"]`);
+                if (el) {
+                    el.style.top = `${item.y}%`;
+
+                    // Check collision
+                    if (item.y > 75 && item.y < 85) { // Player range
+                        const playerLeft = gameState.playerX - 5;
+                        const playerRight = gameState.playerX + 5;
+
+                        if (item.x > playerLeft && item.x < playerRight) {
+                            handleCollision(item);
+                            el.remove();
+                            gameState.items.splice(index, 1);
+                        }
+                    }
+
+                    // Remove if off screen
+                    if (item.y > 100) {
+                        el.remove();
+                        gameState.items.splice(index, 1);
+                    }
+                }
+            });
+        }
+
+        function handleCollision(item) {
+            if (item.isGood) {
+                gameState.score += 10;
+                showScorePopup('+10', item.x, item.y, 'var(--green)');
+                
+                // Level up every 100 points
+                const newLevel = Math.floor(gameState.score / 100) + 1;
+                if (newLevel > gameState.level) {
+                    gameState.level = newLevel;
+                    restartSpawning();
+                    showScorePopup('Level Up!', 50, 50, 'var(--ci-gold)');
+                }
+            } else {
+                gameState.lives--;
+                showScorePopup('-1 ❤️', item.x, item.y, 'var(--red)');
+                
+                if (gameState.lives <= 0) {
+                    gameOver();
+                }
+            }
+
+            updateUI();
+        }
+
+        function showScorePopup(text, x, y, color) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = text;
+            popup.style.left = `${x}%`;
+            popup.style.top = `${y}%`;
+            popup.style.color = color;
+            gameCanvas.appendChild(popup);
+
+            setTimeout(() => popup.remove(), 1000);
+        }
+
+        function updateUI() {
+            scoreDisplay.textContent = gameState.score;
+            livesDisplay.textContent = '❤️'.repeat(gameState.lives);
+            levelDisplay.textContent = gameState.level;
+        }
+
+        function restartSpawning() {
+            clearInterval(gameState.spawnInterval);
+            startSpawning();
+        }
+
+        function togglePause() {
+            gameState.isPaused = !gameState.isPaused;
+            pausedText.classList.toggle('show', gameState.isPaused);
+        }
+
+        function gameOver() {
+            gameState.isPlaying = false;
+            clearInterval(gameState.spawnInterval);
+            clearInterval(gameState.gameLoop);
+
+            finalScore.textContent = gameState.score;
+            gameOverScreen.classList.remove('hidden');
+
+            // Remove all items
+            document.querySelectorAll('.falling-item').forEach(el => el.remove());
+            gameState.items = [];
+        }
+
+        function resetGame() {
+            gameOverScreen.classList.add('hidden');
+            startGame();
+        }
+
+        // Initialize player position
+        updatePlayerPosition();
+    </script>
+</body>
+</html>
