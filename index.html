@@ -456,11 +456,9 @@
         // 3. ZEITMASCHINE (Zum Testen)
         const realDate = new Date();
         
-        // 🔥 SIMULATION: Heute ist der 4. Dezember.
+        // 🔥 SIMULATION: Heute ist der xte Dezember.
         // Zum Scharfschalten einfach diese Zeile löschen!
-        const simulateDate = new Date('2025-12-06T12:00:00');
-
-        const today = (typeof simulateDate !== 'undefined') ? simulateDate : realDate;
+        const simulateDate = new Date('2025-12-06T12:00:00')
 
         const today = (typeof simulateDate !== 'undefined') ? simulateDate : realDate;
         const currentMonth = today.getMonth(); // 11 = Dezember
@@ -513,6 +511,7 @@
 
 </body>
 </html>
+
 
 
 
