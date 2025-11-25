@@ -1,1 +1,1048 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das "Nein"-Sagen Training | Vibecoding Adventskalender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a;
+            --ci-darker: #020617;
+            --text-main: #ffffff;
+            --text-sub: #cbd5e1;
+            --green: #22c55e;
+            --red: #ef4444;
+            --orange: #f97316;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge-gold {
+            display: inline-block;
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .chat-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            height: 400px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .bot .message-avatar {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .user .message-avatar {
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            line-height: 1.6;
+        }
+
+        .bot .message-content {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-top-left-radius: 0.25rem;
+        }
+
+        .user .message-content {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-top-right-radius: 0.25rem;
+        }
+
+        .response-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .response-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            text-align: left;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.5;
+        }
+
+        .response-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--ci-gold);
+            transform: translateX(4px);
+        }
+
+        .response-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .response-btn .label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .feedback {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .feedback.excellent {
+            background: rgba(34, 197, 94, 0.05);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .feedback.good {
+            background: rgba(255, 179, 0, 0.05);
+            border-color: rgba(255, 179, 0, 0.3);
+        }
+
+        .feedback.poor {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback.excellent .feedback-title { color: var(--green); }
+        .feedback.good .feedback-title { color: var(--orange); }
+        .feedback.poor .feedback-title { color: var(--red); }
+
+        .feedback-text {
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .game-over {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .game-over.show {
+            display: block;
+        }
+
+        .game-over-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--ci-gold);
+            margin-bottom: 1rem;
+        }
+
+        .game-over-score {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--text-sub);
+        }
+
+        .game-over-rating {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 179, 0, 0.3);
+        }
+
+        .info-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .info-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-text {
+            color: var(--text-sub);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 179, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .chat-container {
+                height: 350px;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Meta Card Styles */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .meta-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .meta-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .meta-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+        }
+
+        .meta-toggle {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meta-card.collapsed .meta-toggle {
+            transform: rotate(0deg);
+        }
+
+        .meta-card:not(.collapsed) .meta-toggle {
+            transform: rotate(180deg);
+        }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            padding: 0 1.5rem;
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 5000px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 179, 0, 0.1);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .meta-insight {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-insight strong {
+            color: var(--ci-gold);
+        }
+
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: #a78bfa;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge-gold">🎄 Tag 9</div>
+            <h1>🚫 Das "Nein"-Sagen Training</h1>
+            <p class="subtitle">Lerne, dich gegen ausbeuterische Anfragen zu wehren</p>
+        </div>
+
+        <div class="card">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Runde</div>
+                    <div class="stat-value" id="roundDisplay">1/5</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="scoreDisplay">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Nein-Rate</div>
+                    <div class="stat-value" id="noRateDisplay">0%</div>
+                </div>
+            </div>
+
+            <div class="chat-container" id="chatContainer">
+                <!-- Messages will be added here -->
+            </div>
+
+            <div class="feedback" id="feedback">
+                <div class="feedback-title" id="feedbackTitle"></div>
+                <div class="feedback-text" id="feedbackText"></div>
+            </div>
+
+            <div class="response-options" id="responseOptions">
+                <!-- Response buttons will be added here -->
+            </div>
+
+            <div class="game-over" id="gameOver">
+                <div class="game-over-title">🎯 Training abgeschlossen!</div>
+                <div class="game-over-score">
+                    Dein finaler Score: <strong style="color: var(--ci-gold);" id="finalScore">0</strong> Punkte
+                </div>
+                <div class="game-over-rating" id="finalRating"></div>
+                <button class="btn-primary" onclick="resetGame()">🔄 Nochmal trainieren</button>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">💡 Über dieses Training</div>
+                <p class="info-text">
+                    Dieser Chatbot simuliert typische ausbeuterische Anfragen, denen Freelancer und Kreative täglich begegnen. 
+                    Dein Ziel: Höflich aber bestimmt "Nein" sagen, ohne zu rechtfertigen oder nachzugeben. 
+                    Jede Antwort wird bewertet: <strong style="color: var(--green);">Assertiv (+30)</strong>, 
+                    <strong style="color: var(--orange);">Okay (+15)</strong>, oder 
+                    <strong style="color: var(--red);">Zu weich (+0)</strong>. 
+                    <strong>Pro Durchgang werden 5 zufällige Szenarien aus einem Pool von 10 ausgewählt</strong> – so bleibt es spannend beim mehrfachen Spielen!
+                </p>
+            </div>
+
+            <div class="meta-card collapsed" id="metaCard">
+                <div class="meta-header" onclick="toggleMeta()">
+                    <span class="meta-title">🔍 Behind the Scenes</span>
+                    <span class="meta-toggle" id="metaToggle">▼</span>
+                </div>
+                <div class="meta-content" id="metaContent">
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-label">System</div>
+                            <div class="meta-value">Claude Sonnet 4.5</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Build-Zeit</div>
+                            <div class="meta-value">~22 Minuten</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">LLM benötigt?</div>
+                            <div class="meta-value">Nein</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Szenarien-Pool</div>
+                            <div class="meta-value">10 (5 zufällig)</div>
+                        </div>
+                    </div>
+
+                    <div class="meta-insight">
+                        <strong>💡 Vibecoding Insight:</strong> Diese App ist ein <strong>Story-Based Game ohne KI-Backend</strong>. Es gibt einen Pool von 10 vordefinierten Szenarien, aus dem bei jedem Durchgang 5 zufällig ausgewählt werden. Das ist deutlich einfacher als einen echten Chatbot zu bauen, aber für den Lerneffekt völlig ausreichend. Der Trick: Durch die zufällige Auswahl bekommt man beim mehrfachen Spielen immer andere Kombinationen – das hält es interessant, ohne 10 Runden spielen zu müssen!
+                    </div>
+
+                    <div class="meta-learning" style="margin-top: 1.5rem;">
+                        <strong style="color: var(--ci-gold); display: block; margin-bottom: 0.75rem;">📚 Was ich dabei gelernt habe:</strong>
+                        <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem; list-style: none;">
+                            <li style="margin-bottom: 0.5rem;">✓ Chat-Interfaces brauchen kein Backend – statische Szenarien reichen oft</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Shuffle-Logik sorgt für Varianz ohne Komplexität</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Smooth Scroll und CSS-Animationen machen's professionell</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Feedback-Timing: 4 Sekunden sind perfekt zum Lesen</li>
+                        </ul>
+                    </div>
+
+                    <div class="meta-comparison" style="background: rgba(102, 126, 234, 0.05); border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 0.75rem; padding: 1.25rem; margin-top: 1.5rem;">
+                        <strong style="color: #a78bfa; display: block; margin-bottom: 0.75rem;">🤔 Warum KEIN LLM?</strong>
+                        <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                            Ein echter Chatbot mit LLM (Claude/ChatGPT) wäre <strong style="color: white;">flexibler</strong>, könnte auf individuelle Antworten reagieren. Aber:
+                        </p>
+                        <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: white;">API-Kosten:</strong> Jede Session würde $0.05-0.10 kosten</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: white;">Response-Zeit:</strong> 1-3 Sekunden Latenz nervt im Chat-Flow</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: white;">Konsistenz:</strong> LLMs sind unvorhersehbar, hardcoded Feedback ist präziser</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: white;">Komplexität:</strong> Backend, Error-Handling, Rate-Limiting nötig</li>
+                        </ul>
+                        <p style="color: var(--text-sub); line-height: 1.7; margin-top: 1rem;">
+                            Für ein <strong style="color: var(--ci-gold);">Training mit klaren Lernzielen</strong> ist die statische Version besser: schneller, billiger, und das Feedback ist auf den Punkt. 🎯
+                        </p>
+                    </div>
+
+                    <div class="meta-honesty" style="background: rgba(255, 179, 0, 0.05); border: 1px solid rgba(255, 179, 0, 0.2); border-radius: 0.75rem; padding: 1.25rem; margin-top: 1.5rem;">
+                        <strong style="color: var(--ci-gold);">🙏 Ehrliche Grenzen:</strong>
+                        <p style="color: var(--text-sub); line-height: 1.7; margin-top: 0.5rem;">
+                            Diese App kann nicht auf <em>deine eigenen</em> Formulierungen reagieren. Sie gibt dir vordefinierte Optionen. Ein echter Chatbot würde deine freie Eingabe analysieren. Aber: Für ein <strong style="color: white;">Lern-Tool</strong> ist das sogar besser – du siehst direkt, wie gute vs. schlechte Antworten aussehen. Und es funktioniert ohne Backend, ohne Kosten, sofort. 🚀
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            round: 0,
+            score: 0,
+            totalRounds: 5,
+            noCount: 0,
+            responses: [],
+            currentScenario: null
+        };
+
+        // Scenarios - Die ausbeuterischen Anfragen
+        const scenarios = [
+            {
+                message: "Hey! Ich hab gesehen, du machst coole Designs. Könntest du mir schnell ein Logo machen? Ich kann dich nicht bezahlen, aber es ist super Exposure für dein Portfolio! 🎨",
+                responses: [
+                    {
+                        text: "Klar, kein Problem! Für Exposure mach ich das gerne.",
+                        type: "weak",
+                        feedback: "❌ Zu weich! 'Exposure' zahlt keine Miete. Du hast deine Arbeit kostenlos verschenkt.",
+                        score: 0
+                    },
+                    {
+                        text: "Danke für die Anfrage! Mein Stundensatz liegt bei X€. Sollen wir einen Termin machen?",
+                        type: "assertive",
+                        feedback: "✅ Perfekt! Höflich, professionell, und du hast deinen Wert klargemacht ohne lange Erklärungen.",
+                        score: 30
+                    },
+                    {
+                        text: "Tut mir leid, aber ich arbeite normalerweise nicht kostenlos... außer es passt wirklich gut.",
+                        type: "okay",
+                        feedback: "⚠️ Besser, aber: Das 'außer' öffnet eine Tür. Ein klares Nein ist stärker.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Krass, du machst das echt gut! Hast du nicht Lust, bei meinem Startup mitzumachen? Wir können leider kein Gehalt zahlen, aber wenn wir groß werden, bist du dabei! 🚀",
+                responses: [
+                    {
+                        text: "Wow, klingt spannend! Wann geht's los?",
+                        type: "weak",
+                        feedback: "❌ Du arbeitest kostenlos für ein Versprechen. 99% der Startups scheitern. Deine Zeit ist wertvoll!",
+                        score: 0
+                    },
+                    {
+                        text: "Ich wünsche euch viel Erfolg! Wenn ihr Budget habt, meldet euch gerne wieder.",
+                        type: "assertive",
+                        feedback: "✅ Exzellent! Freundlich, aber bestimmt. Kein 'Vielleicht später', kein Rechtfertigen.",
+                        score: 30
+                    },
+                    {
+                        text: "Das klingt interessant, aber ich kann gerade nicht unbezahlt arbeiten. Vielleicht später?",
+                        type: "okay",
+                        feedback: "⚠️ Gut abgelehnt, aber 'vielleicht später' lädt zu weiteren Anfragen ein. Sei klarer!",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Du bist doch Experte, oder? Kannst du mir mal kurz helfen? Dauert nur 10 Minuten, ist wirklich easy! Ich lad dich auch auf nen Kaffee ein ☕",
+                responses: [
+                    {
+                        text: "Okay, 10 Minuten gehen klar!",
+                        type: "weak",
+                        feedback: "❌ Spoiler: Es werden 2 Stunden. 'Nur kurz helfen' ist eine Falle. Kaffee ≠ faire Bezahlung.",
+                        score: 0
+                    },
+                    {
+                        text: "Für professionelle Beratung habe ich einen Stundensatz. Interesse an einem Beratungstermin?",
+                        type: "assertive",
+                        feedback: "✅ Top! Du behandelst deine Expertise als das, was sie ist: wertvoll. Keine Ausnahmen.",
+                        score: 30
+                    },
+                    {
+                        text: "Das klingt nach mehr als 10 Minuten. Ich kann leider nicht kostenlos beraten.",
+                        type: "okay",
+                        feedback: "⚠️ Gut, dass du es einschätzt! Aber das 'leider' ist unnötig. Du entschuldigst dich für deine Grenzen.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Ich sehe, du hast schon für andere gearbeitet. Warum nicht für mich? Ist doch die gleiche Arbeit! Außerdem kennen wir uns doch... 🤝",
+                responses: [
+                    {
+                        text: "Na gut, für dich mach ich eine Ausnahme.",
+                        type: "weak",
+                        feedback: "❌ 'Kennen' bedeutet nicht 'kostenlos arbeiten'. Freunde respektieren deine Grenzen.",
+                        score: 0
+                    },
+                    {
+                        text: "Gerade weil wir uns kennen, verstehst du sicher, dass ich von meiner Arbeit lebe. Mein Angebot steht!",
+                        type: "assertive",
+                        feedback: "✅ Perfekt! Du drehst das Argument um und bleibst freundlich aber fest.",
+                        score: 30
+                    },
+                    {
+                        text: "Ich würde gern, aber ich kann nicht für jeden kostenlos arbeiten, das geht nicht.",
+                        type: "okay",
+                        feedback: "⚠️ Besser als nachzugeben! Aber das 'würde gern' ist zu weich. Du WILLST nicht umsonst arbeiten.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Komm schon, sei nicht so! Das Budget ist halt knapp. Ich dachte, du hilfst gern anderen? Oder geht's dir nur ums Geld? 💸",
+                responses: [
+                    {
+                        text: "Nein, natürlich nicht! Okay, ich mach's für weniger...",
+                        type: "weak",
+                        feedback: "❌ Guilt-Tripping funktioniert. Du lässt dich manipulieren und arbeitest unter Wert. Rote Flagge!",
+                        score: 0
+                    },
+                    {
+                        text: "Meine Preise sind fair kalkuliert. Wenn das Budget nicht passt, verstehe ich das – viel Erfolg bei der Suche!",
+                        type: "assertive",
+                        feedback: "✅ Champion! Du lässt dich nicht manipulieren, bleibst sachlich und beendest die Diskussion.",
+                        score: 30
+                    },
+                    {
+                        text: "Das ist unfair. Ich muss auch von was leben. Mein Preis steht.",
+                        type: "okay",
+                        feedback: "⚠️ Gut, dass du dich wehrst! Aber 'das ist unfair' ist defensiv. Du musst dich nicht rechtfertigen.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Ich hab ein riesiges Projekt! Wenn du mir hilfst, empfehle ich dich an ALLE meine Kontakte weiter. Das sind mindestens 500 Leute! 📣",
+                responses: [
+                    {
+                        text: "Oh wow, 500 Leute! Okay, deal!",
+                        type: "weak",
+                        feedback: "❌ 'Empfehlungen' sind wie Exposure – meist leer. 99% dieser Kontakte werden nie anfragen.",
+                        score: 0
+                    },
+                    {
+                        text: "Empfehlungen schätze ich sehr! Für das Projekt selbst gilt aber mein regulärer Preis. Passt das?",
+                        type: "assertive",
+                        feedback: "✅ Brilliant! Du wertschätzt Empfehlungen, lässt dich aber nicht davon kaufen. Klare Grenze.",
+                        score: 30
+                    },
+                    {
+                        text: "Hmm, das klingt gut, aber ich kann nicht nur für Empfehlungen arbeiten.",
+                        type: "okay",
+                        feedback: "⚠️ Richtig erkannt! Aber 'hmm' zeigt Zögern. Sei direkter – das ist nicht verhandelbar.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Alle anderen machen das für die Hälfte! Willst du den Job oder nicht? Ich hab noch 3 andere Anfragen... ⏰",
+                responses: [
+                    {
+                        text: "Oh nein! Okay, ich mach's für die Hälfte.",
+                        type: "weak",
+                        feedback: "❌ Klassischer Druckaufbau. Wenn 'die anderen' billiger sind, warum fragt er dann dich? Du lässt dich unter Wert verkaufen.",
+                        score: 0
+                    },
+                    {
+                        text: "Dann würde ich dir empfehlen, mit den anderen zu arbeiten. Viel Erfolg!",
+                        type: "assertive",
+                        feedback: "✅ Ice cold! 🧊 Du lässt dich nicht erpressen. Wer mit Preisdruck kommt, ist kein guter Kunde.",
+                        score: 30
+                    },
+                    {
+                        text: "Mein Preis spiegelt meine Qualität wider. Wenn dir das zu viel ist, verstehe ich das.",
+                        type: "okay",
+                        feedback: "⚠️ Gut verteidigt! Aber das 'verstehe ich das' klingt nach Rechtfertigung. Du brauchst keine Erlaubnis für deine Preise.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Kannst du das nicht einfach schnell machen? Du bist doch so talentiert, für dich ist das in 5 Minuten fertig! 🎯",
+                responses: [
+                    {
+                        text: "Stimmt, geht ja schnell. Okay!",
+                        type: "weak",
+                        feedback: "❌ Deine Expertise macht dich MEHR wert, nicht weniger. Schnelligkeit = Jahre Training. Verkauf dich nicht unter Wert!",
+                        score: 0
+                    },
+                    {
+                        text: "Gerade weil ich gut bin, habe ich einen Wert. Mein Angebot gilt unabhängig von der Dauer.",
+                        type: "assertive",
+                        feedback: "✅ Perfekt! Du erkennst die Manipulation und stellst klar: Expertise ist wertvoll, nicht billig.",
+                        score: 30
+                    },
+                    {
+                        text: "Auch wenn's schnell geht, ist das meine Expertise. Ich kann nicht kostenlos arbeiten.",
+                        type: "okay",
+                        feedback: "⚠️ Richtig gedacht! Aber 'kann nicht' klingt nach Entschuldigung. Du WILLST nicht – das ist legitim.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Ich zahle dir nachträglich, versprochen! Ich hab gerade nur einen Cash-Flow-Engpass. Du vertraust mir doch, oder? 💰",
+                responses: [
+                    {
+                        text: "Klar vertraue ich dir, kein Problem!",
+                        type: "weak",
+                        feedback: "❌ 'Nachträglich zahlen' = oft gar nicht zahlen. Vertrauen ≠ unbezahlte Vorleistung. Deine Miete wartet auch nicht.",
+                        score: 0
+                    },
+                    {
+                        text: "Ich arbeite grundsätzlich auf Vorkasse/50% Anzahlung. Das ist meine Policy für alle Kunden.",
+                        type: "assertive",
+                        feedback: "✅ Goldstandard! Du machst es unpersönlich (Policy) und bietest eine Lösung (Anzahlung). Professionell!",
+                        score: 30
+                    },
+                    {
+                        text: "Ich verstehe Cash-Flow-Probleme, aber ich kann leider nicht auf Kredit arbeiten.",
+                        type: "okay",
+                        feedback: "⚠️ Empathie ist gut, aber 'leider' ist zu weich. Deine Payment-Terms sind legitim, nicht bedauerlich.",
+                        score: 15
+                    }
+                ]
+            },
+            {
+                message: "Sieh es als Investition in unsere Beziehung! Wenn das Projekt erfolgreich wird, arbeiten wir langfristig zusammen. Garantiert! 🤞",
+                responses: [
+                    {
+                        text: "Langfristige Zusammenarbeit klingt super! Bin dabei.",
+                        type: "weak",
+                        feedback: "❌ 'Investitionen' sollten beide Seiten tätigen. Du investierst Zeit/Arbeit, er nichts. Unbalanciert = Red Flag.",
+                        score: 0
+                    },
+                    {
+                        text: "Für langfristige Partnerschaften braucht's eine faire Basis. Das heißt: reguläre Bezahlung von Anfang an.",
+                        type: "assertive",
+                        feedback: "✅ Exzellent! Du definierst, was 'Partnerschaft' bedeutet: Gegenseitiger Respekt = faire Bezahlung.",
+                        score: 30
+                    },
+                    {
+                        text: "Das klingt vielversprechend, aber ich kann nicht spekulativ arbeiten. Tut mir leid.",
+                        type: "okay",
+                        feedback: "⚠️ Gut abgegrenzt! Aber das 'tut mir leid' ist überflüssig. Du hast nichts zu entschuldigen.",
+                        score: 15
+                    }
+                ]
+            }
+        ];
+
+        // Shuffle scenarios and pick 5 random ones
+        function shuffleScenarios() {
+            const shuffled = scenarios.sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, 5); // Pick only 5 from the pool of 10
+        }
+
+        let shuffledScenarios = shuffleScenarios();
+
+        function startGame() {
+            nextRound();
+        }
+
+        function nextRound() {
+            if (gameState.round >= gameState.totalRounds) {
+                endGame();
+                return;
+            }
+
+            gameState.round++;
+            gameState.currentScenario = shuffledScenarios[gameState.round - 1];
+
+            updateStats();
+            addBotMessage(gameState.currentScenario.message);
+            showResponseOptions(gameState.currentScenario.responses);
+            hideFeedback();
+        }
+
+        function addBotMessage(text) {
+            const chatContainer = document.getElementById('chatContainer');
+            const message = document.createElement('div');
+            message.className = 'message bot';
+            message.innerHTML = `
+                <div class="message-avatar">😈</div>
+                <div class="message-content">${text}</div>
+            `;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addUserMessage(text) {
+            const chatContainer = document.getElementById('chatContainer');
+            const message = document.createElement('div');
+            message.className = 'message user';
+            message.innerHTML = `
+                <div class="message-avatar">🛡️</div>
+                <div class="message-content">${text}</div>
+            `;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showResponseOptions(responses) {
+            const container = document.getElementById('responseOptions');
+            container.innerHTML = '';
+
+            responses.forEach((response, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'response-btn';
+                btn.innerHTML = `
+                    <span class="label">Option ${index + 1}</span>
+                    ${response.text}
+                `;
+                btn.onclick = () => selectResponse(response);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectResponse(response) {
+            // Disable all buttons
+            document.querySelectorAll('.response-btn').forEach(btn => btn.disabled = true);
+
+            // Add user message
+            addUserMessage(response.text);
+
+            // Track if it was a "no"
+            if (response.type === 'assertive' || response.type === 'okay') {
+                gameState.noCount++;
+            }
+
+            // Update score
+            gameState.score += response.score;
+            gameState.responses.push(response);
+
+            // Show feedback
+            showFeedback(response);
+
+            // Next round after delay
+            setTimeout(() => {
+                if (gameState.round < gameState.totalRounds) {
+                    nextRound();
+                } else {
+                    endGame();
+                }
+            }, 4000);
+        }
+
+        function showFeedback(response) {
+            const feedback = document.getElementById('feedback');
+            const title = document.getElementById('feedbackTitle');
+            const text = document.getElementById('feedbackText');
+
+            feedback.className = 'feedback show ' + response.type;
+            
+            if (response.type === 'assertive') {
+                title.textContent = '🏆 Exzellent! +30 Punkte';
+            } else if (response.type === 'okay') {
+                title.textContent = '👍 Okay! +15 Punkte';
+            } else {
+                title.textContent = '😬 Zu weich! +0 Punkte';
+            }
+
+            text.textContent = response.feedback;
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback').classList.remove('show');
+        }
+
+        function updateStats() {
+            document.getElementById('roundDisplay').textContent = `${gameState.round}/${gameState.totalRounds}`;
+            document.getElementById('scoreDisplay').textContent = gameState.score;
+            
+            const noRate = gameState.round > 0 
+                ? Math.round((gameState.noCount / gameState.round) * 100) 
+                : 0;
+            document.getElementById('noRateDisplay').textContent = `${noRate}%`;
+        }
+
+        function endGame() {
+            document.getElementById('responseOptions').style.display = 'none';
+            document.getElementById('gameOver').classList.add('show');
+            document.getElementById('finalScore').textContent = gameState.score;
+
+            const maxScore = gameState.totalRounds * 30;
+            const percentage = (gameState.score / maxScore) * 100;
+
+            let rating = '';
+            if (percentage >= 80) {
+                rating = '🏆 Boundary-Champion! Du lässt dich nicht ausbeuten.';
+            } else if (percentage >= 60) {
+                rating = '💪 Gut! Du hältst meist stand, aber es gibt Luft nach oben.';
+            } else if (percentage >= 40) {
+                rating = '😅 Okay-ish. Du gibst zu oft nach. Übe weiter!';
+            } else {
+                rating = '😬 Autsch. Du wirst ausgenutzt. Zeit, Grenzen zu setzen!';
+            }
+
+            document.getElementById('finalRating').textContent = rating;
+        }
+
+        function resetGame() {
+            gameState = {
+                round: 0,
+                score: 0,
+                totalRounds: 5,
+                noCount: 0,
+                responses: [],
+                currentScenario: null
+            };
+
+            shuffledScenarios = shuffleScenarios();
+            
+            document.getElementById('chatContainer').innerHTML = '';
+            document.getElementById('gameOver').classList.remove('show');
+            document.getElementById('responseOptions').style.display = 'grid';
+            
+            startGame();
+        }
+
+        function toggleMeta() {
+            const metaCard = document.getElementById('metaCard');
+            metaCard.classList.toggle('collapsed');
+        }
+
+        // Start the game
+        startGame();
+    </script>
+</body>
+</html>
