@@ -143,13 +143,12 @@
             position: absolute;
             inset: 0;
             background-image: url('Karl_zwinkert.png');
-            background-size: contain;
+            background-size: 70%;
             background-repeat: no-repeat;
             background-position: center center;
-            border-radius: 50%;
-            opacity: 0.95;
             z-index: 5;
             transition: transform 0.5s ease;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
         }
 
         .globe:hover .karl-bg {
@@ -255,6 +254,7 @@
             background: white;
             border-radius: 50%;
             pointer-events: none;
+            top: -10%;
             animation: fall linear infinite;
             opacity: 0.5;
         }
@@ -268,7 +268,20 @@
         }
 
         @keyframes fall {
-            to { transform: translateY(120%); }
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% { 
+                transform: translateY(calc(100vh / 4));
+                opacity: 0;
+            }
         }
 
         @keyframes explode {
@@ -661,31 +674,40 @@
 
         // Create snow particles
         function createSnow() {
-            const particleCount = 60;
+            const particleCount = 50;
             for (let i = 0; i < particleCount; i++) {
                 const flake = document.createElement('div');
                 flake.classList.add('snow-particle');
-                resetFlake(flake);
                 snowContainer.appendChild(flake);
+                animateFlake(flake);
             }
         }
 
-        function resetFlake(flake) {
-            const size = Math.random() * 3 + 1;
+        function animateFlake(flake) {
+            const size = Math.random() * 4 + 2;
             flake.style.width = `${size}px`;
             flake.style.height = `${size}px`;
             flake.style.left = `${Math.random() * 100}%`;
-            flake.style.top = `-${Math.random() * 20}%`;
-            flake.style.opacity = Math.random() * 0.7 + 0.3;
-            flake.style.boxShadow = `0 0 ${size}px rgba(255,255,255,0.8)`;
+            flake.style.opacity = Math.random() * 0.6 + 0.4;
+            flake.style.boxShadow = `0 0 ${size * 2}px rgba(255,255,255,0.8)`;
             
-            const duration = Math.random() * 3 + 3;
+            const duration = Math.random() * 4 + 4;
+            const delay = Math.random() * 5;
+            
             flake.style.animationDuration = `${duration}s`;
-            flake.style.animationDelay = `-${Math.random() * 5}s`;
+            flake.style.animationDelay = `${delay}s`;
             
+            // Reset position when animation completes
             flake.addEventListener('animationiteration', () => {
                 flake.style.left = `${Math.random() * 100}%`;
-                flake.style.top = `-${Math.random() * 20}%`;
+            });
+        }
+
+        function resetAllSnow() {
+            const particles = snowContainer.querySelectorAll('.snow-particle');
+            particles.forEach(p => {
+                p.style.transition = 'none';
+                animateFlake(p);
             });
         }
 
@@ -729,11 +751,14 @@
             predictionBox.classList.add('hidden');
             predictionBox.classList.remove('float-in');
 
-            // Animate snow particles
+            // Shake snow particles
             const particles = snowContainer.querySelectorAll('.snow-particle');
             particles.forEach(p => {
-                p.style.transition = 'top 0.2s ease';
-                p.style.top = Math.random() * 100 + '%';
+                const randomTop = Math.random() * 100;
+                const randomLeft = Math.random() * 100;
+                p.style.transition = 'all 0.3s ease-out';
+                p.style.top = `${randomTop}%`;
+                p.style.left = `${randomLeft}%`;
             });
 
             setTimeout(() => {
@@ -752,11 +777,10 @@
                 predictionBox.classList.remove('hidden');
                 predictionBox.classList.add('float-in');
 
-                // Reset snow
-                particles.forEach(p => {
-                    p.style.transition = '';
-                    resetFlake(p);
-                });
+                // Reset snow after a brief moment
+                setTimeout(() => {
+                    resetAllSnow();
+                }, 300);
 
                 isAnimating = false;
                 shakeBtn.disabled = false;
