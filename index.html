@@ -381,6 +381,215 @@
             }
         });
     </script>
+<!-- Behind the Scenes Section - Add this before closing </body> tag -->
 
+<div class="container" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
+    <div class="meta-card collapsed" id="metaCard">
+        <div class="meta-header" onclick="toggleMeta()">
+            <span class="meta-title">🔍 Behind the Scenes: Was ist Vibecoding?</span>
+            <span class="meta-toggle" id="metaToggle">▼</span>
+        </div>
+        <div class="meta-content" id="metaContent">
+            
+            <div class="meta-section">
+                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                    💡 Die Motivation hinter diesem Adventskalender
+                </h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                    Als Marketing-Professorin ohne klassischen Dev-Background wollte ich zeigen: <strong style="color: white;">Mit GenAI kann jede*r Ideen prototypen – ohne jahrelange Programmiererfahrung.</strong>
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                    Aber (und das ist wichtig): <strong style="color: var(--ci-gold);">Das macht mich nicht zur Programmiererin.</strong> Es macht mich zu jemandem, der KI-Tools nutzt, um Konzepte sichtbar zu machen. Ein riesiger Unterschied.
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7;">
+                    Dieser Adventskalender ist ein <em>Experiment in AI Literacy</em> – für Marketer, die coden lernen wollen, ohne dabei echte Devs zu beleidigen. 😅
+                </p>
+            </div>
+
+            <div class="meta-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                    🙏 Demut gegenüber echten Programmierern
+                </h3>
+                <div style="background: rgba(255, 179, 0, 0.05); border-left: 4px solid var(--ci-gold); padding: 1.25rem; border-radius: 0.5rem;">
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                        <strong style="color: white;">Klartext:</strong> Was ich hier mache, ist <strong>kein "echtes" Programmieren</strong>. 
+                    </p>
+                    <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem; list-style: none;">
+                        <li style="margin-bottom: 0.75rem;">❌ Ich schreibe keine Production-Ready Software</li>
+                        <li style="margin-bottom: 0.75rem;">❌ Ich kenne keine Design Patterns auswendig</li>
+                        <li style="margin-bottom: 0.75rem;">❌ Ich kann keinen Bug in 10.000 Zeilen Code debuggen</li>
+                        <li style="margin-bottom: 0.75rem;">❌ Ich verstehe nicht, wie ein Compiler funktioniert</li>
+                        <li>❌ Ich würde nie behaupten, "Programmieren gelernt" zu haben</li>
+                    </ul>
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-top: 1rem;">
+                        Was ich <em>kann</em>: KI-Tools nutzen, um <strong>schnell visuelle Prototypen</strong> zu bauen, die eine Idee kommunizieren. Das ist wertvoll – aber es ersetzt nicht jahrelange Erfahrung, Systemverständnis oder die Fähigkeit, skalierbare Architekturen zu bauen.
+                    </p>
+                    <p style="color: var(--ci-gold); line-height: 1.7; margin-top: 1rem; font-weight: 600;">
+                        Respekt an alle echten Devs da draußen. Ihr seid die Rockstars. Ich bin nur jemand mit Canva-Vibes, der jetzt auch HTML kann. 🙃
+                    </p>
+                </div>
+            </div>
+
+            <div class="meta-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                    🛠️ Wie diese Seite entstanden ist
+                </h3>
+                <div class="meta-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Konzept</div>
+                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Mein Hirn + Kaffee</div>
+                    </div>
+                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Design</div>
+                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Figma + Intuition</div>
+                    </div>
+                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Code</div>
+                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Claude + Gemini</div>
+                    </div>
+                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Debugging</div>
+                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Trial & Error</div>
+                    </div>
+                </div>
+                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
+                    Diese Landing Page ist ein <strong>Single HTML File</strong> mit Vanilla CSS. Keine Frameworks, kein Build-Process – nur das Nötigste. Warum? Weil ich's verstehen will, was ich da eigentlich mache (oder was die KI für mich macht). 
+                </p>
+            </div>
+
+            <div class="meta-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                    🎓 Was ich dabei lerne
+                </h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
+                    Jede dieser 24 Apps ist ein Mini-Lernmoment:
+                </p>
+                <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">Wie man KI-Systeme effektiv promptet (Prompt Engineering ≠ Coding)</li>
+                    <li style="margin-bottom: 0.5rem;">Wo LLMs brillieren (schnelle Prototypen) und wo sie versagen (Logik, Edge Cases)</li>
+                    <li style="margin-bottom: 0.5rem;">Dass "funktionierender Code" und "guter Code" zwei verschiedene Dinge sind</li>
+                    <li style="margin-bottom: 0.5rem;">Warum Dokumentation und Clean Code so wichtig sind (weil ich sonst meinen eigenen Code nicht verstehe)</li>
+                    <li>Dass ich niemals die Arbeit ersetzen kann, die echte Devs leisten – aber ich kann kommunizieren, was möglich sein könnte</li>
+                </ul>
+            </div>
+
+            <div class="meta-section" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                    💬 An echte Programmierer*innen
+                </h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                    Falls ihr das hier lest und innerlich stirbt, weil mein Code nicht DRY ist, keine Tests hat oder aus 47 nested divs besteht: <strong style="color: white;">Ich weiß.</strong>
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                    Das hier ist kein Angriff auf euren Beruf. Es ist ein Versuch, Menschen ohne Tech-Background zu zeigen, dass man <em>anfangen</em> kann – mit dem Wissen, dass der Weg vom "funktioniert irgendwie" zum "ist production-ready" verdammt lang ist.
+                </p>
+                <p style="color: var(--ci-gold); line-height: 1.7; font-weight: 600;">
+                    Wenn ihr Tipps habt, wie ich besser werden kann: Ich bin auf LinkedIn. Feedback (auch brutales) ist willkommen. ❤️
+                </p>
+            </div>
+
+            <div class="meta-section" style="margin-top: 2rem; background: rgba(15, 23, 42, 0.5); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 179, 0, 0.2);">
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
+                    <strong style="color: var(--ci-gold);">TL;DR:</strong>
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
+                    Ich bin keine Programmiererin. Ich bin jemand, die KI nutzt, um Ideen visuell zu machen. Das ist okay – solange ich ehrlich darüber bin. Vibecoding ist nicht "Coding lernen", sondern "AI Literacy für Non-Devs". 
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-top: 0.75rem; font-size: 0.9375rem;">
+                    Und an alle echten Devs: <em>You are seen. You are appreciated. Und nein, KI wird euch nicht ersetzen – sie macht nur sichtbar, wie komplex das ist, was ihr täglich leistet.</em> 🙏
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- CSS für Meta Card (falls noch nicht vorhanden) -->
+<style>
+    .meta-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.5rem;
+        overflow: hidden;
+    }
+
+    .meta-header {
+        padding: 1.25rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s ease;
+    }
+
+    .meta-header:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .meta-title {
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--ci-gold);
+    }
+
+    .meta-toggle {
+        color: var(--ci-gold);
+        font-size: 0.875rem;
+        transition: transform 0.3s ease;
+    }
+
+    .meta-card.collapsed .meta-toggle {
+        transform: rotate(0deg);
+    }
+
+    .meta-card:not(.collapsed) .meta-toggle {
+        transform: rotate(180deg);
+    }
+
+    .meta-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        padding: 0 1.5rem;
+    }
+
+    .meta-card:not(.collapsed) .meta-content {
+        max-height: 3000px;
+        padding: 0 1.5rem 1.5rem 1.5rem;
+    }
+
+    .meta-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .meta-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .meta-content {
+            font-size: 0.9rem;
+        }
+        
+        .meta-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+</style>
+
+<!-- JavaScript für Toggle (falls noch nicht vorhanden) -->
+<script>
+    function toggleMeta() {
+        const metaCard = document.getElementById('metaCard');
+        metaCard.classList.toggle('collapsed');
+    }
+</script>
 </body>
 </html>
+
