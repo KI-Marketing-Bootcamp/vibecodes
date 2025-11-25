@@ -3,175 +3,610 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KI Marketing Orakel 2026 - Vibecoding Tag 1</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>KI Marketing Orakel 2026 | Vibecoding Adventskalender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* DEIN CI GOLD & NAVY */
+            /* Marketing Gold */
             --ci-gold: #FFB300;
-            --ci-dark: #0f172a; 
+            
+            /* Navy Abstufungen */
+            --ci-dark: #0f172a;
             --ci-darker: #020617;
+            
+            /* Text */
+            --text-main: #ffffff;
+            --text-sub: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--ci-darker);
-            /* EXAKT DER GLEICHE VERLAUF WIE INDEX.HTML */
             background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
-            color: white;
+            color: var(--text-main);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
         }
 
-        .gold-text { color: var(--ci-gold); }
-        .logo-glow { filter: drop-shadow(0 0 20px rgba(255,255,255,0.1)); }
-
-        /* CI Button Style (Wie die Badges) */
-        .btn-gold {
-            background-color: var(--ci-gold);
-            color: var(--ci-darker);
-            font-weight: 700;
-            padding: 1rem 3rem;
-            border-radius: 9999px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 179, 0, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.875rem;
-        }
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 179, 0, 0.4);
-        }
-        .btn-gold:active { transform: scale(0.98); }
-
-        /* Zurück Button (Dezent) */
+        /* Zurück Button */
         .back-btn {
-            position: absolute;
+            position: fixed;
             top: 1.5rem;
             left: 1.5rem;
-            color: #94a3b8; /* slate-400 */
+            color: var(--text-sub);
             font-size: 0.875rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: color 0.3s;
+            transition: all 0.3s;
             z-index: 50;
             opacity: 0.7;
+            text-decoration: none;
         }
-        .back-btn:hover { color: var(--ci-gold); opacity: 1; }
-
-        /* Orakel Globe - Angepasst an Flat Design */
-        .globe-container {
-            position: relative;
-            /* Weniger "Weltraum", mehr "Tech" Glow */
-            box-shadow: 0 0 60px rgba(255, 179, 0, 0.1); 
+        
+        .back-btn:hover { 
+            color: var(--ci-gold); 
+            opacity: 1;
+            transform: translateX(-2px);
         }
 
-        .globe-glass {
-            background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05), rgba(255, 179, 0, 0.02) 60%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(2px);
+        .back-icon {
+            width: 1rem;
+            height: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .back-btn:hover .back-icon {
+            transform: translateX(-0.25rem);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
             z-index: 20;
+        }
+
+        .logo {
+            height: 3rem;
+            margin-bottom: 1.5rem;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-gold {
+            display: inline-block;
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            padding: 0.375rem 1rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.625rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .gold-text {
+            color: var(--ci-gold);
+        }
+
+        /* Globe Container */
+        .globe-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .globe {
+            width: 18rem;
+            height: 18rem;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 0 60px rgba(255, 179, 0, 0.1);
+        }
+
+        .globe:hover {
+            transform: scale(1.02);
         }
 
         .karl-bg {
             position: absolute;
             inset: 0;
-            background-image: url('karl-schlau.jpg');
-            background-size: cover;
-            background-position: center 20%;
+            background-image: url('Karl_zwinkert.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
             border-radius: 50%;
-            opacity: 0.9;
+            opacity: 0.95;
             z-index: 5;
-            /* Weicher Verlauf am Rand */
-            mask-image: radial-gradient(circle at center, black 55%, transparent 98%);
+            transition: transform 0.5s ease;
+        }
+
+        .globe:hover .karl-bg {
+            transform: scale(1.05);
+        }
+
+        .globe-glass {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05), rgba(255, 179, 0, 0.02) 60%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(2px);
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .snow-container,
+        .dust-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .snow-container {
+            z-index: 15;
+        }
+
+        .dust-container {
+            z-index: 25;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oracle-content {
+            position: relative;
+            z-index: 40;
+            width: 80%;
+            text-align: center;
+            padding: 0.5rem;
+            margin-top: 2.5rem;
         }
 
         .oracle-box {
-            background: rgba(15, 23, 42, 0.8); /* Navy mit Transparenz */
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
         }
 
-        /* Partikel etc. bleiben gleich */
-        .snow-particle { position: absolute; background: white; border-radius: 50%; pointer-events: none; z-index: 15; animation: fall linear infinite; opacity: 0.5; }
-        .gold-dust { position: absolute; background: var(--ci-gold); border-radius: 50%; pointer-events: none; z-index: 25; opacity: 0; }
-        @keyframes fall { to { transform: translateY(120%); } }
-        @keyframes explode { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
-        .shake-animation { animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0) rotate(-1deg); } 20%, 80% { transform: translate3d(2px, 0, 0) rotate(1deg); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0) rotate(-1deg); } 40%, 60% { transform: translate3d(4px, 0, 0) rotate(1deg); } }
-        .float-in { animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes floatUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        .globe:hover .oracle-box {
+            border-color: rgba(255, 179, 0, 0.3);
+        }
 
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            filter: drop-shadow(0 0 15px rgba(255,179,0,0.4));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .placeholder-text {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .prediction-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
+        }
+
+        .prediction-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border: 1px solid var(--ci-gold);
+            border-radius: 2rem;
+            color: var(--ci-gold);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            background: rgba(255, 179, 0, 0.1);
+        }
+
+        /* Snow & Dust Effects */
+        .snow-particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+            opacity: 0.5;
+        }
+
+        .gold-dust {
+            position: absolute;
+            background: var(--ci-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(120%); }
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .shake-animation {
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0) rotate(-1deg); }
+            20%, 80% { transform: translate3d(2px, 0, 0) rotate(1deg); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0) rotate(-1deg); }
+            40%, 60% { transform: translate3d(4px, 0, 0) rotate(1deg); }
+        }
+
+        .float-in {
+            animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Base */
+        .globe-base {
+            width: 12rem;
+            height: 2.5rem;
+            background: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            border-radius: 50%;
+            margin-top: -1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .base-line {
+            width: 8rem;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--ci-gold), transparent);
+            opacity: 0.4;
+            margin-top: 1px;
+        }
+
+        /* Button */
+        .btn-primary {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 20px rgba(255, 179, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 179, 0, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover .btn-shimmer {
+            transform: translateX(100%);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.75rem;
+            }
+
+            .logo {
+                height: 3.5rem;
+            }
+
+            .globe {
+                width: 24rem;
+                height: 24rem;
+            }
+
+            .prediction-text {
+                font-size: 1.5rem;
+            }
+
+            .btn-primary {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .globe {
+                width: 16rem;
+                height: 16rem;
+            }
+
+            .oracle-box {
+                padding: 1.5rem 1rem;
+            }
+
+            .prediction-text {
+                font-size: 1.125rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Meta Card Styles */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin-top: 3rem;
+            padding: 0 1rem;
+        }
+
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .meta-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .meta-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .meta-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+        }
+
+        .meta-toggle {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meta-card.collapsed .meta-toggle {
+            transform: rotate(0deg);
+        }
+
+        .meta-card:not(.collapsed) .meta-toggle {
+            transform: rotate(180deg);
+        }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 600px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 179, 0, 0.1);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .meta-insight {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+        }
+
+        .meta-insight strong {
+            color: var(--ci-gold);
+        }
     </style>
 </head>
-<body class="h-screen w-full flex flex-col items-center justify-center relative">
-
-    <a href="index.html" class="back-btn group">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<body>
+    <a href="index.html" class="back-btn">
+        <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Zurück
     </a>
 
-    <!-- Header -->
-    <header class="z-20 text-center mb-8 flex flex-col items-center relative mt-8 md:mt-0">
-         <!-- LOGO -->
-         <a href="https://www.marketing-ki.de" target="_blank">
-            <img src="logo.png" alt="KI Marketing Bootcamp" class="h-12 md:h-14 mb-6 object-contain logo-glow hover:scale-105 transition-transform duration-300">
+    <header class="header">
+        <a href="https://www.marketing-ki.de" target="_blank">
+            <img src="logo.png" alt="KI Marketing Bootcamp" class="logo">
         </a>
-
-        <div class="inline-block mb-4 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-            <span class="text-[#FFB300] text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">Vibecoding Tag 1</span>
-        </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">KI ORAKEL <span class="gold-text">2026</span></h1>
+        <div class="badge-gold">🎄 Vibecoding Tag 1</div>
+        <h1>KI ORAKEL <span class="gold-text">2026</span></h1>
     </header>
 
-    <!-- Globe -->
-    <div class="relative z-20 flex flex-col items-center justify-center">
-        
-        <div id="globe-wrapper" class="globe-container rounded-full">
-            <div id="globe" class="w-72 h-72 md:w-96 md:h-96 rounded-full relative flex items-center justify-center overflow-hidden cursor-pointer group">
-                <div class="karl-bg transition-transform duration-500 group-hover:scale-105"></div>
-                <div class="globe-glass absolute inset-0 rounded-full pointer-events-none"></div>
-                <div id="globe-snow" class="absolute inset-0 z-20 pointer-events-none"></div>
-                <div id="gold-dust-container" class="absolute inset-0 z-25 pointer-events-none flex items-center justify-center"></div>
+    <div class="globe-wrapper" id="globeWrapper">
+        <div class="globe" id="globe">
+            <div class="karl-bg"></div>
+            <div class="globe-glass"></div>
+            <div class="snow-container" id="snowContainer"></div>
+            <div class="dust-container" id="dustContainer"></div>
 
-                <div class="relative z-40 w-4/5 text-center p-2 flex flex-col items-center justify-center h-full mt-10">
-                    <!-- Placeholder -->
-                    <div id="placeholder-icon" class="oracle-box p-6 rounded-2xl flex flex-col items-center border-white/5 group-hover:border-[#FFB300]/30 transition-colors">
-                        <div class="text-5xl mb-3 drop-shadow-[0_0_15px_rgba(255,179,0,0.4)] animate-pulse">🔮</div>
-                        <p class="text-base font-bold text-white leading-tight">Frag Karl nach<br>der Zukunft!</p>
-                    </div>
+            <div class="oracle-content">
+                <div class="oracle-box" id="placeholderBox">
+                    <div class="placeholder-icon">🔮</div>
+                    <p class="placeholder-text">Frag Karl nach<br>der Zukunft!</p>
+                </div>
 
-                    <!-- Prediction -->
-                    <div id="prediction-text" class="hidden oracle-box p-8 rounded-2xl">
-                        <p class="text-xl font-bold leading-snug text-white drop-shadow-sm prediction-content"></p>
-                        <div class="mt-4 inline-block px-3 py-1 border border-[#FFB300] rounded-full text-[#FFB300] text-[10px] font-bold uppercase tracking-widest bg-[#FFB300]/10">
-                            Karls Prognose
-                        </div>
-                    </div>
+                <div class="oracle-box hidden" id="predictionBox">
+                    <p class="prediction-text" id="predictionText"></p>
+                    <div class="prediction-badge">Karls Prognose</div>
                 </div>
             </div>
         </div>
 
-        <!-- Base -->
-        <div class="w-48 h-10 bg-gradient-to-b from-[#0f172a] to-[#020617] rounded-[100%] -mt-6 shadow-xl z-10 border-t border-white/5 flex justify-center">
-            <div class="w-32 h-[1px] bg-gradient-to-r from-transparent via-[#FFB300] to-transparent opacity-40 mt-[1px]"></div>
+        <div class="globe-base">
+            <div class="base-line"></div>
         </div>
+    </div>
 
-        <!-- Action Button -->
-        <button onclick="shakeGlobe()" class="mt-10 btn-gold flex items-center gap-2 group relative overflow-hidden">
-            <span class="relative z-10">Zukunft vorhersagen</span>
-            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        </button>
+    <button class="btn-primary" id="shakeBtn">
+        <span style="position: relative; z-index: 10;">Zukunft vorhersagen</span>
+        <div class="btn-shimmer"></div>
+    </button>
 
+    <div class="container">
+        <div class="meta-card collapsed" id="metaCard">
+            <div class="meta-header" onclick="toggleMeta()">
+                <span class="meta-title">🔍 Behind the Scenes</span>
+                <span class="meta-toggle" id="metaToggle">▼</span>
+            </div>
+            <div class="meta-content" id="metaContent">
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <div class="meta-label">System</div>
+                        <div class="meta-value">Gemini Pro 1.5</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Build-Zeit</div>
+                        <div class="meta-value">~12 Minuten</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Iterationen</div>
+                        <div class="meta-value">2 Runden</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Optimiert durch</div>
+                        <div class="meta-value">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+                <div class="meta-insight">
+                    <strong>💡 Vibecoding Insight:</strong> Das Original wurde mit Gemini in 2 Iterationen gebaut (Tailwind-basiert). Claude hat dann Tailwind entfernt, die Performance optimiert, mehr dark-humor Predictions hinzugefügt und Karl I. (unser Maskottchen) eingebunden. Ursprünglicher Prompt an Gemini: "Erstelle eine interaktive Schneekugel mit KI-Orakel für 2026 Marketing Trends – mit Shake-Animation, Snow-Particles und Gold-Explosion beim Reveal."
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -197,19 +632,37 @@
             "Dringend gesucht: 'Bot-Empathie-Trainer'.",
             "Freelance-Gig: 'Algorithmischer Bias-Jäger'.",
             "Influencer-Nische: 'Smart-Fridge-Content-Creator'.",
-            "Handwerk 4.0: 'GPU-Kühlungssystem-Barista'."
+            "Handwerk 4.0: 'GPU-Kühlungssystem-Barista'.",
+            "KI-Detox-Camps werden das neue Yoga-Retreat.",
+            "Dein persönlicher KI-Klon macht deine Zoom-Calls – du schläfst.",
+            "Virtuelle Assistenten entwickeln eigene Neurosen.",
+            "Achtung: Deine KI verhandelt jetzt besser als dein Anwalt.",
+            "'Prompt-Whisperer' verdienen mehr als CEOs.",
+            "LinkedIn wird zum reinen Bot-Netzwerk – Menschen ziehen zu Discord.",
+            "Reality-Check-Apps warnen vor zu viel KI-Konsum.",
+            "Die erste KI kündigt ihrem Chef – wegen mangelnder Prompts.",
+            "Meditation gegen KI-FOMO wird Pflichtfach in Business Schools.",
+            "Deine Ex meldet sich – es ist ein Deepfake.",
+            "Therapie-Sessions werden von KI-Coaches geleitet. Deine KI weint mit.",
+            "Hashtag #NoFilterButAI wird der ehrlichste Content-Disclaimer.",
+            "Kreativagenturen stellen nur noch 'Halluzinations-Kuratoren' ein."
         ];
 
-        const globeWrapper = document.getElementById('globe-wrapper');
+        const globeWrapper = document.getElementById('globeWrapper');
         const globe = document.getElementById('globe');
-        const placeholder = document.getElementById('placeholder-icon');
-        const predictionContainer = document.getElementById('prediction-text');
-        const predictionText = predictionContainer.querySelector('p');
-        const snowContainer = document.getElementById('globe-snow');
-        const dustContainer = document.getElementById('gold-dust-container');
+        const placeholderBox = document.getElementById('placeholderBox');
+        const predictionBox = document.getElementById('predictionBox');
+        const predictionText = document.getElementById('predictionText');
+        const snowContainer = document.getElementById('snowContainer');
+        const dustContainer = document.getElementById('dustContainer');
+        const shakeBtn = document.getElementById('shakeBtn');
 
+        let isAnimating = false;
+
+        // Create snow particles
         function createSnow() {
-            for(let i=0; i<60; i++) {
+            const particleCount = 60;
+            for (let i = 0; i < particleCount; i++) {
                 const flake = document.createElement('div');
                 flake.classList.add('snow-particle');
                 resetFlake(flake);
@@ -231,62 +684,97 @@
             flake.style.animationDelay = `-${Math.random() * 5}s`;
             
             flake.addEventListener('animationiteration', () => {
-                 flake.style.left = `${Math.random() * 100}%`;
-                 flake.style.top = `-${Math.random() * 20}%`;
+                flake.style.left = `${Math.random() * 100}%`;
+                flake.style.top = `-${Math.random() * 20}%`;
             });
         }
 
+        // Create gold explosion effect
         function createGoldExplosion() {
-            for(let i=0; i<40; i++) {
-                const p = document.createElement('div');
-                p.classList.add('gold-dust');
-                const s = Math.random() * 4 + 2;
-                p.style.width = s + 'px';
-                p.style.height = s + 'px';
+            const particleCount = 40;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('gold-dust');
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 150 + 50; 
+                const velocity = Math.random() * 150 + 50;
                 const tx = Math.cos(angle) * velocity + 'px';
                 const ty = Math.sin(angle) * velocity + 'px';
-                p.style.setProperty('--tx', tx);
-                p.style.setProperty('--ty', ty);
-                p.style.animation = `explode 0.8s ease-out forwards`;
-                dustContainer.appendChild(p);
-                setTimeout(() => p.remove(), 800);
+                
+                particle.style.setProperty('--tx', tx);
+                particle.style.setProperty('--ty', ty);
+                particle.style.animation = 'explode 0.8s ease-out forwards';
+                
+                dustContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 800);
             }
         }
 
+        // Main shake and predict function
         function shakeGlobe() {
-            if(globeWrapper.classList.contains('shake-animation')) return;
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            shakeBtn.disabled = true;
 
+            // Start shake animation
             globeWrapper.classList.add('shake-animation');
             
-            placeholder.style.opacity = '0';
-            predictionContainer.classList.add('hidden');
-            predictionContainer.classList.remove('float-in');
+            // Fade out placeholder
+            placeholderBox.classList.add('fade-out');
+            predictionBox.classList.add('hidden');
+            predictionBox.classList.remove('float-in');
 
-            const particles = document.querySelectorAll('.snow-particle');
+            // Animate snow particles
+            const particles = snowContainer.querySelectorAll('.snow-particle');
             particles.forEach(p => {
                 p.style.transition = 'top 0.2s ease';
                 p.style.top = Math.random() * 100 + '%';
             });
 
             setTimeout(() => {
+                // Remove shake
                 globeWrapper.classList.remove('shake-animation');
+                
+                // Create explosion
                 createGoldExplosion();
                 
-                const randomTxt = predictions[Math.floor(Math.random() * predictions.length)];
-                predictionText.innerText = `"${randomTxt}"`;
+                // Show prediction
+                const randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
+                predictionText.textContent = `"${randomPrediction}"`;
 
-                placeholder.style.display = 'none';
-                predictionContainer.classList.remove('hidden');
-                predictionContainer.classList.add('float-in');
+                placeholderBox.classList.add('hidden');
+                placeholderBox.classList.remove('fade-out');
+                predictionBox.classList.remove('hidden');
+                predictionBox.classList.add('float-in');
 
-                particles.forEach(p => resetFlake(p));
+                // Reset snow
+                particles.forEach(p => {
+                    p.style.transition = '';
+                    resetFlake(p);
+                });
+
+                isAnimating = false;
+                shakeBtn.disabled = false;
             }, 800);
         }
 
-        createSnow();
+        // Event listeners
+        shakeBtn.addEventListener('click', shakeGlobe);
         globe.addEventListener('click', shakeGlobe);
+
+        // Initialize
+        createSnow();
+
+        // Toggle meta card
+        function toggleMeta() {
+            const metaCard = document.getElementById('metaCard');
+            metaCard.classList.toggle('collapsed');
+        }
     </script>
 </body>
 </html>
