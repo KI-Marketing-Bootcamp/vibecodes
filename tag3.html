@@ -215,6 +215,104 @@
             line-height: 1.6;
         }
 
+        /* Meta Card Styles */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .meta-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .meta-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .meta-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+        }
+
+        .meta-toggle {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meta-card.collapsed .meta-toggle {
+            transform: rotate(0deg);
+        }
+
+        .meta-card:not(.collapsed) .meta-toggle {
+            transform: rotate(180deg);
+        }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 179, 0, 0.1);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .meta-insight {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+        }
+
+        .meta-insight strong {
+            color: var(--ci-gold);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -274,6 +372,36 @@
                 <p class="info-text">
                     Das Prompt-Roulette kombiniert zufällig Aufgaben, Stile und Themen zu absurden – aber oft überraschend kreativen – KI-Prompts. Perfekt, um Writer's Block zu überwinden oder einfach zu lachen. Probier deinen generierten Prompt doch mal wirklich aus!
                 </p>
+            </div>
+
+            <div class="meta-card collapsed" id="metaCard">
+                <div class="meta-header" onclick="toggleMeta()">
+                    <span class="meta-title">🔍 Behind the Scenes</span>
+                    <span class="meta-toggle" id="metaToggle">▼</span>
+                </div>
+                <div class="meta-content" id="metaContent">
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-label">System</div>
+                            <div class="meta-value">Claude Sonnet 4.5</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Build-Zeit</div>
+                            <div class="meta-value">~4 Minuten</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Iterationen</div>
+                            <div class="meta-value">2 Prompts</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Code-Zeilen</div>
+                            <div class="meta-value">~350 Zeilen</div>
+                        </div>
+                    </div>
+                    <div class="meta-insight">
+                        <strong>💡 Vibecoding Insight:</strong> Der Hauptprompt war simpel: "Erstelle ein Prompt-Roulette mit 3 Kategorien (Aufgabe, Thema, Stil), Spin-Animation und Copy/Share-Buttons. Style: Navy-Gold CI mit linearem Gradient." Claude hat automatisch 10 Varianten pro Kategorie generiert und die Animation hinzugefügt.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -407,6 +535,11 @@
                     alert('Zum Teilen in die Zwischenablage kopiert!');
                 });
             }
+        }
+
+        function toggleMeta() {
+            const metaCard = document.getElementById('metaCard');
+            metaCard.classList.toggle('collapsed');
         }
     </script>
 </body>
