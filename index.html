@@ -21,30 +21,30 @@
             min-height: 100vh;
         }
         
-        /* Karten-Design */
         .door {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.08);  /* War: 0.03 - jetzt deutlicher */
+            border: 1px solid rgba(255, 255, 255, 0.15);  /* War: 0.08 - jetzt sichtbarer */
             backdrop-filter: blur(10px);
         }
         
         .door:hover {
             transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.12);  /* NEU: Hellerer Hintergrund beim Hover */
             border-color: var(--ci-gold);
-            box-shadow: 0 10px 40px -10px rgba(255, 179, 0, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(255, 179, 0, 0.3);  /* War: 0.2 - jetzt stärker */
             z-index: 10;
         }
-
+        
         .door-open:hover .door-number {
             color: var(--ci-gold);
         }
-
+        
         .door-locked {
-            opacity: 0.3;
+            opacity: 0.4;  /* War: 0.3 - jetzt minimal sichtbarer */
             cursor: not-allowed;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.02);  /* War: transparent - jetzt minimal sichtbar */
+            border: 1px solid rgba(255,255,255,0.08);  /* War: 0.05 - jetzt etwas deutlicher */
         }
         
         .gold-text { 
@@ -572,5 +572,6 @@
 </script>
 </body>
 </html>
+
 
 
