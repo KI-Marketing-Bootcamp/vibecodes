@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Use Case Inspector | Marketing & Kommunikation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15); 
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-xl shadow-lg shadow-blue-900/20">
+                    🔍
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-white leading-tight">AI Use Case Inspector</h1>
+                    <p class="text-xs text-slate-400 font-mono">Marketing & Kommunikation</p>
+                </div>
+            </div>
+            <div class="hidden md:block text-xs font-bold bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">
+                v1.0.0
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
+        
+        <!-- Intro -->
+        <div class="mb-10 text-center max-w-2xl mx-auto animate-fade-in">
+            <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Ist dein Use Case sicher?</h2>
+            <p class="text-slate-400 text-lg">
+                Prüfe geplante KI-Einsätze auf Risiken, finde Best Practices und vermeide teure Fehler in der Kommunikation.
+            </p>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="relative flex-1">
+                <span class="absolute left-4 top-3.5 text-slate-500">🔎</span>
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Suche nach 'Bild', 'Text', 'Strategie'..." 
+                    class="w-full bg-slate-800/80 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder-slate-500"
+                >
+            </div>
+            <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0" id="filterContainer">
+                <!-- Filters injected via JS -->
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div id="gridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in" style="animation-delay: 0.2s;">
+            <!-- Cards injected via JS -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-slate-500 text-sm">
+            <p>&copy; 2024 AI Use Case Inspector. Ein Tool für moderne Kommunikation.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div id="modalContent" class="bg-slate-900 w-full max-w-2xl rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col transform scale-95 transition-transform duration-300">
+            <!-- Modal Content Injected via JS -->
+        </div>
+    </div>
+
+    <!-- DATA & LOGIC -->
+    <script>
+        // --- DATA DATABASE ---
+        const USE_CASES = [
+            {
+                id: 'uc1',
+                title: 'Blog Post Generierung',
+                category: 'Text',
+                riskLevel: 'Medium',
+                tools: ['ChatGPT', 'Claude', 'Jasper'],
+                description: 'Erstellung von SEO-optimierten Artikeln für den Unternehmensblog.',
+                howTo: 'Nutze KI für Gliederung und ersten Entwurf. Definiere Tone-of-Voice im System Prompt.',
+                greenFlags: ['Human-in-the-Loop Redaktion', 'Faktencheck externer Quellen', 'Einbindung eigener Case Studies'],
+                redFlags: ['Copy-Paste ohne Prüfung (Duplicate Content)', 'Halluzinierte Statistiken', 'Generischer "KI-Sound" ("In der heutigen Zeit...")']
+            },
+            {
+                id: 'uc2',
+                title: 'Bildgenerierung Social Media',
+                category: 'Bild/Video',
+                riskLevel: 'High',
+                tools: ['Midjourney', 'DALL-E 3', 'Adobe Firefly'],
+                description: 'Erstellung von Visuals für Instagram/LinkedIn Posts.',
+                howTo: 'Erstelle Bilder als "Symbolbilder". Nutze Firefly für urheberrechtlich sichereres Material.',
+                greenFlags: ['Kennzeichnung als "KI-generiert"', 'Nutzung als Moodboard/Inspiration', 'Firefly (trainiert auf Stockdaten)'],
+                redFlags: ['Nutzung von Stilen lebender Künstler (Rechtliches Risiko)', 'Unnatürliche Hände/Texte im Bild', 'Urheberrechtsschutz nicht gegeben (Jeder kann es kopieren)']
+            },
+            {
+                id: 'uc3',
+                title: 'Meeting-Protokolle',
+                category: 'Produktivität',
+                riskLevel: 'High',
+                tools: ['Otter.ai', 'MS Teams Premium', 'Zoom AI'],
+                description: 'Transkription und Zusammenfassung interner Strategie-Meetings.',
+                howTo: 'Aktiviere das Tool nur mit Zustimmung aller Teilnehmer. Prüfe, wo die Daten gespeichert werden.',
+                greenFlags: ['Enterprise-Lizenz (kein Training auf Daten)', 'Explizite Zustimmung aller Teilnehmer', 'Manuelle Korrektur kritischer Punkte'],
+                redFlags: ['Aufzeichnung vertraulicher Kundendaten (NDA-Verstoß)', 'Nutzung kostenloser Tools (Datenabfluss)', 'Fehlinterpretation von Sarkasmus im Protokoll']
+            },
+            {
+                id: 'uc4',
+                title: 'Coding & Web-Skripte',
+                category: 'Daten/Analyse',
+                riskLevel: 'Medium',
+                tools: ['GitHub Copilot', 'ChatGPT', 'Cursor'],
+                description: 'Erstellung kleiner HTML/JS Snippets für Landing Pages oder Tracking.',
+                howTo: 'Lasse dir den Code erklären. Teste ihn in einer isolierten Umgebung (Sandbox).',
+                greenFlags: ['Code Review durch Entwickler', 'Nutzung für Standard-Probleme (RegEx, Boilerplate)', 'Verständnis des Outputs'],
+                redFlags: ['Einfügen von Code in Live-Umgebung ohne Test', 'Sicherheitslücken in generiertem Code', 'Upload von Firmen-Secrets (API Keys) in den Chat']
+            },
+            {
+                id: 'uc5',
+                title: 'Sentiment Analyse',
+                category: 'Daten/Analyse',
+                riskLevel: 'Medium',
+                tools: ['Brandwatch', 'Custom GPTs', 'Python Scripts'],
+                description: 'Auswertung von tausenden Kundenkommentaren auf Stimmung.',
+                howTo: 'Exportiere Kommentare (anonymisiert) und nutze LLMs zur Cluster-Bildung (z.B. "Top 3 Beschwerden").',
+                greenFlags: ['Anonymisierung von Nutzernamen', 'Qualitativer Stichproben-Check', 'Kombination mit Verkaufszahlen'],
+                redFlags: ['Verlass auf reine Score-Werte (Sarkasmus-Blindheit)', 'Analyse in Echtzeit ohne Filter', 'DSGVO-Verstoß bei Daten-Export']
+            },
+            {
+                id: 'uc6',
+                title: 'Übersetzung & Lokalisierung',
+                category: 'Text',
+                riskLevel: 'Low',
+                tools: ['DeepL', 'Google Translate'],
+                description: 'Übersetzung von Marketing-Materialien in andere Sprachen.',
+                howTo: 'Nutze Tools für den ersten Entwurf ("Pre-Translation"). Beauftrage Muttersprachler für das Lektorat ("Post-Editing").',
+                greenFlags: ['Post-Editing durch Humans', 'Glossar-Funktion für Markennamen nutzen', 'Datenschutz-Modus aktivieren (DeepL Pro)'],
+                redFlags: ['Wörtliche Übersetzung von Redewendungen', 'Ungeprüfte Veröffentlichung', 'Verlust von kulturellen Nuancen']
+            },
+            {
+                id: 'uc7',
+                title: 'Personalisierte E-Mails',
+                category: 'Strategie',
+                riskLevel: 'High',
+                tools: ['HubSpot AI', 'Salesforce Einstein', 'Custom Scripts'],
+                description: 'Hyper-personalisierte Sales-Mails basierend auf LinkedIn-Profilen.',
+                howTo: 'Nutze strukturierte Daten. Vermeide "Creepy"-Faktor (zu viel persönliches Wissen).',
+                greenFlags: ['Segmente statt Individuen targeten', 'Menschliche Endkontrolle vor Versand', 'Opt-In der Empfänger vorhanden'],
+                redFlags: ['Upload von CRM-Listen in öffentliche KI (Datenschutz-GAU)', 'Halluzinierte Beziehungen ("Wie wir neulich besprachen...")', 'Spam-Filter Trigger durch Massenversand']
+            },
+            {
+                id: 'uc8',
+                title: 'Logo & Branding Design',
+                category: 'Bild/Video',
+                riskLevel: 'High',
+                tools: ['Midjourney', 'Canva Magic'],
+                description: 'Erstellung von Logos oder Icons für Marken.',
+                howTo: 'Nutze KI NUR für Moodboards und interne Ideenfindung. Beauftrage Designer für Reinzeichnung.',
+                greenFlags: ['Inspirationsquelle', 'Vektorisierung durch Profis', 'Markenrechtliche Prüfung'],
+                redFlags: ['Nutzung von Roh-KI-Output als Logo (Nicht schützbar!)', 'Ähnlichkeit zu bestehenden Marken (Verwechslungsgefahr)', 'Pixel-Grafiken statt Vektoren']
+            },
+            {
+                id: 'uc9',
+                title: 'Krisen-Simulation',
+                category: 'Strategie',
+                riskLevel: 'Low',
+                tools: ['ChatGPT', 'Claude'],
+                description: 'Simulieren von Shitstorms und Testen von PR-Antworten.',
+                howTo: 'Prompt: "Du bist ein wütender Twitter-Mob. Kritisiere unsere Pressemeldung."',
+                greenFlags: ['Stress-Test für Argumente', 'Identifikation von "Blinden Flecken"', 'Training für Junior-Mitarbeiter'],
+                redFlags: ['Eingabe echter vertraulicher Krisendaten', 'Verlass auf KI-Ethik (KI ist oft zu höflich)', 'Nutzung der KI-Antwort als finale Pressemeldung']
+            }
+        ];
+
+        // --- APP STATE ---
+        let searchTerm = '';
+        let selectedCategory = 'Alle';
+
+        // --- DOM ELEMENTS ---
+        const gridContainer = document.getElementById('gridContainer');
+        const filterContainer = document.getElementById('filterContainer');
+        const searchInput = document.getElementById('searchInput');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+
+        // --- HELPER FUNCTIONS ---
+        const getRiskColor = (level) => {
+            switch(level) {
+                case 'Low': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+                case 'Medium': return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+                case 'High': return 'bg-red-500/10 text-red-400 border-red-500/20';
+                default: return 'bg-slate-500/10 text-slate-400';
+            }
+        };
+
+        const getRiskBadge = (level) => {
+             switch(level) {
+                case 'Low': return '✅ Low Risk';
+                case 'Medium': return '⚠️ Medium Risk';
+                case 'High': return '🛑 High Risk';
+                default: return 'Unknown';
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+        const renderFilters = () => {
+            const categories = ['Alle', ...new Set(USE_CASES.map(u => u.category))];
+            
+            filterContainer.innerHTML = categories.map(cat => `
+                <button 
+                    onclick="setCategory('${cat}')"
+                    class="px-4 py-2 rounded-xl whitespace-nowrap text-sm font-bold transition-all border ${
+                        selectedCategory === cat 
+                        ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/25' 
+                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-750 hover:border-slate-600'
+                    }"
+                >
+                    ${cat}
+                </button>
+            `).join('');
+        };
+
+        const renderGrid = () => {
+            const filtered = USE_CASES.filter(uc => {
+                const matchesSearch = uc.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                      uc.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                      uc.tools.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()));
+                const matchesCategory = selectedCategory === 'Alle' || uc.category === selectedCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filtered.length === 0) {
+                gridContainer.innerHTML = `
+                    <div class="col-span-full text-center py-20 opacity-50">
+                        <div class="text-4xl mb-4">🤷‍♂️</div>
+                        <p>Keine Use Cases gefunden.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            gridContainer.innerHTML = filtered.map(uc => `
+                <div 
+                    onclick="openModal('${uc.id}')"
+                    class="bg-slate-800 border border-slate-700 rounded-xl p-6 cursor-pointer card-hover group flex flex-col h-full transition-all"
+                >
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] uppercase font-bold px-2 py-1 rounded border ${getRiskColor(uc.riskLevel)}">
+                            ${getRiskBadge(uc.riskLevel)}
+                        </span>
+                        <span class="text-xs text-slate-500 font-mono">${uc.category}</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                        ${uc.title}
+                    </h3>
+                    
+                    <p class="text-sm text-slate-400 mb-6 flex-1 leading-relaxed">
+                        ${uc.description}
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-700/50">
+                        ${uc.tools.slice(0, 3).map(t => `
+                            <span class="text-[10px] bg-slate-900 text-slate-300 px-2 py-1 rounded border border-slate-700">
+                                ${t}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        const openModal = (id) => {
+            const uc = USE_CASES.find(u => u.id === id);
+            if (!uc) return;
+
+            const modalHTML = `
+                <div class="p-6 border-b border-slate-800 flex justify-between items-start bg-slate-800/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-1 pr-4">${uc.title}</h2>
+                        <div class="flex items-center gap-3 text-sm">
+                            <span class="text-slate-400">${uc.category}</span>
+                            <span class="font-bold px-2 py-0.5 rounded text-xs border ${getRiskColor(uc.riskLevel)}">
+                                Risk: ${uc.riskLevel}
+                            </span>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-colors text-xl">
+                        ×
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto space-y-8 custom-scrollbar">
+                    
+                    <!-- How To -->
+                    <div class="bg-blue-900/10 border border-blue-500/20 p-5 rounded-xl">
+                        <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                            💡 Best Practice
+                        </h3>
+                        <p class="text-blue-100 text-base leading-relaxed">
+                            ${uc.howTo}
+                        </p>
+                    </div>
+
+                    <!-- Flags Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Green Flags -->
+                        <div>
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                ✅ Green Flags
+                            </h3>
+                            <ul class="space-y-3">
+                                ${uc.greenFlags.map(flag => `
+                                    <li class="text-sm text-slate-300 flex items-start gap-3 bg-emerald-900/5 p-3 rounded-lg border border-emerald-500/10">
+                                        <span class="text-emerald-500 mt-0.5">•</span>
+                                        <span>${flag}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Red Flags -->
+                        <div>
+                            <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                🚩 Red Flags
+                            </h3>
+                            <ul class="space-y-3">
+                                ${uc.redFlags.map(flag => `
+                                    <li class="text-sm text-slate-300 flex items-start gap-3 bg-red-900/5 p-3 rounded-lg border border-red-500/10">
+                                        <span class="text-red-500 mt-0.5">•</span>
+                                        <span>${flag}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">Gängige Tools</h3>
+                        <div class="flex flex-wrap gap-2">
+                            ${uc.tools.map(tool => `
+                                <span class="px-3 py-1.5 bg-slate-800 rounded-lg text-sm text-slate-300 border border-slate-700 flex items-center gap-2">
+                                    ⚙️ ${tool}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modalContent.innerHTML = modalHTML;
+            modalOverlay.classList.remove('hidden');
+            // Small timeout to allow transition
+            setTimeout(() => {
+                modalOverlay.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+            
+            // Lock body scroll
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModal = () => {
+            modalOverlay.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modalOverlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        };
+
+        // --- EVENT HANDLERS ---
+        window.setCategory = (cat) => {
+            selectedCategory = cat;
+            renderFilters();
+            renderGrid();
+        };
+
+        window.closeModal = closeModal;
+        window.openModal = openModal;
+
+        // Init Search Listener
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderGrid();
+        });
+
+        // Close modal on outside click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // --- INIT ---
+        renderFilters();
+        renderGrid();
+
+    </script>
+</body>
+</html>
