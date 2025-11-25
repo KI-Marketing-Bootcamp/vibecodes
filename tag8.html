@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Kosten Rechner - Vibecoding Tag 7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+            --text-sub: #94a3b8;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .gold-text { color: var(--ci-gold); }
+
+        /* Glass Panel Style */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        /* Input Fields */
+        .input-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: var(--ci-gold);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 179, 0, 0.2);
+        }
+
+        /* Buttons */
+        .btn-gold {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.4);
+        }
+        
+        .btn-stop {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-stop:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+            color: white;
+        }
+
+        /* Resume Button (Grün) */
+        .btn-resume {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-resume:hover {
+            background-color: rgba(34, 197, 94, 0.3);
+            color: white;
+        }
+
+        /* Animation für den Ticker */
+        @keyframes burn {
+            0% { text-shadow: 0 0 4px #FFB300, 0 0 10px #FFB300, 0 0 20px #FF4500; }
+            30% { text-shadow: 0 0 8px #FFB300, 0 0 15px #FF4500, 0 0 30px #FF0000, 0 0 40px #FF0000; transform: scale(1.02); }
+            60% { text-shadow: 0 0 6px #FFB300, 0 0 12px #FF4500, 0 0 25px #FF0000; transform: scale(0.98); }
+            100% { text-shadow: 0 0 4px #FFB300, 0 0 10px #FFB300, 0 0 20px #FF4500; }
+        }
+        .burning-money {
+            animation: burn 0.8s infinite alternate;
+            color: #fff; /* Weißer Kern */
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+            z-index: 50;
+        }
+        .back-btn:hover { color: var(--ci-gold); }
+
+        /* --- Meta Card Styles (Behind the Scenes) --- */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            overflow: hidden;
+            width: 100%;
+            max-width: 32rem; /* matches main container width approx */
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .meta-header {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .meta-header:hover { background: rgba(255, 255, 255, 0.02); }
+
+        .meta-title {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+            opacity: 0.8;
+        }
+
+        .meta-toggle { color: var(--ci-gold); font-size: 0.75rem; transition: transform 0.3s ease; }
+        
+        .meta-card.collapsed .meta-toggle { transform: rotate(0deg); }
+        .meta-card:not(.collapsed) .meta-toggle { transform: rotate(180deg); }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-sub);
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-right: 0.5rem;
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <a href="index.html" class="back-btn group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Zurück
+    </a>
+
+    <!-- Logo Header (Small) -->
+    <div class="absolute top-6 right-6 hidden md:block">
+        <img src="logo.png" alt="KI Marketing Bootcamp" class="h-8 opacity-50">
+    </div>
+
+    <!-- APP CONTAINER -->
+    <main class="w-full max-w-lg glass-panel p-8 md:p-10 text-center relative overflow-hidden z-10">
+        
+        <!-- Ambient Glow Background -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#FFB300] opacity-5 blur-[100px] pointer-events-none rounded-full"></div>
+
+        <div class="inline-block mb-4 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <!-- UPDATE: Hier steht jetzt Tag 7 -->
+            <span class="text-[#FFB300] text-[10px] font-bold tracking-[0.2em] uppercase">Tag 7 • Produktivität</span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Money <span class="gold-text">Burner</span></h1>
+        <p class="text-slate-400 text-sm mb-8">Wie teuer ist dieses Meeting wirklich?</p>
+
+        <!-- Settings Form -->
+        <div id="setup-panel" class="space-y-6 transition-all duration-500">
+            <div>
+                <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2 font-bold text-left pl-1">Teilnehmer</label>
+                <div class="relative">
+                    <input type="number" id="participants" value="4" min="1" class="input-field w-full rounded-xl p-4 text-lg font-bold text-center focus:ring-0">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">👤</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2 font-bold text-left pl-1">Ø Stundensatz (€)</label>
+                <div class="relative">
+                    <input type="number" id="hourly-rate" value="85" min="1" class="input-field w-full rounded-xl p-4 text-lg font-bold text-center focus:ring-0">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">€/h</span>
+                </div>
+            </div>
+
+            <button onclick="startMeeting()" class="btn-gold w-full py-4 rounded-xl text-lg mt-4 shadow-lg flex items-center justify-center gap-2">
+                <span>🔥</span> Meeting Starten
+            </button>
+        </div>
+
+        <!-- Active Ticker (Hidden by default) -->
+        <div id="ticker-panel" class="hidden space-y-8 py-4">
+            
+            <div>
+                <p class="text-slate-400 text-xs uppercase tracking-widest mb-4">Kosten bisher</p>
+                <div class="text-6xl md:text-7xl font-black gold-text burning-money tabular-nums tracking-tight" id="cost-display">
+                    0,00 €
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-sm text-slate-400 border-t border-white/5 pt-6">
+                <div>
+                    <span class="block text-xs uppercase tracking-wider opacity-50">Dauer</span>
+                    <span id="time-display" class="font-mono text-white text-lg">00:00:00</span>
+                </div>
+                <div>
+                    <span class="block text-xs uppercase tracking-wider opacity-50">Burn Rate</span>
+                    <span id="burn-rate-display" class="font-mono text-white text-lg">0,00 €/min</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <!-- UPDATE: Toggle Button statt nur Stop -->
+                <button id="toggleBtn" onclick="toggleMeeting()" class="btn-stop flex-1 py-3 rounded-xl transition-colors duration-300">Pause</button>
+                <button onclick="resetMeeting()" class="bg-white/10 hover:bg-white/20 text-white flex-1 py-3 rounded-xl transition-colors">Reset</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- BEHIND THE SCENES -->
+    <div class="meta-card collapsed" id="metaCard">
+        <div class="meta-header" onclick="toggleMeta()">
+            <span class="meta-title">🔍 Behind the Scenes</span>
+            <span class="meta-toggle">▼</span>
+        </div>
+        <div class="meta-content">
+            <p class="mb-4 leading-relaxed">
+                Dieses Tool ist ein Klassiker der Produktivität. Die Herausforderung beim Vibecoding war hier nicht die Mathematik (die ist simpel), sondern das emotionale Feedback: Wie visualisiert man "brennendes Geld"?
+            </p>
+            
+            <div class="mb-4">
+                <span class="tech-tag">Gemini 3</span>
+                <span class="tech-tag">Vanilla JS</span>
+                <span class="tech-tag">CSS Animations</span>
+            </div>
+
+            <p class="text-xs opacity-60 leading-relaxed">
+                <strong>Der Prompt:</strong> "Erstelle einen Meeting-Kosten-Rechner. Gib Anzahl der Teilnehmer und Durchschn. Stundenlohn ein -> Ein Ticker zeigt live, wie viel Geld gerade verbrannt wird."
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        let startTime;
+        let elapsedTime = 0;
+        let isRunning = false;
+        
+        const setupPanel = document.getElementById('setup-panel');
+        const tickerPanel = document.getElementById('ticker-panel');
+        const costDisplay = document.getElementById('cost-display');
+        const timeDisplay = document.getElementById('time-display');
+        const burnRateDisplay = document.getElementById('burn-rate-display');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        // Meta Card Toggle
+        function toggleMeta() {
+            document.getElementById('metaCard').classList.toggle('collapsed');
+        }
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        }
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function toggleMeeting() {
+            if (isRunning) {
+                stopMeeting();
+            } else {
+                startMeeting();
+            }
+        }
+
+        function startMeeting() {
+            const participants = parseFloat(document.getElementById('participants').value) || 0;
+            const hourlyRate = parseFloat(document.getElementById('hourly-rate').value) || 0;
+
+            if (participants <= 0 || hourlyRate <= 0) return;
+
+            // Kosten pro Sekunde
+            const costPerSecond = (participants * hourlyRate) / 3600;
+            const costPerMinute = participants * hourlyRate / 60;
+
+            burnRateDisplay.textContent = formatMoney(costPerMinute) + "/min";
+
+            // UI Switch
+            setupPanel.classList.add('hidden');
+            tickerPanel.classList.remove('hidden');
+
+            // Update Button State -> "Pause"
+            toggleBtn.textContent = "Pause";
+            toggleBtn.classList.remove('btn-resume');
+            toggleBtn.classList.add('btn-stop');
+
+            if (!isRunning) {
+                isRunning = true;
+                // WICHTIG: Startzeit basierend auf bisheriger Dauer neu setzen
+                startTime = Date.now() - elapsedTime;
+                
+                timerInterval = setInterval(() => {
+                    elapsedTime = Date.now() - startTime;
+                    const currentCost = (elapsedTime / 1000) * costPerSecond;
+                    
+                    costDisplay.textContent = formatMoney(currentCost);
+                    timeDisplay.textContent = formatTime(elapsedTime);
+
+                }, 50); 
+            }
+        }
+
+        function stopMeeting() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            
+            // Update Button State -> "Weiter"
+            toggleBtn.textContent = "Weiter";
+            toggleBtn.classList.remove('btn-stop');
+            toggleBtn.classList.add('btn-resume');
+        }
+
+        function resetMeeting() {
+            stopMeeting();
+            elapsedTime = 0;
+            costDisplay.textContent = "0,00 €";
+            timeDisplay.textContent = "00:00:00";
+            
+            // Reset Toggle Button text just in case
+            toggleBtn.textContent = "Pause";
+            toggleBtn.classList.add('btn-stop');
+            toggleBtn.classList.remove('btn-resume');
+
+            tickerPanel.classList.add('hidden');
+            setupPanel.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
