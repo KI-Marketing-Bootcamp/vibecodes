@@ -11,6 +11,7 @@
             --ci-gold: #FFB300;
             --ci-dark: #0f172a; 
             --ci-darker: #020617;
+            --text-sub: #cbd5e1;
         }
         
         body {
@@ -21,18 +22,19 @@
             min-height: 100vh;
         }
         
+        /* Karten-Design (Dein Update) */
         .door {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255, 255, 255, 0.08);  /* War: 0.03 - jetzt deutlicher */
-            border: 1px solid rgba(255, 255, 255, 0.15);  /* War: 0.08 - jetzt sichtbarer */
+            background: rgba(255, 255, 255, 0.08);  
+            border: 1px solid rgba(255, 255, 255, 0.15); 
             backdrop-filter: blur(10px);
         }
         
         .door:hover {
             transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.12);  /* NEU: Hellerer Hintergrund beim Hover */
+            background: rgba(255, 255, 255, 0.12); 
             border-color: var(--ci-gold);
-            box-shadow: 0 10px 40px -10px rgba(255, 179, 0, 0.3);  /* War: 0.2 - jetzt stärker */
+            box-shadow: 0 10px 40px -10px rgba(255, 179, 0, 0.3); 
             z-index: 10;
         }
         
@@ -41,15 +43,13 @@
         }
         
         .door-locked {
-            opacity: 0.4;  /* War: 0.3 - jetzt minimal sichtbarer */
+            opacity: 0.4; 
             cursor: not-allowed;
-            background: rgba(255, 255, 255, 0.02);  /* War: transparent - jetzt minimal sichtbar */
-            border: 1px solid rgba(255,255,255,0.08);  /* War: 0.05 - jetzt etwas deutlicher */
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(255,255,255,0.08); 
         }
         
-        .gold-text { 
-            color: var(--ci-gold); 
-        }
+        .gold-text { color: var(--ci-gold); }
         
         .badge-gold {
             background-color: var(--ci-gold);
@@ -105,67 +105,70 @@
             line-height: 1;
         }
 
-        .close-modal:hover {
-            transform: scale(1.1);
-        }
+        .close-modal:hover { transform: scale(1.1); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Impressum Styles */
-        .impressum-section {
-            margin-bottom: 2rem;
-        }
-
-        .impressum-section h3 {
-            color: var(--ci-gold);
-            font-weight: 700;
-            font-size: 1.125rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .impressum-section p {
-            color: #cbd5e1;
-            line-height: 1.8;
-            margin-bottom: 0.5rem;
-        }
-
-        .impressum-section a {
-            color: var(--ci-gold);
-            text-decoration: underline;
-            transition: opacity 0.2s;
-        }
-
-        .impressum-section a:hover {
-            opacity: 0.8;
-        }
+        .impressum-section { margin-bottom: 2rem; }
+        .impressum-section h3 { color: var(--ci-gold); font-weight: 700; font-size: 1.125rem; margin-bottom: 0.75rem; }
+        .impressum-section p { color: #cbd5e1; line-height: 1.8; margin-bottom: 0.5rem; }
+        .impressum-section a { color: var(--ci-gold); text-decoration: underline; transition: opacity 0.2s; }
+        .impressum-section a:hover { opacity: 0.8; }
 
         /* Scrollbar Styling für Modal */
-        .modal-content::-webkit-scrollbar {
-            width: 8px;
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--ci-gold); border-radius: 10px; }
+        
+        /* Meta Card Styles */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
         }
 
-        .modal-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+        .meta-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
         }
 
-        .modal-content::-webkit-scrollbar-thumb {
-            background: var(--ci-gold);
-            border-radius: 10px;
+        .meta-header:hover { background: rgba(255, 255, 255, 0.02); }
+        .meta-title { font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ci-gold); }
+        
+        .meta-toggle {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meta-card.collapsed .meta-toggle { transform: rotate(0deg); }
+        .meta-card:not(.collapsed) .meta-toggle { transform: rotate(180deg); }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 1.5rem;
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 3000px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+        
+        .meta-section { margin-bottom: 1.5rem; }
+        .meta-section:last-child { margin-bottom: 0; }
+        
+        @media (max-width: 768px) {
+            .meta-content { font-size: 0.9rem; }
+            .meta-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
     </style>
 </head>
@@ -183,7 +186,7 @@
         <div class="relative inline-block text-center">
             
             <!-- Karl -->
-            <img src="karl-schlau.png" class="absolute -right-20 -top-10 w-24 h-24 rounded-full border-4 border-[#0f172a] shadow-2xl transform rotate-12 hidden md:block hover:rotate-6 transition-transform duration-300 object-cover z-20" alt="Karl Schlau">
+            <img src="karl-schlau.jpg" class="absolute -right-20 -top-10 w-24 h-24 rounded-full border-4 border-[#0f172a] shadow-2xl transform rotate-12 hidden md:block hover:rotate-6 transition-transform duration-300 object-cover z-20" alt="Karl Schlau">
             
             <div class="inline-block mb-4 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
                 <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase leading-relaxed">
@@ -202,93 +205,88 @@
         </p>
     </header>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full max-w-6xl mb-20 px-2 md:px-0">
-        
-        <!-- Tür 1 (Orakel - Lokal) -->
-        <a href="tag1.html" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
-            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            <div class="absolute top-4 right-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300 door-number">1</div>
-            
-            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">🔮</span>
-            
-            <div class="text-center px-2 relative z-10">
-                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 1</span>
-                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Das Orakel</span>
-            </div>
-        </a>
+    <!-- AUTOMATISCHES GRID -->
+    <div id="calendar-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full max-w-6xl mb-20 px-2 md:px-0">
+        <!-- Das Script unten füllt diesen Bereich automatisch -->
+    </div>
 
-        <!-- Tür 2 (Kontext Baby - Extern) -->
-        <a href="https://kontext-baby.netlify.app/" target="_blank" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
-            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            <!-- Extern Badge -->
-            <div class="absolute top-3 right-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+    <!-- Meta Card (Behind the Scenes) -->
+    <div class="container" style="max-width: 1200px; margin: 0 auto 4rem auto; padding: 0 2rem;">
+        <div class="meta-card collapsed" id="metaCard">
+            <div class="meta-header" onclick="toggleMeta()">
+                <span class="meta-title">🔍 Behind the Scenes: Was ist Vibecoding?</span>
+                <span class="meta-toggle" id="metaToggle">▼</span>
             </div>
+            <div class="meta-content" id="metaContent">
+                
+                <div class="meta-section">
+                    <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                        💡 Die Motivation hinter diesem Adventskalender
+                    </h3>
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                        Als Marketing-Menschen ohne klassischen Dev-Background wollten wir zeigen: <strong style="color: white;">Mit GenAI kann jede*r Ideen prototypen.</strong>
+                    </p>
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                        Aber (und das ist wichtig): <strong style="color: var(--ci-gold);">Das macht uns nicht zu Programmierer:innen.</strong> Sondern zu Menschen, die KI-Tools nutzen, um Konzepte sichtbar zu machen. Ein riesiger Unterschied.
+                    </p>
+                    <p style="color: var(--text-sub); line-height: 1.7;">
+                        Dieser Adventskalender ist also ein <em>Experiment in AI Literacy.</em>
+                    </p>
+                </div>
 
-            <div class="absolute top-4 left-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300">2</div>
-            
-            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">🔍</span>
-            
-            <div class="text-center px-2 relative z-10">
-                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 2</span>
-                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Kontext Baby</span>
-            </div>
-        </a>
-
-        <!-- Tür 3 (Prompt Roulette - Lokal) -->
-        <a href="tag3.html" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
-            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            <div class="absolute top-4 right-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300 door-number">3</div>
-            
-            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">🎲</span>
-            
-            <div class="text-center px-2 relative z-10">
-                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 3</span>
-                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Prompt Roulette</span>
-            </div>
-        </a>
-
-        <!-- Tür 4 (Keyframe-Extractor - Extern) -->
-        <a href="https://www.linkedin.com/safety/go?url=https%3A%2F%2Fai.studio%2Fapps%2Fdrive%2F1DCohQa6HiZpRwWy62PA2tn99Hpsr5y0R&trk=flagship-messaging-web&messageThreadUrn=urn%3Ali%3AmessagingThread%3A2-ZDYzYmY4OTItNzJiNS00OGY5LWIwZTgtZDhhODQzMWRjZmE2XzAxMw%3D%3D&lipi=urn%3Ali%3Apage%3Ad_flagship3_messaging_conversation_detail%3BiTlLA3XBQ5iOJeAD6gwuyw%3D%3D" target="_blank" class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
-            <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            <!-- Extern Badge -->
-            <div class="absolute top-3 right-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-            </div>
-
-            <div class="absolute top-4 left-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300">4</div>
-            
-            <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">📽️</span>
-            
-            <div class="text-center px-2 relative z-10">
-                <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag 4</span>
-                <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">Keyframe Extractor</span>
-            </div>
-        </a>
-        
-        <!-- Türen 5-24 (Locked) -->
-        <script>
-            for(let i=5; i<=24; i++) {
-                document.write(`
-                    <div class="door door-locked relative aspect-square rounded-2xl flex flex-col items-center justify-center">
-                        <span class="text-4xl font-black text-slate-800">${i}</span>
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest border border-slate-700 px-2 py-1 rounded">Soon</span>
+                <div class="meta-section" style="margin-top: 2rem;">
+                    <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                        🛠️ Wie diese Seite entstanden ist
+                    </h3>
+                    <div class="meta-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Konzept</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Hirnschmalz + Kaffee</div>
+                        </div>
+                        <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Design</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">GenAI + Intuition</div>
+                        </div>
+                        <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Code</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Claude + Gemini</div>
+                        </div>
+                        <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Debugging</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Trial & Error</div>
                         </div>
                     </div>
-                `);
-            }
-        </script>
+                    <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
+                        Diese Landing Page ist ein <strong>Single HTML File</strong> mit Vanilla CSS. 
+                    </p>
+                </div>
 
+                <div class="meta-section" style="margin-top: 2rem;">
+                    <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+                        🎓 Was ich dabei lerne
+                    </h3>
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
+                        Jede dieser 24 Apps ist ein Mini-Lernmoment:
+                    </p>
+                    <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Wie man KI-Systeme effektiv promptet (Prompt Engineering ≠ Coding)</li>
+                        <li style="margin-bottom: 0.5rem;">Wo LLMs brillieren (schnelle Prototypen) und wo sie versagen (Logik, Edge Cases)</li>
+                        <li style="margin-bottom: 0.5rem;">Dass "funktionierender Code" und "guter Code" zwei verschiedene Dinge sind</li>
+                        <li style="margin-bottom: 0.5rem;">Warum Dokumentation und Clean Code so wichtig sind</li>
+                    </ul>
+                </div>
+
+                <div class="meta-section" style="margin-top: 2rem; background: rgba(15, 23, 42, 0.5); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 179, 0, 0.2);">
+                    <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
+                        <strong style="color: var(--ci-gold);">TL;DR:</strong>
+                    </p>
+                    <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
+                        Wir sind keine Programmierer. Wir nutzen genAI zur Visualisierung von Ideen. Das ist okay, solange man ehrlich drüber ist. Vibecoding ist nicht "Coding lernen", sondern "AI Literacy für Non-Devs". 
+                    </p>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- Impressum Modal -->
@@ -377,7 +375,14 @@
         </div>
     </footer>
 
+    <!-- LOGIK & DATEN -->
     <script>
+        // 1. MODAL LOGIC (IMPRESSUM & META)
+        function toggleMeta() {
+            const metaCard = document.getElementById('metaCard');
+            metaCard.classList.toggle('collapsed');
+        }
+
         function openImpressum() {
             document.getElementById('impressumModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -401,178 +406,94 @@
                 closeImpressum();
             }
         });
+
+        // 2. KALENDER DATEN (Hier eintragen!)
+        const calendarData = [
+            { 
+                day: 1, 
+                title: "Das Orakel", 
+                icon: "🔮", 
+                link: "tag1.html", 
+                external: false 
+            },
+            { 
+                day: 2, 
+                title: "Kontext Baby", 
+                icon: "🔍", 
+                link: "https://kontext-baby.netlify.app/", 
+                external: true 
+            },
+            { 
+                day: 3, 
+                title: "Prompt Roulette", 
+                icon: "🎲", 
+                link: "tag3.html", 
+                external: false 
+            },
+            { 
+                day: 4, 
+                title: "Keyframe Extractor", 
+                icon: "📽️", 
+                link: "https://www.linkedin.com/safety/go?url=https%3A%2F%2Fai.studio%2Fapps%2Fdrive%2F1DCohQa6HiZpRwWy62PA2tn99Hpsr5y0R&trk=flagship-messaging-web&messageThreadUrn=urn%3Ali%3AmessagingThread%3A2-ZDYzYmY4OTItNzJiNS00OGY5LWIwZTgtZDhhODQzMWRjZmE2XzAxMw%3D%3D&lipi=urn%3Ali%3Apage%3Ad_flagship3_messaging_conversation_detail%3BiTlLA3XBQ5iOJeAD6gwuyw%3D%3D", 
+                external: true 
+            }
+        ];
+
+        // 3. ZEITMASCHINE (Zum Testen)
+        const realDate = new Date();
+        
+        // 🔥 SIMULATION: Heute ist der 4. Dezember.
+        // Zum Scharfschalten einfach diese Zeile löschen!
+        const simulateDate = new Date('2025-12-04'); 
+
+        const today = (typeof simulateDate !== 'undefined') ? simulateDate : realDate;
+        const currentMonth = today.getMonth(); // 11 = Dezember
+        const currentDay = today.getDate();
+
+        // 4. GRID GENERIERUNG
+        const grid = document.getElementById('calendar-grid');
+
+        for (let i = 1; i <= 24; i++) {
+            const data = calendarData.find(d => d.day === i) || { day: i, title: "Soon", icon: "", link: "#", external: false };
+            
+            // Ist das Türchen offen? (Wenn Tag <= Heute)
+            const isOpen = (currentDay >= i) || (currentMonth > 10 && currentMonth !== 11);
+
+            if (isOpen) {
+                // OFFENES TÜRCHEN HTML (Dein Design)
+                const targetAttr = data.external ? 'target="_blank"' : '';
+                const extIcon = data.external ? 
+                    `<div class="absolute top-3 right-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>` : '';
+
+                grid.innerHTML += `
+                    <a href="${data.link}" ${targetAttr} class="door door-open group relative aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden bg-[#0f172a]">
+                        <div class="absolute inset-0 bg-[#FFB300] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        ${extIcon}
+                        <div class="absolute top-4 right-5 text-slate-700 text-4xl font-black group-hover:text-[#FFB300] transition-colors duration-300 door-number">${i}</div>
+                        <span class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">${data.icon}</span>
+                        <div class="text-center px-2 relative z-10">
+                            <span class="text-xs text-[#FFB300] font-bold uppercase tracking-widest block mb-1">Tag ${i}</span>
+                            <span class="text-sm font-medium text-white group-hover:text-[#FFB300] transition-colors">${data.title}</span>
+                        </div>
+                    </a>
+                `;
+            } else {
+                // GESCHLOSSENES TÜRCHEN HTML
+                grid.innerHTML += `
+                    <div class="door door-locked relative aspect-square rounded-2xl flex flex-col items-center justify-center">
+                        <span class="text-4xl font-black text-slate-800">${i}</span>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest border border-slate-700 px-2 py-1 rounded">Soon</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
     </script>
 
-
-<div class="container" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
-    <div class="meta-card collapsed" id="metaCard">
-        <div class="meta-header" onclick="toggleMeta()">
-            <span class="meta-title">🔍 Behind the Scenes: Was ist Vibecoding?</span>
-            <span class="meta-toggle" id="metaToggle">▼</span>
-        </div>
-        <div class="meta-content" id="metaContent">
-            
-            <div class="meta-section">
-                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
-                    💡 Die Motivation hinter diesem Adventskalender
-                </h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
-                    Als Marketing-Menschen ohne klassischen Dev-Background wollten wir zeigen: <strong style="color: white;">Mit GenAI kann jede*r Ideen prototypen.</strong>
-                </p>
-                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
-                    Aber (und das ist wichtig): <strong style="color: var(--ci-gold);">Das macht uns nicht zu Programmierer:innen.</strong> Sondern zu Menschen, die KI-Tools nutzen, um Konzepte sichtbar zu machen. Ein riesiger Unterschied.
-                </p>
-                <p style="color: var(--text-sub); line-height: 1.7;">
-                    Dieser Adventskalender ist also ein <em>Experiment in AI Literacy.</em>
-                </p>
-            </div>
-
-            <div class="meta-section" style="margin-top: 2rem;">
-                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
-                    🛠️ Wie diese Seite entstanden ist
-                </h3>
-                <div class="meta-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Konzept</div>
-                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Hirnschmalz + Kaffee</div>
-                    </div>
-                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Design</div>
-                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">GenAI + Intuition</div>
-                    </div>
-                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Code</div>
-                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Claude + Gemini</div>
-                    </div>
-                    <div class="meta-item" style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 179, 0, 0.1);">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); margin-bottom: 0.5rem;">Debugging</div>
-                        <div style="font-size: 1rem; font-weight: 700; color: var(--ci-gold);">Trial & Error</div>
-                    </div>
-                </div>
-                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
-                    Diese Landing Page ist ein <strong>Single HTML File</strong> mit Vanilla CSS. 
-                </p>
-            </div>
-
-            <div class="meta-section" style="margin-top: 2rem;">
-                <h3 style="color: var(--ci-gold); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
-                    🎓 Was ich dabei lerne
-                </h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
-                    Jede dieser 24 Apps ist ein Mini-Lernmoment:
-                </p>
-                <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem;">
-                    <li style="margin-bottom: 0.5rem;">Wie man KI-Systeme effektiv promptet (Prompt Engineering ≠ Coding)</li>
-                    <li style="margin-bottom: 0.5rem;">Wo LLMs brillieren (schnelle Prototypen) und wo sie versagen (Logik, Edge Cases)</li>
-                    <li style="margin-bottom: 0.5rem;">Dass "funktionierender Code" und "guter Code" zwei verschiedene Dinge sind</li>
-                    <li style="margin-bottom: 0.5rem;">Warum Dokumentation und Clean Code so wichtig sind</li>
-                </ul>
-            </div>
-
-            <div class="meta-section" style="margin-top: 2rem; background: rgba(15, 23, 42, 0.5); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 179, 0, 0.2);">
-                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 0.75rem;">
-                    <strong style="color: var(--ci-gold);">TL;DR:</strong>
-                </p>
-                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9375rem;">
-                    Wir sind keine Programmierer. Wir nutzen genAI zur Visualisierung von Ideen. Das ist okay, solange man ehrlich drüber ist. Vibecoding ist nicht "Coding lernen", sondern "AI Literacy für Non-Devs". 
-                </p>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!-- CSS für Meta Card (falls noch nicht vorhanden) -->
-<style>
-    .meta-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 1.5rem;
-        overflow: hidden;
-    }
-
-    .meta-header {
-        padding: 1.25rem 1.5rem;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.2s ease;
-    }
-
-    .meta-header:hover {
-        background: rgba(255, 255, 255, 0.02);
-    }
-
-    .meta-title {
-        font-weight: 700;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--ci-gold);
-    }
-
-    .meta-toggle {
-        color: var(--ci-gold);
-        font-size: 0.875rem;
-        transition: transform 0.3s ease;
-    }
-
-    .meta-card.collapsed .meta-toggle {
-        transform: rotate(0deg);
-    }
-
-    .meta-card:not(.collapsed) .meta-toggle {
-        transform: rotate(180deg);
-    }
-
-    .meta-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-        padding: 0 1.5rem;
-    }
-
-    .meta-card:not(.collapsed) .meta-content {
-        max-height: 3000px;
-        padding: 0 1.5rem 1.5rem 1.5rem;
-    }
-
-    .meta-section {
-        margin-bottom: 1.5rem;
-    }
-
-    .meta-section:last-child {
-        margin-bottom: 0;
-    }
-
-    .container {
-        width: 100%;
-    }
-
-    @media (max-width: 768px) {
-        .meta-content {
-            font-size: 0.9rem;
-        }
-        
-        .meta-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-        }
-    }
-</style>
-
-<script>
-    function toggleMeta() {
-        const metaCard = document.getElementById('metaCard');
-        metaCard.classList.toggle('collapsed');
-    }
-</script>
 </body>
 </html>
-
-
-
-
-
-
-
