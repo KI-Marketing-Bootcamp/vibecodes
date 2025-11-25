@@ -306,6 +306,129 @@
             .falling-item {
                 font-size: 1.5rem;
             }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Meta Card Styles */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .meta-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .meta-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .meta-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ci-gold);
+        }
+
+        .meta-toggle {
+            color: var(--ci-gold);
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meta-card.collapsed .meta-toggle {
+            transform: rotate(0deg);
+        }
+
+        .meta-card:not(.collapsed) .meta-toggle {
+            transform: rotate(180deg);
+        }
+
+        .meta-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 1.5rem;
+        }
+
+        .meta-card:not(.collapsed) .meta-content {
+            max-height: 2000px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 179, 0, 0.1);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ci-gold);
+        }
+
+        .meta-insight {
+            background: rgba(255, 179, 0, 0.05);
+            border: 1px solid rgba(255, 179, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-insight strong {
+            color: var(--ci-gold);
+        }
+
+        .meta-code-section,
+        .meta-learning {
+            margin-bottom: 1.5rem;
+        }
+
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-snippet code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: #a78bfa;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -366,6 +489,68 @@
                     <li>Steuerung: Pfeiltasten ← → oder Maus</li>
                     <li>Pause: Leertaste</li>
                 </ul>
+            </div>
+
+            <div class="meta-card collapsed" id="metaCard">
+                <div class="meta-header" onclick="toggleMeta()">
+                    <span class="meta-title">🔍 Behind the Scenes</span>
+                    <span class="meta-toggle" id="metaToggle">▼</span>
+                </div>
+                <div class="meta-content" id="metaContent">
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-label">System</div>
+                            <div class="meta-value">Claude Sonnet 4.5</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Build-Zeit</div>
+                            <div class="meta-value">~18 Minuten</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Framework</div>
+                            <div class="meta-value">Vanilla JS</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">FPS</div>
+                            <div class="meta-value">60</div>
+                        </div>
+                    </div>
+                    <div class="meta-insight">
+                        <strong>💡 Vibecoding Insight:</strong> Dieses Browser-Game wurde komplett ohne Game-Engine gebaut – nur mit Vanilla JavaScript, CSS Animations und einem Game-Loop mit setInterval(). Der schwierigste Teil? Die Collision Detection zwischen fallendem Item und Spieler-Position. Claude hat das in 2 Iterationen hinbekommen: Erst die Basic Mechanics, dann Fine-Tuning für präzise Treffer-Erkennung. Kein Canvas, kein Pixi.js – nur DOM-Manipulation. Old School, aber funktioniert! 🎮
+                    </div>
+                    <div class="meta-code-section">
+                        <strong style="color: var(--ci-gold); display: block; margin-bottom: 0.75rem;">🎯 Kern-Mechanik:</strong>
+                        <div class="code-snippet">
+                            <code>// Collision Detection Logic<br>
+if (item.y > 75 && item.y < 85) {<br>
+&nbsp;&nbsp;const playerLeft = gameState.playerX - 5;<br>
+&nbsp;&nbsp;const playerRight = gameState.playerX + 5;<br>
+&nbsp;&nbsp;if (item.x > playerLeft && item.x < playerRight) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;handleCollision(item); // Treffer!<br>
+&nbsp;&nbsp;}<br>
+}</code>
+                        </div>
+                        <p style="color: var(--text-sub); font-size: 0.875rem; margin-top: 0.75rem; line-height: 1.6;">
+                            Das Game läuft mit 60 FPS und checkt jeden Frame, ob ein Item in der "Fang-Zone" (75-85% Höhe) ist. Die Hit-Box des Spielers ist ±5% breit. Simple, aber effektiv!
+                        </p>
+                    </div>
+                    <div class="meta-learning">
+                        <strong style="color: var(--ci-gold); display: block; margin-bottom: 0.75rem;">📚 Was ich dabei gelernt habe:</strong>
+                        <ul style="color: var(--text-sub); line-height: 1.8; margin-left: 1.5rem; list-style: none;">
+                            <li style="margin-bottom: 0.5rem;">✓ Game Loops mit setInterval() statt requestAnimationFrame()</li>
+                            <li style="margin-bottom: 0.5rem;">✓ State Management ohne Framework (nur ein gameState Objekt)</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Collision Detection mit Prozent-basierten Positionen</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Progressive Difficulty durch Level-Multiplikator</li>
+                            <li style="margin-bottom: 0.5rem;">✓ DOM-Manipulation ist langsamer als Canvas, aber für einfache Games OK</li>
+                        </ul>
+                    </div>
+                    <div class="meta-honesty" style="background: rgba(102, 126, 234, 0.05); border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 0.75rem; padding: 1.25rem; margin-top: 1.5rem;">
+                        <strong style="color: #a78bfa;">🙏 Ehrlichkeit:</strong>
+                        <p style="color: var(--text-sub); line-height: 1.7; margin-top: 0.5rem;">
+                            Würde ein echter Game Dev das so machen? <strong style="color: white;">Nein.</strong> Die würden Canvas oder WebGL nutzen, eine Game-Engine wie Phaser.js, und ein richtiges Entity-Component-System. Aber für einen schnellen Prototype, der das Konzept zeigt? Diese Lösung ist mehr als genug. Und sie läuft in jedem Browser ohne Dependencies. 🎯
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -591,6 +776,11 @@
         function resetGame() {
             gameOverScreen.classList.add('hidden');
             startGame();
+        }
+
+        function toggleMeta() {
+            const metaCard = document.getElementById('metaCard');
+            metaCard.classList.toggle('collapsed');
         }
 
         // Initialize player position
