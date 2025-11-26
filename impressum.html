@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum - KI Marketing Bootcamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at top center, #1e293b 0%, var(--ci-darker) 100%);
+            color: #cbd5e1; /* Helles Grau für Text */
+            min-height: 100vh;
+        }
+        
+        h1, h2 { color: var(--ci-gold); font-weight: 700; }
+        h2 { font-size: 1.1rem; margin-bottom: 0.5rem; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        a { color: var(--ci-gold); text-decoration: none; transition: opacity 0.2s; }
+        a:hover { opacity: 0.8; text-decoration: underline; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center py-12 px-4">
+
+    <div class="w-full max-w-2xl mb-8">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 no-underline hover:no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Zurück zum Kalender
+        </a>
+    </div>
+
+    <main class="w-full max-w-2xl glass-panel rounded-2xl p-8 md:p-12">
+        
+        <h1 class="text-3xl md:text-4xl mb-8 border-b border-white/10 pb-6">Impressum</h1>
+
+        <div>
+            <h2>Angaben gemäß § 5 TMG</h2>
+            <p>
+                uncanny minds GmbH<br>
+                Kemnather Str. 12b<br>
+                92681 Erbendorf
+            </p>
+
+            <h2>Vertreten durch</h2>
+            <p>
+                Veronika Hackl<br>
+                Georg Neumann
+            </p>
+
+            <h2>Kontakt</h2>
+            <p>
+                Telefon: <a href="tel:+4996821833367">+49 9682 1833367</a><br>
+                E-Mail: <a href="mailto:info@marketing-ki.de">info@marketing-ki.de</a>
+            </p>
+
+            <h2>Umsatzsteuer-ID</h2>
+            <p>
+                Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br>
+                DE347385226
+            </p>
+
+            <h2>Redaktionell verantwortlich</h2>
+            <p>
+                Georg Neumann<br>
+                Kemnather Str. 12b<br>
+                92681 Erbendorf
+            </p>
+
+            <h2>EU-Streitschlichtung</h2>
+            <p>
+                Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a>.<br>
+                Unsere E-Mail-Adresse finden Sie oben im Impressum.
+            </p>
+
+            <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
+            <p>
+                Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+            </p>
+        </div>
+
+    </main>
+
+    <footer class="mt-12 text-slate-500 text-xs text-center">
+        &copy; 2025 uncanny minds GmbH • <a href="index.html" class="text-slate-500 hover:text-[#FFB300]">Vibecoding Adventskalender</a>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
