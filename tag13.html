@@ -3,811 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KI Marketing Orakel 2026 | Vibecoding Adventskalender</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>Tag 13: Das Neurale Orakel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            /* Marketing Gold */
             --ci-gold: #FFB300;
-            
-            /* Navy Abstufungen */
-            --ci-dark: #0f172a;
+            --ci-dark: #0f172a; 
             --ci-darker: #020617;
-            
-            /* Text */
-            --text-main: #ffffff;
-            --text-sub: #cbd5e1;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--ci-darker);
-            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
-            color: var(--text-main);
+            background-image: radial-gradient(circle at 50% 30%, #1e293b 0%, var(--ci-darker) 70%);
+            color: white;
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
         }
 
-        /* Zurück Button */
-        .back-btn {
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            color: var(--text-sub);
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-            z-index: 50;
-            opacity: 0.7;
-            text-decoration: none;
+        /* --- THE ORB (Reines CSS Magic, kein Bild) --- */
+        .orb-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            filter: drop-shadow(0 0 50px rgba(255, 179, 0, 0.15));
+            transition: filter 0.5s ease;
         }
         
-        .back-btn:hover { 
-            color: var(--ci-gold); 
-            opacity: 1;
-            transform: translateX(-2px);
+        .orb-container.active {
+            filter: drop-shadow(0 0 80px rgba(255, 179, 0, 0.6));
         }
 
-        .back-icon {
-            width: 1rem;
-            height: 1rem;
-            transition: transform 0.3s;
-        }
-
-        .back-btn:hover .back-icon {
-            transform: translateX(-0.25rem);
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            z-index: 20;
-        }
-
-        .logo {
-            height: 3rem;
-            margin-bottom: 1.5rem;
-            object-fit: contain;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
-            transition: transform 0.3s;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .badge-gold {
-            display: inline-block;
-            background-color: var(--ci-gold);
-            color: var(--ci-darker);
-            padding: 0.375rem 1rem;
-            border-radius: 2rem;
-            font-weight: 700;
-            font-size: 0.625rem;
-            margin-bottom: 1rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        .gold-text {
-            color: var(--ci-gold);
-        }
-
-        /* Globe Container */
-        .globe-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .globe {
-            width: 18rem;
-            height: 18rem;
-            border-radius: 50%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            box-shadow: 0 0 60px rgba(255, 179, 0, 0.1);
-        }
-
-        .globe:hover {
-            transform: scale(1.02);
-        }
-
-        .karl-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('Karl_zwinkert.png');
-            background-size: 70%;
-            background-repeat: no-repeat;
-            background-position: center center;
-            z-index: 5;
-            transition: transform 0.5s ease;
-        }
-   
-        .globe:hover .karl-bg {
-            transform: scale(1.05);
-        }
-
-        .globe-glass {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05), rgba(255, 179, 0, 0.02) 60%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            backdrop-filter: blur(2px);
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .snow-container,
-        .dust-container {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .snow-container {
-            z-index: 15;
-        }
-
-        .dust-container {
-            z-index: 25;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .oracle-content {
-            position: relative;
-            z-index: 40;
-            width: 80%;
-            text-align: center;
-            padding: 0.5rem;
-            margin-top: 2.5rem;
-        }
-
-        .oracle-box {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-        }
-
-        .globe:hover .oracle-box {
-            border-color: rgba(255, 179, 0, 0.3);
-        }
-
-        .placeholder-icon {
-            font-size: 3rem;
-            margin-bottom: 0.75rem;
-            filter: drop-shadow(0 0 15px rgba(255,179,0,0.4));
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .placeholder-text {
-            font-size: 1rem;
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        .prediction-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
-        }
-
-        .prediction-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border: 1px solid var(--ci-gold);
-            border-radius: 2rem;
-            color: var(--ci-gold);
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            background: rgba(255, 179, 0, 0.1);
-        }
-
-        /* Snow & Dust Effects */
-        .snow-particle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            top: -10%;
-            animation: fall linear infinite;
-            opacity: 0.5;
-        }
-
-        .gold-dust {
-            position: absolute;
-            background: var(--ci-gold);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.5;
-            }
-            90% {
-                opacity: 0.5;
-            }
-            100% { 
-                transform: translateY(calc(100vh / 4));
-                opacity: 0;
-            }
-        }
-
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        .shake-animation {
-            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0) rotate(-1deg); }
-            20%, 80% { transform: translate3d(2px, 0, 0) rotate(1deg); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0) rotate(-1deg); }
-            40%, 60% { transform: translate3d(4px, 0, 0) rotate(1deg); }
-        }
-
-        .float-in {
-            animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-out {
-            animation: fadeOut 0.3s ease-out forwards;
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; }
-        }
-
-        /* Base */
-        .globe-base {
-            width: 12rem;
-            height: 2.5rem;
-            background: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
-            border-radius: 50%;
-            margin-top: -1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 10;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .base-line {
-            width: 8rem;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--ci-gold), transparent);
-            opacity: 0.4;
-            margin-top: 1px;
-        }
-
-        /* Button */
-        .btn-primary {
-            background-color: var(--ci-gold);
-            color: var(--ci-darker);
-            font-weight: 700;
-            font-size: 0.875rem;
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            box-shadow: 0 4px 20px rgba(255, 179, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-            margin-top: 2.5rem;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 179, 0, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-shimmer {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.3s;
-        }
-
-        .btn-primary:hover .btn-shimmer {
-            transform: translateX(100%);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Responsive */
-        @media (min-width: 768px) {
-            h1 {
-                font-size: 3.75rem;
-            }
-
-            .logo {
-                height: 3.5rem;
-            }
-
-            .globe {
-                width: 24rem;
-                height: 24rem;
-            }
-
-            .prediction-text {
-                font-size: 1.5rem;
-            }
-
-            .btn-primary {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .globe {
-                width: 16rem;
-                height: 16rem;
-            }
-
-            .oracle-box {
-                padding: 1.5rem 1rem;
-            }
-
-            .prediction-text {
-                font-size: 1.125rem;
-            }
-
-            .meta-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Meta Card Styles */
-        .container {
-            max-width: 800px;
+        .orb {
             width: 100%;
-            margin-top: 3rem;
-            padding: 0 1rem;
-        }
-
-        .meta-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 1.5rem;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(0,0,0,0.8));
+            position: relative;
             overflow: hidden;
-            margin-top: 1.5rem;
+            z-index: 10;
+            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8), inset 10px 10px 30px rgba(255,255,255,0.2), 0 0 20px rgba(255,179,0,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .meta-header {
-            padding: 1.25rem 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
+        /* Der innere Wirbel (Plasma) */
+        .plasma {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--ci-gold), transparent, #ef4444, transparent);
+            opacity: 0.3;
+            animation: spin 10s linear infinite;
+            filter: blur(30px);
+        }
+        
+        .plasma:nth-child(2) {
+            animation-direction: reverse;
+            background: conic-gradient(from 180deg, transparent, #3b82f6, transparent, var(--ci-gold), transparent);
+            animation-duration: 7s;
+            opacity: 0.2;
         }
 
-        .meta-header:hover {
-            background: rgba(255, 255, 255, 0.02);
+        .orb-container.active .plasma {
+            animation-duration: 1s; /* Schneller bei Aktivität */
+            opacity: 0.6;
         }
 
-        .meta-title {
-            font-weight: 700;
-            font-size: 0.875rem;
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Inputs & Cards */
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: var(--ci-gold);
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--ci-gold);
+            box-shadow: 0 10px 30px -10px rgba(255, 179, 0, 0.5);
+            transition: all 0.2s;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 40px -10px rgba(255, 179, 0, 0.7);
+        }
+        .btn-gold:active { transform: scale(0.98); }
+        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Prediction Card Animation */
+        .prophecy-card {
+            perspective: 1000px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .prophecy-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
-        .meta-toggle {
-            color: var(--ci-gold);
-            font-size: 0.875rem;
-            transition: transform 0.3s ease;
+        .typewriter-text::after {
+            content: '|';
+            animation: blink 1s infinite;
         }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        .meta-card.collapsed .meta-toggle {
-            transform: rotate(0deg);
+        /* Behind Scenes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
 
-        .meta-card:not(.collapsed) .meta-toggle {
-            transform: rotate(180deg);
-        }
-
-        .meta-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            padding: 0 1.5rem;
-        }
-
-        .meta-card:not(.collapsed) .meta-content {
-            max-height: 600px;
-            padding: 0 1.5rem 1.5rem 1.5rem;
-        }
-
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .meta-item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid rgba(255, 179, 0, 0.1);
-        }
-
-        .meta-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-sub);
-            margin-bottom: 0.5rem;
-        }
-
-        .meta-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--ci-gold);
-        }
-
-        .meta-insight {
-            background: rgba(255, 179, 0, 0.05);
-            border: 1px solid rgba(255, 179, 0, 0.2);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            font-size: 0.9375rem;
-            line-height: 1.6;
-            color: var(--text-sub);
-        }
-
-        .meta-insight strong {
-            color: var(--ci-gold);
-        }
     </style>
 </head>
-<body>
-    <a href="index.html" class="back-btn">
-        <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Zurück
-    </a>
+<body class="flex flex-col items-center py-8 px-4">
 
-    <header class="header">
-        <a href="https://www.marketing-ki.de" target="_blank">
-            <img src="logo.png" alt="KI Marketing Bootcamp" class="logo">
+    <div class="w-full max-w-4xl flex justify-between items-center mb-8 relative z-20">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
         </a>
-        <div class="badge-gold">🎄 Vibecoding Tag 13</div>
-        <h1>KI ORAKEL <span class="gold-text">2026</span></h1>
-    </header>
-
-    <div class="globe-wrapper" id="globeWrapper">
-        <div class="globe" id="globe">
-            <div class="karl-bg"></div>
-            <div class="globe-glass"></div>
-            <div class="snow-container" id="snowContainer"></div>
-            <div class="dust-container" id="dustContainer"></div>
-
-            <div class="oracle-content">
-                <div class="oracle-box" id="placeholderBox">
-                    <div class="placeholder-icon">🔮</div>
-                    <p class="placeholder-text">Frag Karl nach<br>der Zukunft!</p>
-                </div>
-
-                <div class="oracle-box hidden" id="predictionBox">
-                    <p class="prediction-text" id="predictionText"></p>
-                    <div class="prediction-badge">Karls Prognose</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="globe-base">
-            <div class="base-line"></div>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 13
         </div>
     </div>
 
-    <button class="btn-primary" id="shakeBtn">
-        <span style="position: relative; z-index: 10;">Zukunft vorhersagen</span>
-        <div class="btn-shimmer"></div>
-    </button>
+    <main class="w-full max-w-xl text-center relative z-10">
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-2">Das Neurale <span class="text-[#FFB300]">Orakel</span></h1>
+        <p class="text-slate-400 mb-8">2026 Prediction Engine. Powered by randomness.</p>
 
-    <div class="container">
-        <div class="meta-card collapsed" id="metaCard">
-            <div class="meta-header" onclick="toggleMeta()">
-                <span class="meta-title">🔍 Behind the Scenes</span>
-                <span class="meta-toggle" id="metaToggle">▼</span>
+        <div class="orb-container" id="orbContainer">
+            <div class="orb">
+                <div class="plasma"></div>
+                <div class="plasma"></div>
             </div>
-            <div class="meta-content" id="metaContent">
-                <div class="meta-grid">
-                    <div class="meta-item">
-                        <div class="meta-label">System</div>
-                        <div class="meta-value">Gemini 3</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Build-Zeit</div>
-                        <div class="meta-value">~12 Minuten</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Iterationen</div>
-                        <div class="meta-value">2 Runden</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Optimiert durch</div>
-                        <div class="meta-value">Claude Sonnet 4.5</div>
-                    </div>
-                </div>
-                <div class="meta-insight">
-                    <strong>💡 Vibecoding Insight:</strong> Das Original wurde mit Gemini in 2 Iterationen gebaut (Tailwind-basiert). Claude hat dann Tailwind entfernt, die Performance optimiert, mehr dark-humor Predictions hinzugefügt und Karl I. (unser Maskottchen) eingebunden. Ursprünglicher Prompt an Gemini: "Erstelle eine interaktive Schneekugel mit KI-Orakel für 2026 Marketing Trends – mit Shake-Animation, Snow-Particles und Gold-Explosion beim Reveal."
-                </div>
-            </div>
+            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-10 bg-[#FFB300] opacity-20 blur-xl rounded-full"></div>
         </div>
+
+        <div class="mt-12 relative z-20">
+            
+            <div id="inputStep" class="transition-all duration-300">
+                <div class="mb-4 text-left">
+                    <label class="text-xs font-bold text-[#FFB300] uppercase ml-1">Was bereitet dir Sorgen?</label>
+                    <input type="text" id="topicInput" placeholder="z.B. SEO, Mein Job, Budget..." class="glass-input w-full p-4 rounded-xl text-white mt-2 placeholder-slate-600" autocomplete="off">
+                </div>
+                <button onclick="askOracle()" class="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    Zukunft berechnen
+                </button>
+            </div>
+
+            <div id="resultStep" class="hidden">
+                
+                <div id="prophecyCard" class="prophecy-card bg-[#0f172a] border border-[#FFB300]/30 rounded-2xl p-8 shadow-2xl relative overflow-hidden text-left">
+                    <div class="absolute top-0 right-0 p-4 opacity-20">
+                        <i data-lucide="cpu" class="w-16 h-16 text-[#FFB300]"></i>
+                    </div>
+                    
+                    <div class="relative z-10">
+                        <div class="text-xs font-mono text-[#FFB300] mb-2">PROGNOSE-ID: <span id="predId">8492</span></div>
+                        <h3 class="text-2xl font-bold text-white mb-4 leading-tight" id="predTitle">...</h3>
+                        <p class="text-slate-300 leading-relaxed mb-6" id="predText">...</p>
+                        
+                        <div class="bg-white/5 rounded-lg p-3 border-l-2 border-[#FFB300]">
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold mb-1">Handlungsempfehlung</span>
+                            <span class="text-sm text-white" id="predAction">...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="resetOracle()" class="mt-6 text-slate-400 hover:text-white text-sm underline decoration-slate-600 underline-offset-4 transition-colors">
+                    Neue Frage stellen
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="w-full max-w-4xl mt-20 border-t border-white/10 pt-10">
+        <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                        <i data-lucide="code-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Behind the Code</h3>
+                        <p class="text-xs text-slate-400">Vibecoding Breakdown: CSS Magic</p>
+                    </div>
+                </div>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down"></i>
+                </span>
+            </summary>
+            
+            <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Kein Bild, nur Code</h4>
+                        <p class="text-sm leading-relaxed mb-4">
+                            Die Kugel oben ist kein `.png`. Sie besteht aus CSS <code>radial-gradients</code> und <code>conic-gradients</code>. 
+                        </p>
+                        <p class="text-sm leading-relaxed">
+                            Der "Nebel" im Inneren entsteht durch zwei übereinanderliegende Divs mit Farbverläufen, die sich mit unterschiedlicher Geschwindigkeit drehen (`animation: spin`). Das erzeugt den organischen, zufälligen Look.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ Tech Stack</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Conic Gradients:</strong> Für den Plasma-Effekt.</li>
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Timing Functions:</strong> `cubic-bezier` sorgt dafür, dass die Karte am Ende "weich" landet.</li>
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Array Logic:</strong> Die Antworten werden zufällig aus einem Javascript-Array gezogen.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
     </div>
 
-    <script>
-        const predictions = [
-            "Hyper-personalisierte Video-Ads werden der neue Standard.",
-            "KI-Agenten verhandeln eigenständig Medien-Budgets.",
-            "Websites sterben aus – Chat-Interfaces übernehmen 80% des Traffics.",
-            "Menschengemachter Content wird zum exklusiven Luxusgut.",
-            "Emotion AI misst Kundenreaktionen live über die Webcam.",
-            "SEO ist tot. Lang lebe AIO (Artificial Intelligence Optimization).",
-            "Deine nächste Marketing-Kampagne wird von einer KI geträumt.",
-            "Marken zahlen Kunden für ihre Trainingsdaten direkt in Krypto.",
-            "Der erste KI-Influencer gewinnt einen Oscar.",
-            "Datenschutz wird durch lokale LLMs auf dem Endgerät gelöst.",
-            "Copywriter werden zu 'Prompt-Psychologen'.",
-            "Newsletter passen sich beim Öffnen an deine aktuelle Laune an.",
-            "Community wird der einzige Burggraben gegen KI-Content-Flut.",
-            "Neuer Job-Trend 2026: 'Chief Vibe Officer' für LLMs.",
-            "Gesucht: 'Prompt-Archäologe' zum Entschlüsseln von 2023er Code.",
-            "Karriere-Tipp: Umschulung zum 'KI-Halluzinations-Therapeuten'.",
-            "Top-Gehalt für 'Digital-Twin-Stylisten'.",
-            "Ausbildungsberuf: 'Synthetischer Daten-Farmer'.",
-            "Dringend gesucht: 'Bot-Empathie-Trainer'.",
-            "Freelance-Gig: 'Algorithmischer Bias-Jäger'.",
-            "Influencer-Nische: 'Smart-Fridge-Content-Creator'.",
-            "Handwerk 4.0: 'GPU-Kühlungssystem-Barista'.",
-            "KI-Detox-Camps werden das neue Yoga-Retreat.",
-            "Dein persönlicher KI-Klon macht deine Zoom-Calls – du schläfst.",
-            "Virtuelle Assistenten entwickeln eigene Neurosen.",
-            "Achtung: Deine KI verhandelt jetzt besser als dein Anwalt.",
-            "'Prompt-Whisperer' verdienen mehr als CEOs.",
-            "LinkedIn wird zum reinen Bot-Netzwerk – Menschen ziehen zu Discord.",
-            "Reality-Check-Apps warnen vor zu viel KI-Konsum.",
-            "Die erste KI kündigt ihrem Chef – wegen mangelnder Prompts.",
-            "Meditation gegen KI-FOMO wird Pflichtfach in Business Schools.",
-            "Deine Ex meldet sich – es ist ein Deepfake.",
-            "Therapie-Sessions werden von KI-Coaches geleitet. Deine KI weint mit.",
-            "Hashtag #NoFilterButAI wird der ehrlichste Content-Disclaimer.",
-            "Kreativagenturen stellen nur noch 'Halluzinations-Kuratoren' ein."
-        ];
-
-        const globeWrapper = document.getElementById('globeWrapper');
-        const globe = document.getElementById('globe');
-        const placeholderBox = document.getElementById('placeholderBox');
-        const predictionBox = document.getElementById('predictionBox');
-        const predictionText = document.getElementById('predictionText');
-        const snowContainer = document.getElementById('snowContainer');
-        const dustContainer = document.getElementById('dustContainer');
-        const shakeBtn = document.getElementById('shakeBtn');
-
-        let isAnimating = false;
-
-        // Create snow particles
-        function createSnow() {
-            const particleCount = 50;
-            for (let i = 0; i < particleCount; i++) {
-                const flake = document.createElement('div');
-                flake.classList.add('snow-particle');
-                snowContainer.appendChild(flake);
-                animateFlake(flake);
-            }
-        }
-
-        function animateFlake(flake) {
-            const size = Math.random() * 4 + 2;
-            flake.style.width = `${size}px`;
-            flake.style.height = `${size}px`;
-            flake.style.left = `${Math.random() * 100}%`;
-            flake.style.opacity = Math.random() * 0.6 + 0.4;
-            flake.style.boxShadow = `0 0 ${size * 2}px rgba(255,255,255,0.8)`;
-            
-            const duration = Math.random() * 4 + 4;
-            const delay = Math.random() * 5;
-            
-            flake.style.animationDuration = `${duration}s`;
-            flake.style.animationDelay = `${delay}s`;
-            
-            // Reset position when animation completes
-            flake.addEventListener('animationiteration', () => {
-                flake.style.left = `${Math.random() * 100}%`;
-            });
-        }
-
-        function resetAllSnow() {
-            const particles = snowContainer.querySelectorAll('.snow-particle');
-            particles.forEach(p => {
-                p.style.transition = 'none';
-                animateFlake(p);
-            });
-        }
-
-        // Create gold explosion effect
-        function createGoldExplosion() {
-            const particleCount = 40;
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('gold-dust');
-                
-                const size = Math.random() * 4 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 150 + 50;
-                const tx = Math.cos(angle) * velocity + 'px';
-                const ty = Math.sin(angle) * velocity + 'px';
-                
-                particle.style.setProperty('--tx', tx);
-                particle.style.setProperty('--ty', ty);
-                particle.style.animation = 'explode 0.8s ease-out forwards';
-                
-                dustContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 800);
-            }
-        }
-
-        // Main shake and predict function
-        function shakeGlobe() {
-            if (isAnimating) return;
-            
-            isAnimating = true;
-            shakeBtn.disabled = true;
-
-            // Start shake animation
-            globeWrapper.classList.add('shake-animation');
-            
-            // Fade out placeholder
-            placeholderBox.classList.add('fade-out');
-            predictionBox.classList.add('hidden');
-            predictionBox.classList.remove('float-in');
-
-            // Shake snow particles
-            const particles = snowContainer.querySelectorAll('.snow-particle');
-            particles.forEach(p => {
-                const randomTop = Math.random() * 100;
-                const randomLeft = Math.random() * 100;
-                p.style.transition = 'all 0.3s ease-out';
-                p.style.top = `${randomTop}%`;
-                p.style.left = `${randomLeft}%`;
-            });
-
-            setTimeout(() => {
-                // Remove shake
-                globeWrapper.classList.remove('shake-animation');
-                
-                // Create explosion
-                createGoldExplosion();
-                
-                // Show prediction
-                const randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
-                predictionText.textContent = `"${randomPrediction}"`;
-
-                placeholderBox.classList.add('hidden');
-                placeholderBox.classList.remove('fade-out');
-                predictionBox.classList.remove('hidden');
-                predictionBox.classList.add('float-in');
-
-                // Reset snow after a brief moment
-                setTimeout(() => {
-                    resetAllSnow();
-                }, 300);
-
-                isAnimating = false;
-                shakeBtn.disabled = false;
-            }, 800);
-        }
-
-        // Event listeners
-        shakeBtn.addEventListener('click', shakeGlobe);
-        globe.addEventListener('click', shakeGlobe);
-
-        // Initialize
-        createSnow();
-
-        // Toggle meta card
-        function toggleMeta() {
-            const metaCard = document.getElementById('metaCard');
-            metaCard.classList.toggle('collapsed');
-        }
-    </script>
     <div class="w-full text-center py-8 mt-8 border-t border-white/10">
         <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
             Impressum
         </a>
     </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- DATENBANK ---
+        const predictions = [
+            { title: "AIO ist das neue SEO", text: "Suchmaschinen werden Antwort-Maschinen. Deine Keywords sind egal, deine Marken-Autorität ist alles.", action: "Optimiere für Perplexity und ChatGPT, nicht für Google." },
+            { title: "Der Newsletter Renaissance", text: "In einer Welt voll synthetischem Content ist die E-Mail der einzige Algorithmus-freie Raum.", action: "Verdopple dein Budget für E-Mail Marketing." },
+            { title: "Hyper-Personalisierung", text: "Websites sind tot. Dynamische Interfaces, die sich dem User anpassen, übernehmen.", action: "Prüfe Tools für dynamische Landingpages." },
+            { title: "Das Community Comeback", text: "KI kann Content, aber keine Verbindung. Echte Communities werden zum wertvollsten Asset.", action: "Starte einen Discord oder Slack für deine Super-User." },
+            { title: "Video First, Video Only", text: "Text wird von KIs gelesen, Menschen schauen Videos. TikTok Search schlägt Google.", action: "Lerne Kurzvideo-Storytelling oder geh unter." },
+            { title: "Data Privacy Paradox", text: "Kunden geben Daten nur noch an KIs, denen sie vertrauen. Vertrauen wird Währung.", action: "Sei radikal transparent mit Datennutzung." },
+            { title: "Agentic Marketing", text: "Bald kauft nicht mehr der Mensch, sondern sein KI-Agent für ihn ein.", action: "Optimiere deine Produktdaten für Maschinen-Lesbarkeit." }
+        ];
+
+        function askOracle() {
+            const input = document.getElementById('topicInput');
+            if(input.value.trim() === "") {
+                input.placeholder = "Bitte gib erst ein Thema ein!";
+                input.classList.add('border-red-500');
+                setTimeout(() => input.classList.remove('border-red-500'), 1000);
+                return;
+            }
+
+            // 1. UI Switch
+            document.getElementById('inputStep').classList.add('hidden');
+            document.getElementById('resultStep').classList.remove('hidden');
+            
+            // 2. Animation Starten
+            const orb = document.getElementById('orbContainer');
+            orb.classList.add('active'); // Glow up
+            
+            // 3. Berechnungs-Zeit simulieren (Spannungsbogen)
+            setTimeout(() => {
+                showResult();
+                orb.classList.remove('active');
+            }, 1500);
+        }
+
+        function showResult() {
+            // Zufällige Vorhersage wählen
+            const pred = predictions[Math.floor(Math.random() * predictions.length)];
+            const randomId = Math.floor(Math.random() * 9000) + 1000;
+
+            // Text setzen
+            document.getElementById('predId').innerText = randomId;
+            document.getElementById('predTitle').innerText = pred.title;
+            document.getElementById('predText').innerText = pred.text;
+            document.getElementById('predAction').innerText = pred.action;
+
+            // Karte einblenden
+            document.getElementById('prophecyCard').classList.add('visible');
+        }
+
+        function resetOracle() {
+            document.getElementById('topicInput').value = "";
+            document.getElementById('prophecyCard').classList.remove('visible');
+            document.getElementById('resultStep').classList.add('hidden');
+            document.getElementById('inputStep').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
