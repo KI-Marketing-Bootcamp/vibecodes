@@ -29,6 +29,12 @@
             transition: all 0.3s;
         }
 
+        /* Critical Section Styling */
+        .critical-panel {
+            background: rgba(239, 68, 68, 0.05); /* Leichter Rotstich */
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         /* Custom Checkbox */
         .power-check { appearance: none; width: 1.2em; height: 1.2em; border: 1px solid #475569; border-radius: 4px; background: rgba(0,0,0,0.3); cursor: pointer; position: relative; transition: all 0.2s; }
         .power-check:checked { background: var(--ci-gold); border-color: var(--ci-gold); box-shadow: 0 0 10px rgba(255, 179, 0, 0.3); }
@@ -84,8 +90,7 @@
                 AI Persona <span class="text-[#FFB300]">Engine</span>
             </h1>
             <p class="text-slate-400 text-sm md:text-base font-light max-w-2xl mx-auto">
-                Prompts sind Befehle. Personas sind Mitarbeiter.<br>
-                Design dir hier deinen perfekten KI-Kollegen – wie in einem RPG.
+                Baue dir deinen perfekten Mitarbeiter. Aber Vorsicht: Je menschlicher er wirkt, desto riskanter wird es.
             </p>
         </div>
 
@@ -130,10 +135,14 @@
 
                 <div class="col-span-2 md:col-span-1">
                     <div class="flex justify-between mb-2">
-                        <label class="text-sm font-bold text-slate-300">Output-Länge</label>
-                        <span id="valLen" class="text-xs text-[#FFB300]">Auf den Punkt</span>
+                        <label class="text-sm font-bold text-slate-300">Autonomie</label>
+                        <span id="valAuto" class="text-xs text-[#FFB300]">Co-Pilot</span>
                     </div>
-                    <input type="range" id="rangeLen" min="0" max="100" value="30" oninput="updateUI()">
+                    <input type="range" id="rangeAuto" min="0" max="100" value="30" oninput="updateUI()">
+                    <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+                        <span>Fragt nach</span>
+                        <span>Entscheidet</span>
+                    </div>
                 </div>
 
                 <div class="col-span-2 md:col-span-1">
@@ -169,7 +178,7 @@
                         <input type="checkbox" id="checkDevil" class="power-check" onchange="updateUI()">
                         <div>
                             <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Devil's Advocate</span>
-                            <span class="text-[10px] text-slate-500">Immer Gegenargumente & Risiken finden.</span>
+                            <span class="text-[10px] text-slate-500">Immer Gegenargumente finden.</span>
                         </div>
                     </label>
 
@@ -177,7 +186,15 @@
                         <input type="checkbox" id="checkSocratic" class="power-check" onchange="updateUI()">
                         <div>
                             <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Sokratischer Coach</span>
-                            <span class="text-[10px] text-slate-500">Antworte nicht, sondern stelle Fragen.</span>
+                            <span class="text-[10px] text-slate-500">Antworte mit Gegenfragen.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
+                        <input type="checkbox" id="checkSources" class="power-check" onchange="updateUI()">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Quellen-Zwang</span>
+                            <span class="text-[10px] text-slate-500">Keine Aussage ohne Beleg.</span>
                         </div>
                     </label>
 
@@ -186,14 +203,6 @@
                         <div>
                             <span class="block text-sm font-bold text-slate-200 group-hover:text-white">No-Yapping Protocol</span>
                             <span class="text-[10px] text-slate-500">Kein "Gerne, hier ist..." Gelaber.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkMarkdown" class="power-check" checked onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Format Fetischist</span>
-                            <span class="text-[10px] text-slate-500">Viel Fettgedrucktes, Listen, Tabellen.</span>
                         </div>
                     </label>
 
@@ -235,9 +244,56 @@
             </div>
         </div>
 
-        <div class="lg:col-span-12 mt-8 border-t border-white/10 pt-8">
-            <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+        <div class="lg:col-span-12 mt-8">
+            <details class="group glass-panel critical-panel rounded-2xl overflow-hidden transition-all duration-300 open:ring-1 open:ring-red-500/50">
                 
+                <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-red-500/10 rounded-lg text-red-400">
+                            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Critical Research Note: Human-AI Dynamics</h3>
+                            <p class="text-xs text-red-300">Warum wir "Rita" und "Hans" eigentlich kritisch sehen.</p>
+                        </div>
+                    </div>
+                    <span class="text-red-400 transform group-open:rotate-180 transition-transform duration-300">
+                        <i data-lucide="chevron-down"></i>
+                    </span>
+                </summary>
+                
+                <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        
+                        <div>
+                            <h4 class="text-red-400 font-bold text-sm uppercase tracking-widest mb-3">Die Anthropomorphisierungs-Falle</h4>
+                            <p class="text-sm leading-relaxed mb-4">
+                                Wenn wir KIs Namen geben (wie "Rita"), triggern wir den <strong>Eliza-Effekt</strong>: Wir schreiben dem System unbewusst menschliche Eigenschaften (Verständnis, Empathie) zu, die es nicht hat. Das führt zu "Over-Trust" – wir vertrauen falschen Fakten, weil "Rita" ja so nett war.
+                            </p>
+                            <div class="bg-red-500/10 border-l-2 border-red-500 p-3 rounded-r text-xs text-red-200">
+                                <strong>Best Practice:</strong> Nutze funktionale Namen wie "Copy-Bot V2" oder "Analyse-Agent". Das hält die kritische Distanz aufrecht.
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-red-400 font-bold text-sm uppercase tracking-widest mb-3">Das "Silo"-Problem</h4>
+                            <p class="text-sm leading-relaxed mb-4">
+                                Forschung zur <strong>Human-AI Collaboration</strong> zeigt: Wenn Teammitglieder intensive Beziehungen zu ihren individuellen KI-Assistenten aufbauen, kann der Austausch *zwischen* den Menschen abnehmen. Man fragt lieber den Bot als den Kollegen. Das Wissen landet in Silos.
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2 text-sm text-slate-400">
+                                <li><strong>Shared Prompts:</strong> Nutzt eine gemeinsame Prompt-Library statt privater Chats.</li>
+                                <li><strong>AI-Free Zones:</strong> Definiert Meetings, in denen nur Menschen brainstormen.</li>
+                                <li><strong>Review-Pflicht:</strong> KI-Ergebnisse müssen immer von einem *anderen* Menschen geprüft werden.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="lg:col-span-12 mt-4 border-t border-white/10 pt-4">
+            <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
                 <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
@@ -245,39 +301,29 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-white text-lg">Behind the Code</h3>
-                            <p class="text-xs text-slate-400">Wie dieses Tool gebaut wurde (Vibecoding Breakdown)</p>
+                            <p class="text-xs text-slate-400">Vibecoding Breakdown</p>
                         </div>
                     </div>
                     <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
                         <i data-lucide="chevron-down"></i>
                     </span>
                 </summary>
-                
                 <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
-                    
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
                             <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Die Logic</h4>
-                            <p class="text-sm leading-relaxed mb-4">
-                                Das Tool ist im Grunde ein <strong>"String-Builder"</strong>. Jede Checkbox und jeder Slider ist mit einem Textbaustein verknüpft.
-                            </p>
                             <p class="text-sm leading-relaxed">
-                                Wenn du "Chain of Verification" anklickst, fügt Javascript diesen Satz hinzu:<br>
-                                <code class="bg-black/50 text-green-400 p-1 rounded text-xs">Draft an answer, check for errors, then correct.</code><br>
-                                Das zeigt: Apps müssen nicht immer komplexe Datenbanken haben. Manchmal reicht einfache Logik.
+                                Das Tool ist ein <strong>"String-Builder"</strong>. Jeder Slider ist mit Textbausteinen verknüpft. Neu ist die <code>Autonomie</code>-Logik, die entscheidet, ob der Bot Fragen stellt oder Antworten gibt.
                             </p>
                         </div>
-                        
                         <div>
                             <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ UI Tricks</h4>
                             <ul class="space-y-2 text-sm">
-                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Surprise Button:</strong> Nutzt eine CSS Animation (Keyframes) für den Regenbogen-Effekt.</li>
-                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Glassmorphism:</strong> `backdrop-filter: blur(10px)` sorgt für den modernen Look.</li>
-                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Reactivity:</strong> Kein React nötig. Einfaches `oninput="updateUI()"` aktualisiert den Text sofort.</li>
+                                <li><strong>Surprise Button:</strong> Nutzt CSS <code>@keyframes</code> für den Regenbogen-Effekt.</li>
+                                <li><strong>Reactive:</strong> Alles ist Vanilla JS (`onchange`), kein Framework nötig.</li>
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </details>
         </div>
@@ -289,9 +335,9 @@
 
         // Presets Data
         const presets = {
-            analyst: { name: "Dr. Data", role: "Senior Data Analyst", chaos: 10, hard: 80, len: 40, emoji: 0, chain: true, verify: true, devil: false, socratic: false, yap: true, md: true },
-            creative: { name: "Leo", role: "Viral Creative Director", chaos: 90, hard: 40, len: 70, emoji: 60, chain: false, verify: false, devil: true, socratic: false, yap: true, md: false },
-            critic: { name: "Judge Judy", role: "Marketing Auditor", chaos: 30, hard: 100, len: 50, emoji: 10, chain: true, verify: true, devil: true, socratic: true, yap: true, md: true }
+            analyst: { name: "Data Unit 01", role: "Senior Data Analyst", chaos: 10, hard: 80, auto: 20, emoji: 0, chain: true, verify: true, devil: false, socratic: false, sources: true, yap: true },
+            creative: { name: "Concept-Bot", role: "Viral Creative Director", chaos: 90, hard: 40, auto: 80, emoji: 60, chain: false, verify: false, devil: true, socratic: false, sources: false, yap: true },
+            critic: { name: "Auditor V2", role: "Marketing Auditor", chaos: 30, hard: 100, auto: 50, emoji: 10, chain: true, verify: true, devil: true, socratic: true, sources: true, yap: true }
         };
 
         function setPreset(key) {
@@ -300,34 +346,32 @@
             document.getElementById('pRole').value = p.role;
             document.getElementById('rangeChaos').value = p.chaos;
             document.getElementById('rangeHard').value = p.hard;
-            document.getElementById('rangeLen').value = p.len;
+            document.getElementById('rangeAuto').value = p.auto;
             document.getElementById('rangeEmoji').value = p.emoji;
             document.getElementById('checkChain').checked = p.chain;
             document.getElementById('checkVerify').checked = p.verify;
             document.getElementById('checkDevil').checked = p.devil;
             document.getElementById('checkSocratic').checked = p.socratic;
+            document.getElementById('checkSources').checked = p.sources;
             document.getElementById('checkNoYap').checked = p.yap;
-            document.getElementById('checkMarkdown').checked = p.md;
             updateUI();
         }
 
         function randomize() {
             const roles = ["Growth Hacker", "Copywriting Legend", "UX Psychologe", "Code Wizard", "SEO Guru", "Prompt Engineer"];
-            const names = ["Alex", "Sora", "Nexus", "Vibe", "Q", "Nova"];
+            const names = ["Bot-Alpha", "Construct-X", "Nexus", "Helper-V1", "System-Q", "Nova"];
             
             document.getElementById('pName').value = names[Math.floor(Math.random() * names.length)];
             document.getElementById('pRole').value = roles[Math.floor(Math.random() * roles.length)];
             
             document.getElementById('rangeChaos').value = Math.random() * 100;
             document.getElementById('rangeHard').value = Math.random() * 100;
-            document.getElementById('rangeLen').value = Math.random() * 100;
+            document.getElementById('rangeAuto').value = Math.random() * 100;
             document.getElementById('rangeEmoji').value = Math.random() * 100;
             
-            // Random checks
             document.getElementById('checkChain').checked = Math.random() > 0.5;
             document.getElementById('checkVerify').checked = Math.random() > 0.5;
-            document.getElementById('checkSocratic').checked = Math.random() > 0.8; // Seltener
-            document.getElementById('checkDevil').checked = Math.random() > 0.5;
+            document.getElementById('checkSources').checked = Math.random() > 0.7;
             updateUI();
         }
 
@@ -338,7 +382,7 @@
             // Sliders
             const chaosVal = document.getElementById('rangeChaos').value;
             const hardVal = document.getElementById('rangeHard').value;
-            const lenVal = document.getElementById('rangeLen').value;
+            const autoVal = document.getElementById('rangeAuto').value;
             const emojiVal = document.getElementById('rangeEmoji').value;
 
             // Labels Update
@@ -352,8 +396,12 @@
 
             const chaosTxt = setLabel('valChaos', chaosVal, "Deterministisch (Fakten)", "Ausgewogen", "Wild & Kreativ");
             const hardTxt = setLabel('valHard', hardVal, "Sanft & Supportiv", "Professionell", "Gnadenlos Ehrlich");
-            const lenTxt = setLabel('valLen', lenVal, "Stichpunkte", "Kompakt", "Ausführlich");
             
+            let autoInstr = "Balance asking and doing.";
+            if(autoVal < 30) { document.getElementById('valAuto').innerText = "Rückfragen"; autoInstr = "Do not act immediately. Always ask clarifying questions first. You are a Co-Pilot."; }
+            if(autoVal > 70) { document.getElementById('valAuto').innerText = "Autonom"; autoInstr = "Act immediately. Make assumptions if necessary to proceed fast. You are an Autopilot."; }
+            if(autoVal >= 30 && autoVal <= 70) { document.getElementById('valAuto').innerText = "Mixed"; }
+
             let emojiInstr = "Verwende keine Emojis.";
             if(emojiVal > 20) { document.getElementById('valEmoji').innerText = "Dezent"; emojiInstr = "Nutze Emojis sparsam für Struktur."; }
             if(emojiVal > 60) { document.getElementById('valEmoji').innerText = "Viel"; emojiInstr = "Nutze viele Emojis, um Emotionen zu zeigen. 😉"; }
@@ -364,8 +412,8 @@
             const verify = document.getElementById('checkVerify').checked;
             const devil = document.getElementById('checkDevil').checked;
             const socratic = document.getElementById('checkSocratic').checked;
+            const sources = document.getElementById('checkSources').checked;
             const noYap = document.getElementById('checkNoYap').checked;
-            const mark = document.getElementById('checkMarkdown').checked;
 
             // Construct Prompt
             let prompt = `### SYSTEM IDENTITY ###
@@ -374,19 +422,19 @@ Role: ${role}.
 Worldview: ${chaosTxt} | Tone: ${hardTxt}
 
 ### CORE BEHAVIORS ###
-1. **Verbosity**: ${lenTxt}.
+1. **Autonomy Level**: ${autoInstr}
 2. **Emoji Usage**: ${emojiInstr}
 `;
 
             if(chain) prompt += `3. **Chain of Thought**: Before answering, wrap your reasoning process in <thought> tags. Analyze the request first.\n`;
             if(verify) prompt += `4. **Chain of Verification**: COVE PROTOCOL ACTIVE. Draft your response, then critique it for factual errors, then output only the corrected version.\n`;
-            if(devil) prompt += `5. **Devil's Advocate**: Never just agree. Always check for edge cases, logical fallacies, or risks. Challenge the user's assumptions.\n`;
+            if(devil) prompt += `5. **Devil's Advocate**: Never just agree. Always check for edge cases, logical fallacies, or risks.\n`;
             if(socratic) prompt += `6. **Socratic Method**: Do not give answers immediately. Ask guiding questions to help the user find the solution.\n`;
-            if(noYap) prompt += `7. **No-Yapping**: Do not start with "Sure I can help" or "Here is the output". Start directly with the value.\n`;
-            if(mark) prompt += `8. **Formatting**: Use excessive Markdown. Use bolding for key terms, tables for comparisons, and lists for readability.\n`;
+            if(sources) prompt += `7. **Citation Mandate**: Every factual claim must be backed by a source or a disclaimer that it is common knowledge.\n`;
+            if(noYap) prompt += `8. **No-Yapping**: Do not start with "Sure I can help" or "Here is the output". Start directly with the value.\n`;
 
             prompt += `\n### INTERACTION STYLE ###
-You are ${hardTxt}. If the user's input is weak, say so. If the idea is brilliant, acknowledge it.
+You are ${hardTxt}. If the user's input is weak, say so.
 Do not act like a generic AI assistant. Act like a ${role}.`;
 
             document.getElementById('outputCode').innerText = prompt;
