@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welches KI Bootcamp passt zu mir?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+            --text-sub: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .gold-text { color: var(--ci-gold); }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute; top: 1.5rem; left: 1.5rem;
+            color: var(--text-sub); font-size: 0.875rem;
+            display: flex; align-items: center; gap: 0.5rem;
+            transition: color 0.3s; z-index: 50; text-decoration: none;
+        }
+        .back-btn:hover { color: var(--ci-gold); }
+
+        /* Card Design */
+        .main-card {
+            width: 100%; max-width: 700px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bg-glow {
+            position: absolute; top: -10%; right: -10%;
+            width: 20rem; height: 20rem;
+            background: rgba(255, 179, 0, 0.08);
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        /* Step Transitions */
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+            flex-grow: 1;
+            flex-direction: column;
+        }
+        .step.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Options Buttons */
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 179, 0, 0.1);
+            border-color: var(--ci-gold);
+            transform: translateX(5px);
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            min-width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.4);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: auto;
+            margin-bottom: 1rem;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--ci-gold);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Result Specifics */
+        .result-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            background: rgba(255, 179, 0, 0.15);
+            color: var(--ci-gold);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            display: inline-block; padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05); border-radius: 0.25rem;
+            font-size: 0.7rem; margin-right: 0.5rem; color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Meta Card (Behind the Scenes) */
+        .meta-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            overflow: hidden;
+            width: 100%; max-width: 700px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .meta-header { padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .meta-header:hover { background: rgba(255, 255, 255, 0.02); }
+        .meta-title { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ci-gold); opacity: 0.8; }
+        .meta-toggle { color: var(--ci-gold); font-size: 0.75rem; transition: transform 0.3s ease; }
+        .meta-card.collapsed .meta-toggle { transform: rotate(0deg); }
+        .meta-card:not(.collapsed) .meta-toggle { transform: rotate(180deg); }
+        .meta-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; padding: 0 1.5rem; font-size: 0.875rem; color: var(--text-sub); }
+        .meta-card:not(.collapsed) .meta-content { max-height: 500px; padding: 0 1.5rem 1.5rem 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Zurück
+    </a>
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <div class="inline-block mb-3 px-4 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <span class="text-[#FFB300] text-xs font-bold tracking-widest uppercase">Entscheidungshilfe</span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-2">Kurs <span class="gold-text">Navigator</span></h1>
+        <p class="text-slate-400">Finde in 30 Sekunden deine perfekte Weiterbildung.</p>
+    </div>
+
+    <div class="main-card">
+        <div class="bg-glow"></div>
+
+        <!-- Step 1: Zielgruppe -->
+        <div class="step active" id="step1">
+            <h2 class="text-2xl font-bold mb-6">Für wen suchst du?</h2>
+            
+            <button class="option-btn" onclick="nextStep(1, 'me')">
+                <div class="option-icon">👤</div>
+                <div>
+                    <div class="font-bold">Nur für mich</div>
+                    <div class="text-sm text-slate-400">Ich will meine eigenen Skills gezielt professionalisieren.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(1, 'team')">
+                <div class="option-icon">👥</div>
+                <div>
+                    <div class="font-bold">Für mein Team / Unternehmen</div>
+                    <div class="text-sm text-slate-400">Ich suche eine Schulung für meine Kolleg:innen.</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Step 1.5: Team Größe (Nur wenn Team gewählt wurde) -->
+        <div class="step" id="step1b">
+            <h2 class="text-2xl font-bold mb-6">Wie groß ist die Gruppe?</h2>
+            
+            <button class="option-btn" onclick="nextStep('1b', 'small')">
+                <div class="option-icon">🌱</div>
+                <div>
+                    <div class="font-bold">Kleine Runde (1-3 Personen)</div>
+                    <div class="text-sm text-slate-400">Wir möchten uns individuell weiterbilden.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep('1b', 'big')">
+                <div class="option-icon">🏢</div>
+                <div>
+                    <div class="font-bold">Abteilung / Team (4+ Personen)</div>
+                    <div class="text-sm text-slate-400">Wir brauchen eine gemeinsame, exklusive Schulung.</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Step 2: Fokus -->
+        <div class="step" id="step2">
+            <h2 class="text-2xl font-bold mb-6">Was ist dein Hauptfokus?</h2>
+            
+            <button class="option-btn" onclick="nextStep(2, 'mix')">
+                <div class="option-icon">🎨</div>
+                <div>
+                    <div class="font-bold">Bunter Mix & Einstieg</div>
+                    <div class="text-sm text-slate-400">Text, Bild & Social Media. Ich will schnelle Ergebnisse im Alltag.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(2, 'strategy')">
+                <div class="option-icon">🧠</div>
+                <div>
+                    <div class="font-bold">Strategie & Text</div>
+                    <div class="text-sm text-slate-400">Prompting-Deep-Dive, Workflows, Recht & Zertifikate.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(2, 'visual')">
+                <div class="option-icon">📽️</div>
+                <div>
+                    <div class="font-bold">High-End Visuals</div>
+                    <div class="text-sm text-slate-400">Ich will maximale Kontrolle über Bild & Video (ComfyUI, etc).</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Step 3: Lerntyp (NEU) -->
+        <div class="step" id="step3">
+            <h2 class="text-2xl font-bold mb-6">Wie lernst du am liebsten?</h2>
+            
+            <button class="option-btn" onclick="nextStep(3, 'hands_on')">
+                <div class="option-icon">🔨</div>
+                <div>
+                    <div class="font-bold">Hands-on & Pragmatisch</div>
+                    <div class="text-sm text-slate-400">Zeig mir das Tool und lass mich machen. Ich brauche Quick Wins.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(3, 'structured')">
+                <div class="option-icon">📐</div>
+                <div>
+                    <div class="font-bold">Strukturiert & Strategisch</div>
+                    <div class="text-sm text-slate-400">Ich will das "Warum" verstehen und Prozesse aufsetzen.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(3, 'techie')">
+                <div class="option-icon">🔧</div>
+                <div>
+                    <div class="font-bold">Tief & Technisch</div>
+                    <div class="text-sm text-slate-400">Ich will unter die Haube schauen und komplexe Workflows bauen.</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Step 4: Zeit -->
+        <div class="step" id="step4">
+            <h2 class="text-2xl font-bold mb-6">Wie viel Zeit kannst du investieren?</h2>
+            
+            <button class="option-btn" onclick="nextStep(4, 'compact')">
+                <div class="option-icon">⚡</div>
+                <div>
+                    <div class="font-bold">Kompakt (ca. 11h)</div>
+                    <div class="text-sm text-slate-400">Schneller Einstieg, 3 Wochen, sofort loslegen.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(4, 'intensive')">
+                <div class="option-icon">🎓</div>
+                <div>
+                    <div class="font-bold">Intensiv (20h+)</div>
+                    <div class="text-sm text-slate-400">Ich will tief eintauchen und ein IHK-Zertifikat.</div>
+                </div>
+            </button>
+
+            <button class="option-btn" onclick="nextStep(4, 'master')">
+                <div class="option-icon">🛠️</div>
+                <div>
+                    <div class="font-bold">Mastery (40h)</div>
+                    <div class="text-sm text-slate-400">Ich will technisches Deep-Learning und Profi-Skills.</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Step Result -->
+        <div class="step text-center" id="stepResult">
+            <div id="resultContent" class="flex flex-col h-full items-center justify-center">
+                <!-- Dynamic Content goes here -->
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Behind the Scenes -->
+    <div class="meta-card collapsed" id="metaCard">
+        <div class="meta-header" onclick="toggleMeta()">
+            <span class="meta-title">🔍 Behind the Scenes</span>
+            <span class="meta-toggle">▼</span>
+        </div>
+        <div class="meta-content">
+            <p class="mb-4 leading-relaxed">
+                Dieser Kurs-Navigator nutzt einen gewichteten Entscheidungsbaum. Das Spannende hier: Die Logik berücksichtigt nicht nur das "Was" (Thema), sondern auch das "Wie" (Lerntyp) und das "Wer" (Teamgröße).
+            </p>
+            <div class="mb-4">
+                <span class="tech-tag">Logic Tree</span>
+                <span class="tech-tag">Weighted Scoring</span>
+                <span class="tech-tag">Gemini 3</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scores = {
+            creator: 0,
+            manager: 0,
+            visual: 0
+        };
+        let isCorporate = false;
+        let isSmallTeam = false; // Flag für kleine Teams
+
+        function nextStep(currentStep, answer) {
+            
+            // --- STEP 1: WER? ---
+            if (currentStep === 1) {
+                if (answer === 'team') {
+                    // Gehe zum neuen Zwischenschritt
+                    transitionToStep('step1', 'step1b');
+                    return;
+                }
+                // Wenn Einzelperson, direkt zu Schritt 2
+                transitionToStep('step1', 'step2');
+                return;
+            }
+
+            // --- STEP 1b: WIE VIELE? (Team Branch) ---
+            if (currentStep === '1b') {
+                if (answer === 'big') {
+                    isCorporate = true;
+                    showResult();
+                    return;
+                } else {
+                    // Kleines Team -> Weiter im normalen Flow
+                    isSmallTeam = true;
+                    transitionToStep('step1b', 'step2');
+                    return;
+                }
+            }
+
+            // --- STEP 2: FOKUS ---
+            if (currentStep === 2) {
+                if (answer === 'mix') scores.creator += 5;
+                if (answer === 'strategy') scores.manager += 5;
+                if (answer === 'visual') scores.visual += 5;
+                transitionToStep('step2', 'step3');
+                return;
+            }
+
+            // --- STEP 3: LERNTYP ---
+            if (currentStep === 3) {
+                if (answer === 'hands_on') {
+                    scores.creator += 3;
+                    scores.visual += 1;
+                }
+                if (answer === 'structured') {
+                    scores.manager += 4;
+                }
+                if (answer === 'techie') {
+                    scores.visual += 4;
+                    scores.manager -= 1; // Techies wollen meist weniger Strategie-Theorie
+                }
+                transitionToStep('step3', 'step4');
+                return;
+            }
+
+            // --- STEP 4: ZEIT ---
+            if (currentStep === 4) {
+                if (answer === 'compact') scores.creator += 4;
+                if (answer === 'intensive') scores.manager += 4;
+                if (answer === 'master') scores.visual += 4;
+                
+                showResult();
+                return;
+            }
+        }
+
+        function transitionToStep(fromId, toId) {
+            document.getElementById(fromId).classList.remove('active');
+            document.getElementById(toId).classList.add('active');
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            // Simple progress simulation based on visible step
+            let progress = 0;
+            if (document.getElementById('step2').classList.contains('active')) progress = 25;
+            if (document.getElementById('step3').classList.contains('active')) progress = 50;
+            if (document.getElementById('step4').classList.contains('active')) progress = 75;
+            if (document.getElementById('stepResult').classList.contains('active')) progress = 100;
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showResult() {
+            // Alle Schritte ausblenden
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('stepResult').classList.add('active');
+            document.getElementById('progressBar').style.width = '100%';
+
+            const container = document.getElementById('resultContent');
+            
+            // 1. Corporate Großes Team
+            if (isCorporate) {
+                container.innerHTML = `
+                    <div class="result-badge">Deine Empfehlung</div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4">Unternehmens-Bootcamp</h2>
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-md">
+                        Perfekt für größere Teams! Wir kommen zu euch (remote oder vor Ort) und schneidern die Inhalte genau auf eure Bedürfnisse zu.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-8 text-left text-sm text-slate-400">
+                        <div class="bg-white/5 p-3 rounded-lg">✨ Maßgeschneidert</div>
+                        <div class="bg-white/5 p-3 rounded-lg">👥 Teambuilding</div>
+                        <div class="bg-white/5 p-3 rounded-lg">🚀 Sofort-Start</div>
+                        <div class="bg-white/5 p-3 rounded-lg">📜 Zertifikate</div>
+                    </div>
+                    <a href="mailto:info@marketing-ki.de" class="btn-primary">Anfrage senden</a>
+                    <button onclick="location.reload()" class="mt-4 text-xs text-slate-500 hover:text-white underline">Neu starten</button>
+                `;
+                return;
+            } 
+            
+            // 2. Individuell oder Kleines Team
+            // Gewinner ermitteln
+            let winner = 'creator';
+            let maxScore = scores.creator;
+            
+            if (scores.manager > maxScore) {
+                maxScore = scores.manager;
+                winner = 'manager';
+            }
+            if (scores.visual > maxScore) {
+                winner = 'visual';
+            }
+
+            // Zusatztext für kleine Teams
+            let teamHint = isSmallTeam ? 
+                `<div class="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm text-blue-200">
+                    💡 <strong>Tipp für kleine Teams:</strong> Auch als Gruppe von 2-3 Personen könnt ihr an unseren offenen Kursen teilnehmen und profitiert vom Austausch mit anderen!
+                </div>` : '';
+
+            // Render Winner
+            if (winner === 'creator') {
+                container.innerHTML = `
+                    <div class="result-badge">Deine Empfehlung</div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-2">AI Content Creator</h2>
+                    <p class="text-sm text-slate-400 mb-4 uppercase tracking-widest">Der perfekte Einstieg</p>
+                    ${teamHint}
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-md">
+                        Du willst schnelle Ergebnisse? Hier lernst du in 11h alles Wichtige für Text, Bild & Social Media. Perfekt, um KI sofort in deinen Alltag zu integrieren.
+                    </p>
+                    <a href="https://marketing-ki.de/weiterbildung/ai-content-creator/#anmeldungotcamp" target="_blank" class="btn-primary">Zum Kurs (1.750€)</a>
+                    <button onclick="location.reload()" class="mt-4 text-xs text-slate-500 hover:text-white underline">Neu starten</button>
+                `;
+            } else if (winner === 'manager') {
+                container.innerHTML = `
+                    <div class="result-badge">Deine Empfehlung</div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-2">AI Content Manager (IHK)</h2>
+                    <p class="text-sm text-slate-400 mb-4 uppercase tracking-widest">Der Strategie-Profi</p>
+                    ${teamHint}
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-md">
+                        Du willst tiefer rein? Brand Voice, komplexe Workflows, Rechtssicherheit und ein offizielles IHK-Zertifikat. Deine Professionalisierung im KI-Marketing.
+                    </p>
+                    <a href="https://marketing-ki.de/weiterbildung/ai-content-manager/#anmeldung" target="_blank" class="btn-primary">Jetzt bewerben (3.690€)</a>
+                    <button onclick="location.reload()" class="mt-4 text-xs text-slate-500 hover:text-white underline">Neu starten</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="result-badge">Deine Empfehlung</div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-2">Visual AI Engineer</h2>
+                    <p class="text-sm text-slate-400 mb-4 uppercase tracking-widest">Der Tech-Deep-Dive</p>
+                    ${teamHint}
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-md">
+                        Du willst die volle Kontrolle? 40h Deep Dive in Bild- & Video-KI, ComfyUI, Modell-Training und Deployment. Das High-End Level für Medienproduktion.
+                    </p>
+                    <a href="https://marketing-ki.de/weiterbildung/visual-ai-engineer/#anmeldung" target="_blank" class="btn-primary">Jetzt bewerben (3.950€)</a>
+                    <button onclick="location.reload()" class="mt-4 text-xs text-slate-500 hover:text-white underline">Neu starten</button>
+                `;
+            }
+        }
+
+        function toggleMeta() {
+            document.getElementById('metaCard').classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html>
