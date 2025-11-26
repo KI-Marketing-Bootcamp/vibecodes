@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Jahre KI im Marketing - Timeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+            --text-sub: #cbd5e1;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: linear-gradient(to bottom, var(--ci-dark), var(--ci-darker));
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Timeline Specific Styles */
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--ci-gold), transparent);
+        }
+
+        @media (min-width: 768px) {
+            .timeline-line { left: 50%; transform: translateX(-50%); }
+        }
+
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .timeline-point {
+            box-shadow: 0 0 15px rgba(255, 179, 0, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: var(--ci-gold);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar hide */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center py-8 px-4 relative">
+
+    <div class="w-full max-w-4xl flex justify-between items-center mb-12 z-10">
+        <a href="index.html" class="flex items-center gap-2 text-slate-400 hover:text-[#FFB300] transition-colors group">
+            <span class="text-xl group-hover:-translate-x-1 transition-transform">←</span>
+            <span class="font-bold uppercase tracking-widest text-sm">Zurück zum Kalender</span>
+        </a>
+        <img src="logo.png" alt="Logo" class="h-8 opacity-50">
+    </div>
+
+    <div class="text-center max-w-2xl mb-16 z-10">
+        <h1 class="text-4xl md:text-6xl font-black mb-6">
+            3 Jahre <span class="text-[#FFB300]">KI im Marketing</span>
+        </h1>
+        <p class="text-slate-300 text-lg leading-relaxed">
+            Vom ersten API-Aufruf bis zum KI-Video für die Masse. <br>
+            Eine Zeitreise durch den Wahnsinn der letzten Jahre.
+        </p>
+    </div>
+
+    <div class="relative w-full max-w-5xl mx-auto pb-20">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative group" style="animation-delay: 0.1s;">
+            <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                <div class="glass-card p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-white mb-2">Die ersten Gehversuche</h3>
+                    <p class="text-slate-400 text-sm">OpenAI veröffentlicht GPT-3 als API. Noch experimentell, aber der Grundstein ist gelegt.</p>
+                </div>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-[#FFB300] timeline-point z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 md:pl-12 order-3">
+                <span class="text-5xl font-black text-white/10 select-none absolute -top-4 md:-top-6 left-12 md:left-auto">2020</span>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative" style="animation-delay: 0.2s;">
+            <div class="w-full md:w-5/12 pl-12 md:pr-12 md:text-right order-2 md:order-1">
+                <span class="text-5xl font-black text-white/10 select-none hidden md:block">2021</span>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-slate-600 group-hover:border-[#FFB300] transition-colors z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 order-3">
+                <span class="text-5xl font-black text-white/10 select-none md:hidden absolute -top-4 left-12">2021</span>
+                <div class="glass-card p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-white mb-2">Tools entstehen</h3>
+                    <p class="text-slate-400 text-sm">Erste GPT-basierte Writing-Tools wie Jasper.ai erscheinen auf dem Markt.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative" style="animation-delay: 0.3s;">
+            <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-[#FFB300]">
+                    <div class="text-[#FFB300] font-bold uppercase text-xs tracking-widest mb-1">30. November</div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Der Urknall: ChatGPT</h3>
+                    <p class="text-slate-300 text-sm mb-4">ChatGPT (3.5) geht live. 100 Mio. Nutzer in 2 Monaten. Alles ändert sich.</p>
+                    <div class="border-t border-white/10 pt-3 mt-3">
+                        <p class="text-xs text-slate-500">Außerdem: Stable Diffusion Open Source & Gründung KI Marketing Bootcamp.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#FFB300] shadow-[0_0_20px_#FFB300] z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 md:pl-12 order-3">
+                <span class="text-6xl font-black text-[#FFB300]/20 select-none absolute -top-6 left-12 md:left-12">2022</span>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative" style="animation-delay: 0.4s;">
+            <div class="w-full md:w-5/12 pl-12 md:pr-12 md:text-right order-2 md:order-1">
+                 <span class="text-5xl font-black text-white/10 select-none hidden md:block">2023</span>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-slate-600 z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 order-3">
+                <span class="text-5xl font-black text-white/10 select-none md:hidden absolute -top-4 left-12">2023</span>
+                <div class="glass-card p-6 rounded-2xl">
+                    <ul class="space-y-3">
+                        <li class="text-sm text-slate-300"><span class="text-[#FFB300] font-bold">Midjourney v5:</span> Fotorealismus ist da.</li>
+                        <li class="text-sm text-slate-300"><span class="text-[#FFB300] font-bold">GPT-4:</span> Massiver Qualitätssprung.</li>
+                        <li class="text-sm text-slate-300"><span class="text-[#FFB300] font-bold">Runway Gen-2:</span> Video aus Text.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative" style="animation-delay: 0.5s;">
+            <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                <div class="glass-card p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-white mb-2">Das Jahr der Reife</h3>
+                    <p class="text-slate-400 text-sm mb-3">Google Gemini & Claude werden echte Konkurrenz. Prompts werden erfolgskritisch.</p>
+                    <span class="inline-block bg-white/10 rounded px-2 py-1 text-xs text-[#FFB300]">Buch: Content Marketing mit KI</span>
+                </div>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-[#FFB300] z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 md:pl-12 order-3">
+                <span class="text-5xl font-black text-white/10 select-none absolute -top-4 left-12 md:left-12">2024</span>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative" style="animation-delay: 0.6s;">
+            <div class="w-full md:w-5/12 pl-12 md:pr-12 md:text-right order-2 md:order-1">
+                <span class="text-5xl font-black text-white/10 select-none hidden md:block">2025</span>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-slate-600 z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 order-3">
+                <span class="text-5xl font-black text-white/10 select-none md:hidden absolute -top-4 left-12">2025</span>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="bg-[#FFB300] text-[#0f172a] font-bold px-2 py-0.5 rounded text-xs">EU AI Act</span>
+                        <span class="bg-white/10 px-2 py-0.5 rounded text-xs">ChatGPT-5</span>
+                    </div>
+                    <p class="text-slate-300 text-sm">
+                        Google Veo überholt Sora. Kontextbasierte Bild-KI (Nano Banana & Co.) revolutioniert Workflows.
+                        <br><br>
+                        <em class="text-slate-500">Der Jobtitel wandelt sich: Prompt Engineer → Context Engineer.</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-16 w-full relative opacity-50 hover:opacity-100 transition-opacity" style="animation-delay: 0.7s;">
+            <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                <div class="glass-card p-6 rounded-2xl border-dashed border-slate-600">
+                    <h3 class="text-xl font-bold text-white mb-2">Future Outlook</h3>
+                    <p class="text-slate-400 text-sm">KI-Video für die Masse & zuverlässige Agenten-Systeme. Das Uncanny Valley wird übersprungen.</p>
+                </div>
+            </div>
+            <div class="absolute left-[11px] md:left-1/2 md:-ml-[9px] w-[18px] h-[18px] rounded-full bg-[#0f172a] border-4 border-slate-700 z-10 order-1 md:order-2"></div>
+            <div class="w-full md:w-5/12 pl-12 md:pl-12 order-3">
+                <span class="text-5xl font-black text-white/5 select-none absolute -top-4 left-12 md:left-12">2026</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
