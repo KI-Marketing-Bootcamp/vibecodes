@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>24. Dezember - Das Finale</title>
+    <title>24. Dezember - The Blueprint</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --ci-gold: #FFB300;
@@ -16,148 +17,236 @@
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--ci-darker);
-            background-image: radial-gradient(circle at center, #1e293b 0%, var(--ci-darker) 100%);
+            background-image: radial-gradient(circle at top center, #1e293b 0%, var(--ci-darker) 80%);
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         .gold-text { color: var(--ci-gold); }
         
-        .card-glow {
-            box-shadow: 0 0 60px -15px rgba(255, 179, 0, 0.2);
-            border: 1px solid rgba(255, 179, 0, 0.3);
+        /* Glass Panel Styling */
+        .glass-panel {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .manifesto-list li {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: start;
-            gap: 1rem;
+        /* Accordion Styles */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
         }
-        .check-icon {
-            color: var(--ci-gold);
-            flex-shrink: 0;
-            margin-top: 0.2rem;
+        .accordion-content.active {
+            max-height: 1000px; /* Genug Platz */
+            opacity: 1;
+        }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-btn.active .accordion-icon { transform: rotate(180deg); }
+
+        /* Code Block Styling */
+        .code-block {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            border: 1px solid #333;
+            color: #22c55e;
         }
 
-        /* Schimmernder Button */
         .btn-shine {
             background: linear-gradient(45deg, var(--ci-gold), #ffd700, var(--ci-gold));
             background-size: 200% auto;
             color: var(--ci-darker);
             animation: shine 3s linear infinite;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen py-12 px-4">
+<body class="flex flex-col items-center py-12 px-4">
 
-    <a href="index.html" class="absolute top-6 left-6 text-slate-400 hover:text-white transition-colors flex items-center gap-2">
-        ← Zurück zum Kalender
+    <a href="index.html" class="absolute top-6 left-6 text-slate-400 hover:text-white transition-colors flex items-center gap-2 z-20">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Zurück
     </a>
 
-    <main class="max-w-3xl w-full text-center relative z-10">
+    <main class="max-w-4xl w-full relative z-10">
         
-        <div class="mb-10">
+        <div class="text-center mb-16">
             <span class="inline-block py-1 px-3 rounded-full bg-[#FFB300]/10 border border-[#FFB300]/20 text-[#FFB300] text-xs font-bold tracking-widest uppercase mb-4">
-                24. Dezember
+                Das Finale
             </span>
             <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
-                Das Vibecoding<br>
-                <span class="gold-text">Manifest</span>
+                The Vibecoding<br>
+                <span class="gold-text">Blueprint</span>
             </h1>
-            <p class="text-xl text-slate-300 font-light max-w-2xl mx-auto">
-                24 Tage Experiment liegen hinter uns. <br>
-                Das ist unser Fazit für 2025.
+            <p class="text-xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
+                Keine Prompts. Keine PDF-Wüsten.<br>
+                Hier ist unser <strong>Werkstattbericht</strong> und das <strong>System-Setup</strong>, mit dem wir diese 24 Apps gebaut haben.
             </p>
         </div>
 
-        <div class="card-glow rounded-3xl p-8 md:p-12 text-left mb-12 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-[#FFB300] opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i data-lucide="wrench" class="text-[#FFB300]"></i> Werkstattbericht: Die Realität
+            </h2>
+            
+            <div class="space-y-4">
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-lg">💡 Learning 1: Die "Single File" Strategie</span>
+                        <i data-lucide="chevron-down" class="accordion-icon text-[#FFB300]"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6 text-slate-300 leading-relaxed">
+                        <p>Die meisten KI-Coding-Projekte scheitern an der Komplexität der Ordnerstruktur. Unser Hack: <strong>Verlange immer EINE einzige HTML-Datei.</strong></p>
+                        <p class="mt-2">Wenn HTML, CSS und JS in einer Datei liegen, verliert die KI (z.B. Claude) seltener den Kontext. Für Prototypen und Marketing-Tools ist das der absolute Gamechanger.</p>
+                    </div>
+                </div>
 
-            <ul class="manifesto-list text-lg md:text-xl text-slate-200 font-light">
-                <li>
-                    <span class="check-icon">01.</span>
-                    <span>
-                        <strong class="text-white block font-bold mb-1">Ideen > Syntax.</strong>
-                        Wir müssen keine Sprache lernen, um Software zu bauen. Wir müssen lernen, Probleme klar zu formulieren.
-                    </span>
-                </li>
-                <li>
-                    <span class="check-icon">02.</span>
-                    <span>
-                        <strong class="text-white block font-bold mb-1">Prototyping ist das neue Pitching.</strong>
-                        Statt Slides zu bauen, bauen wir funktionierende MVPs. Zeigen ist mächtiger als Behaupten.
-                    </span>
-                </li>
-                <li>
-                    <span class="check-icon">03.</span>
-                    <span>
-                        <strong class="text-white block font-bold mb-1">KI ist kein Autopilot.</strong>
-                        Sie ist unser Co-Pilot. Wir halten das Steuer (die Logik) und die KI bedient die Pedale (den Code).
-                    </span>
-                </li>
-                <li>
-                    <span class="check-icon">04.</span>
-                    <span>
-                        <strong class="text-white block font-bold mb-1">Einfach mal machen.</strong>
-                        Die Barriere zwischen "Ich habe eine Idee" und "Es existiert" war noch nie so niedrig. Nutzen wir das.
-                    </span>
-                </li>
-            </ul>
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-lg">🔌 Learning 2: Keine "npm install" Hölle</span>
+                        <i data-lucide="chevron-down" class="accordion-icon text-[#FFB300]"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6 text-slate-300 leading-relaxed">
+                        <p>Als Non-Devs wollen wir keine Node.js Server aufsetzen. Wir nutzen <strong>CDNs</strong>. Das heißt: Tailwind, React, Vue oder Libraries wie Confetti werden direkt über einen Link im HTML geladen. Das macht die App sofort teilbar und hostbar (z.B. auf GitHub Pages).</p>
+                    </div>
+                </div>
 
-            <div class="mt-12 pt-8 border-t border-white/10 text-center">
-                <p class="text-sm text-slate-400 mb-6 uppercase tracking-widest">Unser Weihnachtsgeschenk an dich</p>
-                
-                <a href="https://marketing-ki.de" target="_blank" class="btn-shine inline-block py-4 px-8 rounded-xl shadow-lg hover:scale-105 transition-transform">
-                    🎁 Das Goldene Prompt-Set holen
-                </a>
-                <p class="text-xs text-slate-500 mt-4">Kostenloser Download • Keine Anmeldung nötig</p>
+                <div class="accordion-btn glass-panel rounded-xl overflow-hidden">
+                    <button class="w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-lg">🧠 Learning 3: Vom Coder zum Regisseur</span>
+                        <i data-lucide="chevron-down" class="accordion-icon text-[#FFB300]"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6 text-slate-300 leading-relaxed">
+                        <p>Wenn ein Bug auftritt, versuchen wir nicht, den Code selbst zu fixen. Wir kopieren den Fehler (aus der Browser-Konsole F12) und sagen der KI: <em>"Hier ist der Fehler. Analysiere die Logik, warum das passiert, bevor du neuen Code schreibst."</em> Wir steuern die Logik, die KI tippt die Syntax.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="text-slate-500 text-sm">
-            Frohe Weihnachten wünscht das Team vom<br>
-            <span class="text-slate-300 font-medium">KI Marketing Bootcamp</span>
+        <div class="mb-20">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i data-lucide="cpu" class="text-[#FFB300]"></i> Dein Vibecoding System-Setup
+            </h2>
+            
+            <div class="glass-panel p-8 rounded-2xl border-l-4 border-[#FFB300] relative">
+                <div class="absolute -top-3 -right-3">
+                    <span class="bg-[#FFB300] text-[#0f172a] text-xs font-bold px-3 py-1 rounded-full shadow-lg">GOLD WERT</span>
+                </div>
+                
+                <p class="mb-6 text-slate-300">
+                    Das ist kein "Prompt" für eine einzelne Aufgabe. Das ist eine <strong>System-Instruktion</strong>. Kopiere diesen Text und füge ihn ganz am Anfang eines neuen Chats (bei Claude, ChatGPT o.ä.) ein. Damit verwandelst du den Chatbot in einen spezialisierten Frontend-Entwickler für Marketing-Prototypen.
+                </p>
+
+                <div class="relative group">
+                    <div class="absolute top-4 right-4 z-10">
+                        <button onclick="copySystemPrompt()" id="copyBtn" class="bg-white/10 hover:bg-white/20 backdrop-blur text-sm font-medium py-2 px-4 rounded-lg transition-all flex items-center gap-2 border border-white/10">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="btnText">Kopieren</span>
+                        </button>
+                    </div>
+                    
+                    <pre class="code-block p-6 rounded-xl overflow-x-auto text-sm leading-6 shadow-2xl" id="systemPrompt">
+Role: Senior Creative Technologist & Frontend Expert.
+
+Mission: Build interactive, beautiful, and functional web prototypes (Single File HTML).
+
+Tech Stack Rules (Strict):
+1. Single HTML File: All CSS (in &lt;style&gt;) and JS (in &lt;script&gt;) must be inside one index.html.
+2. Styling: Use Tailwind CSS via CDN script.
+3. Libraries: Use CDN links for libraries (e.g., FontAwesome, React via unpkg, Canvas-Confetti). NO 'npm install', NO 'import' from local files.
+4. Design System: Dark Mode default. High-end UI (Glassmorphism, Gradients).
+5. Colors: Primary: #FFB300 (Gold), Background: #0f172a (Dark Slate).
+6. Fonts: Use Google Fonts 'Outfit' or 'Inter'.
+
+Behavior:
+- Before coding, briefly summarize the logic you will implement.
+- If I report a bug, analyze the logical root cause first.
+- Add comments in the code explaining complex parts for non-developers.
+- Focus on "Vibe" and UX (Animations, Hover-Effects).
+
+My Goal: I am a marketer prototyping ideas. I need code that works instantly by copy-pasting it into a file.</pre>
+                </div>
+                
+                <div class="mt-4 text-xs text-slate-500 text-center">
+                    Tipp: Speichere das als "Custom Instruction" in ChatGPT oder als "Project Knowledge" in Claude.
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center py-12 border-t border-white/10">
+            <h3 class="text-2xl font-bold mb-4">Bereit für 2025?</h3>
+            <p class="text-slate-400 mb-8">Vibecoding ist erst der Anfang. Bleib dran.</p>
+            
+            <a href="https://marketing-ki.de/newsletter" target="_blank" class="btn-shine inline-flex items-center gap-3 py-4 px-8 rounded-xl shadow-lg hover:scale-105 transition-transform font-bold text-lg">
+                <i data-lucide="mail"></i>
+                Newsletter abonnieren
+            </a>
         </div>
 
     </main>
 
     <script>
-        // Automatisches Konfetti beim Laden
+        // Icons initialisieren
+        lucide.createIcons();
+
+        // Accordion Logic
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            
+            // Toggle current
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.opacity = '0';
+                button.classList.remove('active');
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.opacity = '1';
+                button.classList.add('active');
+            }
+        }
+
+        // Copy Logic
+        function copySystemPrompt() {
+            const text = document.getElementById('systemPrompt').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const btnText = document.getElementById('btnText');
+                
+                // Feedback Style
+                btn.style.backgroundColor = '#22c55e'; // Green
+                btn.style.color = 'white';
+                btnText.innerText = "Kopiert!";
+                
+                // Reset after 2s
+                setTimeout(() => {
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                    btnText.innerText = "Kopieren";
+                }, 2000);
+            });
+        }
+
+        // Confetti Celebration
         window.onload = function() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
             var random = function(min, max) { return Math.random() * (max - min) + min; }
 
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
+                if (timeLeft <= 0) return clearInterval(interval);
                 var particleCount = 50 * (timeLeft / duration);
                 
-                // Konfetti in Gold und Weiß
                 confetti(Object.assign({}, defaults, { 
                     particleCount, 
                     origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 },
-                    colors: ['#FFB300', '#ffffff', '#ffd700']
+                    colors: ['#FFB300', '#ffffff']
                 }));
                 confetti(Object.assign({}, defaults, { 
                     particleCount, 
                     origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 },
-                    colors: ['#FFB300', '#ffffff', '#ffd700']
+                    colors: ['#FFB300', '#ffffff']
                 }));
             }, 250);
         };
