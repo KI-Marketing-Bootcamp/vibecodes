@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3 Jahre KI im Marketing - Interactive Timeline</title>
+    <title>3 Jahre KI im Marketing - Timeline</title>
     
+    <script>
+        window.process = { env: { NODE_ENV: 'production' } };
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -12,12 +16,10 @@
     
     <script src="https://unpkg.com/prop-types/prop-types.min.js"></script>
     
-    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <script src="https://unpkg.com/recharts@1.8.5/umd/Recharts.min.js"></script>
     
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
     
     <script>
@@ -35,13 +37,6 @@
             },
             animation: {
               'float': 'float 6s ease-in-out infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              }
             }
           },
         },
@@ -54,22 +49,16 @@
           color: white; 
           min-height: 100vh;
       }
-      
       .glass-panel {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
       }
-
       .active-card {
         border-color: #FFB300;
         background: rgba(255, 179, 0, 0.05);
         box-shadow: 0 0 30px rgba(255, 179, 0, 0.15);
       }
-
-      /* Glitch Effect für 2026 */
       .glitch { position: relative; display: inline-block; }
       .glitch::before, .glitch::after {
         content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
@@ -80,16 +69,8 @@
       .glitch::after {
         left: -2px; text-shadow: -1px 0 #ff00ff; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse;
       }
-      @keyframes glitch-anim {
-        0% { clip: rect(11px, 9999px, 39px, 0); }
-        100% { clip: rect(68px, 9999px, 7px, 0); }
-      }
-      @keyframes glitch-anim-2 {
-        0% { clip: rect(85px, 9999px, 14px, 0); }
-        100% { clip: rect(10px, 9999px, 95px, 0); }
-      }
-      
-      /* Details/Summary Styling */
+      @keyframes glitch-anim { 0% { clip: rect(11px, 9999px, 39px, 0); } 100% { clip: rect(68px, 9999px, 7px, 0); } }
+      @keyframes glitch-anim-2 { 0% { clip: rect(85px, 9999px, 14px, 0); } 100% { clip: rect(10px, 9999px, 95px, 0); } }
       details > summary { list-style: none; }
       details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -105,96 +86,30 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                     </div>
                     <div>
-                        <h3 class="font-bold text-white text-lg">Behind the Code</h3>
-                        <p class="text-xs text-slate-400">Vibecoding Breakdown: React ohne Build-Prozess</p>
+                        <h3 class="font-bold text-white text-lg">Status Check</h3>
+                        <p class="text-xs text-slate-400">System: Operational</p>
                     </div>
                 </div>
-                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </span>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">▼</span>
             </summary>
-            
-            <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Das Learning</h4>
-                        <p class="text-sm leading-relaxed mb-4">
-                            Normalerweise braucht React komplizierte Tools (Node.js, Webpack). Hier siehst du, dass man React auch <strong>direkt im Browser</strong> nutzen kann.
-                        </p>
-                        <p class="text-sm leading-relaxed">
-                            Wir nutzen <code>Babel Standalone</code>, um den modernen React-Code direkt im Browser zu übersetzen. Perfekt für schnelle Prototypen und Single-File-Apps!
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ Tech Stack</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li class="flex gap-2 items-start"><span class="text-green-500">✔</span> <strong>Recharts:</strong> Eine mächtige Library für Datenvisualisierung (der Graph).</li>
-                            <li class="flex gap-2 items-start"><span class="text-green-500">✔</span> <strong>React Hooks:</strong> <code>useState</code> steuert, welches Jahr gerade angezeigt wird.</li>
-                            <li class="flex gap-2 items-start"><span class="text-green-500">✔</span> <strong>Tailwind CDN:</strong> Für das Styling, ohne CSS-Dateien zu schreiben.</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="px-6 pb-8 text-slate-300 border-t border-white/5 pt-6">
+                <p>Wenn du das hier siehst, funktioniert React & Recharts jetzt korrekt!</p>
             </div>
         </details>
     </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        // Fix: Recharts greift global zu, falls imports fehlschlagen
+        // Recharts 1.8.5 exportiert alles sauber global
         const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } = Recharts;
 
-        // --- DATEN ---
         const timelineData = [
-            {
-                year: 2022,
-                title: "Der Urknall",
-                headline: "ChatGPT Release",
-                desc: "KI verlässt das Labor. Marketing entdeckt 'Text-Generierung'. Prompt Engineering wird geboren.",
-                hype: 20,
-                productivity: 10,
-                color: "#cbd5e1"
-            },
-            {
-                year: 2023,
-                title: "Die Explosion",
-                headline: "Midjourney & Tools",
-                desc: "Bilder, Videos, Stimmen. Jeden Tag 100 neue Tools. FOMO (Fear of Missing Out) regiert die Marketing-Abteilungen.",
-                hype: 90,
-                productivity: 30,
-                color: "#cbd5e1"
-            },
-            {
-                year: 2024,
-                title: "Die Konsolidierung",
-                headline: "Workflow Integration",
-                desc: "Der Hype flacht ab, die echte Arbeit beginnt. KI wird Teil von Office, Adobe und HubSpot. Vibecoding entsteht.",
-                hype: 60,
-                productivity: 65,
-                color: "#FFB300"
-            },
-            {
-                year: 2025,
-                title: "Die Agenten-Ära",
-                headline: "AI Agents & Autopilot",
-                desc: "Wir chatten nicht mehr nur. Wir delegieren. KI plant Kampagnen, bucht Ads und analysiert Daten selbstständig.",
-                hype: 75,
-                productivity: 85,
-                color: "#cbd5e1"
-            },
-            {
-                year: 2026,
-                title: "Die Singularität",
-                headline: "Total Immersion",
-                desc: "Grenzen zwischen Creator und Consumer verschwimmen. Echtzeit-Personalisierung von Video & Audio on the fly.",
-                hype: 100,
-                productivity: 100,
-                color: "#cbd5e1",
-                isGlitch: true
-            }
+            { year: 2022, title: "Der Urknall", headline: "ChatGPT Release", desc: "KI verlässt das Labor. Marketing entdeckt 'Text-Generierung'.", hype: 20, productivity: 10 },
+            { year: 2023, title: "Die Explosion", headline: "Midjourney & Tools", desc: "Jeden Tag 100 neue Tools. FOMO regiert die Abteilungen.", hype: 90, productivity: 30 },
+            { year: 2024, title: "Konsolidierung", headline: "Workflow Integration", desc: "KI wird Teil von Office, Adobe und HubSpot. Echte Arbeit beginnt.", hype: 60, productivity: 65 },
+            { year: 2025, title: "Agenten-Ära", headline: "AI Autopilot", desc: "Wir chatten nicht mehr nur, wir delegieren Aufgaben komplett.", hype: 75, productivity: 85 },
+            { year: 2026, title: "Singularität", headline: "Total Immersion", desc: "Echtzeit-Personalisierung von Video & Audio on the fly.", hype: 100, productivity: 100, isGlitch: true }
         ];
-
-        // --- COMPONENTS ---
 
         const IconArrow = () => (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -209,33 +124,20 @@
 
             return (
                 <div className="max-w-6xl mx-auto w-full">
-                    
-                    {/* Header Area */}
                     <header className="text-center mb-12 animate-float">
                         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-brand-gold/30 bg-brand-gold/10 text-brand-gold text-xs font-bold uppercase tracking-widest mb-4">
-                            <IconBrain /> 
-                            <span>AI Evolution Timeline</span>
+                            <IconBrain /> <span>AI Timeline</span>
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-black mb-4">
-                            Vom Hype zur <span className="text-brand-gold">Realität</span>
-                        </h1>
-                        <p className="text-brand-slate max-w-xl mx-auto text-lg">
-                            Wie sich Künstliche Intelligenz im Marketing entwickelt hat – und wohin die Reise geht.
-                        </p>
+                        <h1 className="text-4xl md:text-6xl font-black mb-4">Vom Hype zur <span className="text-brand-gold">Realität</span></h1>
                     </header>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        
-                        {/* LEFT: Chart Visualization */}
                         <div className="lg:col-span-8 flex flex-col gap-6">
-                            
-                            {/* Chart Container */}
                             <div className="glass-panel rounded-2xl p-6 h-[400px] relative overflow-hidden group">
                                 <h3 className="text-brand-gold font-bold mb-4 flex items-center gap-2">
                                     <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span>
                                     Hype vs. Produktivität
                                 </h3>
-                                
                                 <ResponsiveContainer width="100%" height="90%">
                                     <AreaChart data={timelineData}>
                                         <defs>
@@ -255,85 +157,33 @@
                                             contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', color: '#fff' }}
                                             itemStyle={{ color: '#FFB300' }}
                                         />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="hype" 
-                                            stroke="#FFB300" 
-                                            strokeWidth={3}
-                                            fillOpacity={1} 
-                                            fill="url(#colorHype)" 
-                                            name="KI Hype Level"
-                                        />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="productivity" 
-                                            stroke="#cbd5e1" 
-                                            strokeWidth={2}
-                                            strokeDasharray="5 5"
-                                            fill="url(#colorProd)" 
-                                            name="Echte Produktivität"
-                                        />
+                                        <Area type="monotone" dataKey="hype" stroke="#FFB300" strokeWidth={3} fillOpacity={1} fill="url(#colorHype)" name="Hype" />
+                                        <Area type="monotone" dataKey="productivity" stroke="#cbd5e1" strokeWidth={2} strokeDasharray="5 5" fill="url(#colorProd)" name="Produktivität" />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
 
-                            {/* Detail View of Selected Year */}
-                            <div className="glass-panel rounded-2xl p-8 transition-all duration-500 min-h-[200px] flex flex-col justify-center">
-                                <div className="text-sm text-brand-gold font-bold uppercase tracking-widest mb-2">
-                                    Deep Dive: {selected.year}
-                                </div>
-                                <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${selected.isGlitch ? 'glitch' : ''}`} data-text={selected.headline}>
-                                    {selected.headline}
-                                </h2>
-                                <p className="text-xl text-brand-slate leading-relaxed">
-                                    {selected.desc}
-                                </p>
+                            <div className="glass-panel rounded-2xl p-8 min-h-[200px] flex flex-col justify-center">
+                                <div className="text-sm text-brand-gold font-bold uppercase tracking-widest mb-2">Jahr: {selected.year}</div>
+                                <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${selected.isGlitch ? 'glitch' : ''}`} data-text={selected.headline}>{selected.headline}</h2>
+                                <p className="text-xl text-brand-slate leading-relaxed">{selected.desc}</p>
                             </div>
-
                         </div>
 
-                        {/* RIGHT: Interactive Timeline List */}
                         <div className="lg:col-span-4 flex flex-col gap-4">
                             {timelineData.map((item) => (
-                                <div 
-                                    key={item.year}
-                                    onClick={() => setSelected(item)}
-                                    className={`
-                                        glass-panel rounded-xl p-5 cursor-pointer transition-all duration-300 transform hover:scale-102 hover:translate-x-2
-                                        ${selected.year === item.year ? 'active-card scale-105 border-brand-gold' : 'hover:bg-white/5'}
-                                    `}
-                                >
+                                <div key={item.year} onClick={() => setSelected(item)} className={`glass-panel rounded-xl p-5 cursor-pointer transition-all duration-300 transform hover:scale-102 hover:translate-x-2 ${selected.year === item.year ? 'active-card scale-105 border-brand-gold' : 'hover:bg-white/5'}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className={`text-2xl font-black ${selected.year === item.year ? 'text-brand-gold' : 'text-slate-500'}`}>
-                                            {item.year}
-                                        </span>
-                                        {selected.year === item.year && <IconArrow className="text-brand-gold" />}
+                                        <span className={`text-2xl font-black ${selected.year === item.year ? 'text-brand-gold' : 'text-slate-500'}`}>{item.year}</span>
+                                        {selected.year === item.year && <IconArrow />}
                                     </div>
-                                    <div className="font-bold text-lg text-white mb-1">
-                                        {item.title}
-                                    </div>
-                                    {/* Mini Bar für Productivity */}
+                                    <div className="font-bold text-lg text-white mb-1">{item.title}</div>
                                     <div className="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-                                        <div 
-                                            className="h-full bg-brand-gold transition-all duration-1000 ease-out"
-                                            style={{ width: `${item.productivity}%` }}
-                                        ></div>
-                                    </div>
-                                    <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                                        <span>Produktivität</span>
-                                        <span>{item.productivity}%</span>
+                                        <div className="h-full bg-brand-gold" style={{ width: `${item.productivity}%` }}></div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-
-                    </div>
-                    
-                    {/* Zurück Button */}
-                    <div className="mt-12 text-center">
-                         <a href="index.html" className="inline-block text-brand-slate hover:text-brand-gold transition-colors text-sm font-medium border-b border-transparent hover:border-brand-gold pb-1">
-                            ← Zurück zum Kalender
-                        </a>
                     </div>
                 </div>
             );
@@ -342,10 +192,5 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<TimelineApp />);
     </script>
-    <div class="w-full text-center py-8 mt-8 border-t border-white/10">
-        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
-            Impressum
-        </a>
-    </div>
 </body>
 </html>
