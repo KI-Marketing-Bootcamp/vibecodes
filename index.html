@@ -204,6 +204,60 @@
             0% { transform: translateY(-10vh) translateX(0); opacity: 0.8; }
             100% { transform: translateY(110vh) translateX(20px); opacity: 0.2; }
         }
+        
+        #newsletter-card {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(15, 23, 42, 0.95); /* Dunkler Hintergrund */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 179, 0, 0.3); /* Goldener Rand dezent */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            z-index: 50; /* Über dem Schnee, aber unter Modals */
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+            transform: translateY(150%); /* Startet außerhalb des Bildes */
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #newsletter-card.visible {
+            transform: translateY(0); /* Fährt ins Bild */
+        }
+
+        .newsletter-btn {
+            background-color: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.3);
+        }
+
+        .newsletter-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 179, 0, 0.5);
+            background-color: #ffc107;
+        }
+
+        .close-newsletter {
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .close-newsletter:hover { color: white; }
     </style>
 </head>
 <body class="flex flex-col items-center py-12 px-4 relative">
@@ -411,7 +465,25 @@
             </a>
         </div>
     </footer>
-
+    
+        <div id="newsletter-card">
+                <span class="close-newsletter" onclick="closeNewsletter()">&times;</span>
+                
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/10 p-3 rounded-full border border-white/5">
+                        <span class="text-2xl">💌</span>
+                    </div>
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-lg leading-tight">Keine KI-Tipps verpassen?</h4>
+                        <p class="text-slate-400 text-xs mt-1">Hol dir die besten Hacks direkt in dein Postfach.</p>
+                    </div>
+                </div>
+        
+                <a href="https://marketing-ki.de/newsletter/" target="_blank" class="newsletter-btn">
+                    Jetzt Anmelden
+                </a>
+            </div>
+            
     <!-- LOGIK & DATEN -->
     <script>
         // 1. MODAL LOGIC (IMPRESSUM & META)
@@ -615,10 +687,37 @@
                 `;
             }
         }
+        
+        // --- NEWSLETTER LOGIK ---
+        
+        function showNewsletter() {
+            // Prüfen, ob der User das schon mal weggeklickt hat (im LocalStorage)
+            const hasSeenNewsletter = localStorage.getItem('vibecoding_newsletter_closed');
+            
+            if (!hasSeenNewsletter) {
+                const card = document.getElementById('newsletter-card');
+                if(card) {
+                    card.classList.add('visible');
+                }
+            }
+        }
+
+        function closeNewsletter() {
+            const card = document.getElementById('newsletter-card');
+            card.classList.remove('visible');
+            
+            // Merken, dass der User es geschlossen hat (damit es nicht nervt)
+            localStorage.setItem('vibecoding_newsletter_closed', 'true');
+        }
+
+        // Zeit-Trigger: Nach 5 Sekunden (5000 ms) anzeigen
+        // Du kannst die 5000 auf 10000 ändern für 10 Sekunden
+        setTimeout(showNewsletter, 5000);
     </script>
 
 </body>
 </html>
+
 
 
 
