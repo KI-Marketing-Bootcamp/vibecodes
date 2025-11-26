@@ -13,6 +13,8 @@
             --ci-gold: #FFB300;
             --ci-dark: #0f172a; 
             --ci-darker: #020617;
+            --flag-red: #ef4444;
+            --flag-green: #22c55e;
         }
         body {
             font-family: 'Outfit', sans-serif;
@@ -39,11 +41,24 @@
             opacity: 0;
         }
         .accordion-content.active {
-            max-height: 1000px; /* Genug Platz */
+            max-height: 1000px; 
             opacity: 1;
         }
         .accordion-icon { transition: transform 0.3s ease; }
         .accordion-btn.active .accordion-icon { transform: rotate(180deg); }
+
+        /* Flag Cards */
+        .flag-card {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        .flag-card:hover { transform: translateY(-2px); }
+        
+        .border-red-glow { border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 0 20px rgba(239, 68, 68, 0.1); }
+        .border-green-glow { border-color: rgba(34, 197, 94, 0.3); box-shadow: 0 0 20px rgba(34, 197, 94, 0.1); }
 
         /* Code Block Styling */
         .code-block {
@@ -79,8 +94,8 @@
                 <span class="gold-text">Blueprint</span>
             </h1>
             <p class="text-xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
-                Keine Prompts. Keine PDF-Wüsten.<br>
-                Hier ist unser <strong>Werkstattbericht</strong> und das <strong>System-Setup</strong>, mit dem wir diese 24 Apps gebaut haben.
+                Coding ohne Coder zu sein.<br>
+                Hier ist unser <strong>Werkstattbericht</strong> und die <strong>goldenen Regeln</strong>, damit deine KI-Projekte nicht gegen die Wand fahren.
             </p>
         </div>
 
@@ -103,11 +118,12 @@
 
                 <div class="glass-panel rounded-xl overflow-hidden">
                     <button class="accordion-btn w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-colors" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg">🔌 Learning 2: Keine "npm install" Hölle</span>
+                        <span class="font-bold text-lg">🔒 Learning 2: Sicherheit & API Keys</span>
                         <i data-lucide="chevron-down" class="accordion-icon text-[#FFB300]"></i>
                     </button>
                     <div class="accordion-content px-6 pb-6 text-slate-300 leading-relaxed">
-                        <p>Als Non-Devs wollen wir keine Node.js Server aufsetzen. Wir nutzen <strong>CDNs</strong>. Das heißt: Tailwind, React, Vue oder Libraries wie Confetti werden direkt über einen Link im HTML geladen. Das macht die App sofort teilbar und hostbar (z.B. auf GitHub Pages).</p>
+                        <p><strong>Die wichtigste Regel:</strong> Schreibe deinen API-Key NIEMALS direkt in den Code, wenn du ihn teilst oder hochlädst (z.B. auf GitHub).</p>
+                        <p class="mt-2">Nutze das "Bring Your Own Key"-Prinzip: Bitte die KI, ein Eingabefeld zu bauen, in das der User seinen Key einfügt. Speichere diesen Key nur im <em>LocalStorage</em> des Browsers des Users. So bleibt er privat und deine Credits sind sicher.</p>
                     </div>
                 </div>
 
@@ -123,6 +139,64 @@
             </div>
         </div>
 
+        <div class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i data-lucide="flag" class="text-[#FFB300]"></i> Der KI-Check
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <div class="flag-card border-red-glow">
+                    <h3 class="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="alert-triangle"></i> Red Flags
+                    </h3>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li class="flex gap-2">
+                            <span class="text-red-500">✖</span>
+                            <span>Die KI nutzt <strong>"import ... from"</strong> Syntax (funktioniert nicht einfach so im Browser).</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-red-500">✖</span>
+                            <span>Die KI will, dass du <strong>"npm install"</strong> im Terminal eingibst (zu komplex für Prototypen).</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-red-500">✖</span>
+                            <span>Die KI schreibt den API-Key direkt als Text in den Code ("sk-123..."). <strong>STOP!</strong></span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-red-500">✖</span>
+                            <span>Der Code bricht mitten im Satz ab (Token-Limit erreicht).</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="flag-card border-green-glow">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="check-circle"></i> Green Flags
+                    </h3>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li class="flex gap-2">
+                            <span class="text-green-500">✔</span>
+                            <span>Die KI nutzt <strong>CDN Links</strong> (unpkg, cdnjs) für Bibliotheken.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-500">✔</span>
+                            <span>Die KI fragt nach, bevor sie loslegt ("Soll ich React oder Vanilla JS nutzen?").</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-500">✔</span>
+                            <span>Der Code enthält <strong>Kommentare</strong>, die erklären, was passiert.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-500">✔</span>
+                            <span>Die KI baut ein <strong>Input-Feld</strong> für API-Keys statt sie zu hardcoden.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
         <div class="mb-20">
             <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
                 <i data-lucide="cpu" class="text-[#FFB300]"></i> Dein Vibecoding System-Setup
@@ -134,7 +208,7 @@
                 </div>
                 
                 <p class="mb-6 text-slate-300">
-                    Das ist kein "Prompt" für eine einzelne Aufgabe. Das ist eine <strong>System-Instruktion</strong>. Kopiere diesen Text und füge ihn ganz am Anfang eines neuen Chats (bei Claude, ChatGPT o.ä.) ein. Damit verwandelst du den Chatbot in einen spezialisierten Frontend-Entwickler für Marketing-Prototypen.
+                    Kopiere diesen Text und füge ihn ganz am Anfang eines neuen Chats (bei Claude, ChatGPT o.ä.) ein. Damit verwandelst du den Chatbot in einen spezialisierten Frontend-Entwickler, der all unsere Regeln bereits kennt.
                 </p>
 
                 <div class="relative group">
@@ -154,17 +228,15 @@ Tech Stack Rules (Strict):
 1. Single HTML File: All CSS (in &lt;style&gt;) and JS (in &lt;script&gt;) must be inside one index.html.
 2. Styling: Use Tailwind CSS via CDN script.
 3. Libraries: Use CDN links for libraries (e.g., FontAwesome, React via unpkg, Canvas-Confetti). NO 'npm install', NO 'import' from local files.
-4. Design System: Dark Mode default. High-end UI (Glassmorphism, Gradients).
+4. Security: NEVER hardcode API keys. Always create an input field for the user to enter their own key and save it to localStorage.
 5. Colors: Primary: #FFB300 (Gold), Background: #0f172a (Dark Slate).
-6. Fonts: Use Google Fonts 'Outfit' or 'Inter'.
 
 Behavior:
-- Before coding, briefly summarize the logic you will implement.
-- If I report a bug, analyze the logical root cause first.
-- Add comments in the code explaining complex parts for non-developers.
+- Before coding, briefly summarize the logic.
 - Focus on "Vibe" and UX (Animations, Hover-Effects).
+- If errors occur, analyze the LOGIC first.
 
-My Goal: I am a marketer prototyping ideas. I need code that works instantly by copy-pasting it into a file.</pre>
+My Goal: I am a marketer. I need code that works instantly by copy-pasting it.</pre>
                 </div>
                 
                 <div class="mt-4 text-xs text-slate-500 text-center">
