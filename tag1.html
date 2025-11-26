@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 1: AI Persona Engine Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at center, #1e293b 0%, var(--ci-darker) 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        /* Custom Checkbox */
+        .power-check { appearance: none; width: 1.2em; height: 1.2em; border: 1px solid #475569; border-radius: 4px; background: rgba(0,0,0,0.3); cursor: pointer; position: relative; }
+        .power-check:checked { background: var(--ci-gold); border-color: var(--ci-gold); }
+        .power-check:checked::after { content: '✔'; position: absolute; font-size: 0.8em; color: black; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* Range Slider */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--ci-gold); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px var(--ci-gold); transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #334155; border-radius: 2px; }
+        
+        .code-block { font-family: 'Courier New', monospace; background: #000; border: 1px solid #333; color: #a5f3fc; }
+        
+        .preset-btn:hover { border-color: var(--ci-gold); color: var(--ci-gold); background: rgba(255, 179, 0, 0.05); }
+    </style>
+</head>
+<body class="flex flex-col items-center py-8 px-4">
+
+    <div class="w-full max-w-6xl flex justify-between items-center mb-8 relative z-10">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="flex items-center gap-2">
+             <button onclick="randomize()" class="text-xs flex items-center gap-1 text-[#FFB300] border border-[#FFB300]/30 px-3 py-1 rounded hover:bg-[#FFB300]/10 transition-colors" title="Zufällige Persona">
+                <i data-lucide="dices" class="w-3 h-3"></i> Surprise Me
+            </button>
+            <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+                Tag 1
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-6xl w-full grid lg:grid-cols-12 gap-6 relative z-10">
+        
+        <div class="lg:col-span-12 text-center mb-2">
+            <h1 class="text-3xl md:text-5xl font-black mb-2">
+                AI Persona <span class="text-[#FFB300]">Engine</span>
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base font-light max-w-2xl mx-auto">
+                Baue dir deinen perfekten Mitarbeiter. Nicht nur "freundlich", sondern strategisch.
+            </p>
+        </div>
+
+        <div class="lg:col-span-7 space-y-6">
+            
+            <div class="glass-panel rounded-xl p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <label class="text-xs font-bold text-[#FFB300] uppercase tracking-widest">1. Basis Identität</label>
+                    <div class="flex gap-2">
+                        <button onclick="setPreset('analyst')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">📊 Analyst</button>
+                        <button onclick="setPreset('creative')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">🎨 Creative</button>
+                        <button onclick="setPreset('critic')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">⚖️ Kritiker</button>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-1/3">
+                        <input type="text" id="pName" placeholder="Name" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-[#FFB300] outline-none placeholder-slate-600">
+                    </div>
+                    <div class="w-2/3">
+                        <input type="text" id="pRole" placeholder="Rolle (z.B. Senior SEO Manager)" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-[#FFB300] outline-none placeholder-slate-600">
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-bold text-slate-300">Temperatur</label>
+                        <span id="valChaos" class="text-xs text-[#FFB300]">Präzise</span>
+                    </div>
+                    <input type="range" id="rangeChaos" min="0" max="100" value="20" oninput="updateUI()">
+                </div>
+
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-bold text-slate-300">Härtegrad</label>
+                        <span id="valHard" class="text-xs text-[#FFB300]">Direkt</span>
+                    </div>
+                    <input type="range" id="rangeHard" min="0" max="100" value="70" oninput="updateUI()">
+                </div>
+
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-bold text-slate-300">Output-Länge</label>
+                        <span id="valLen" class="text-xs text-[#FFB300]">Auf den Punkt</span>
+                    </div>
+                    <input type="range" id="rangeLen" min="0" max="100" value="30" oninput="updateUI()">
+                </div>
+
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-bold text-slate-300">Emoji-Dichte</label>
+                        <span id="valEmoji" class="text-xs text-[#FFB300]">Keine</span>
+                    </div>
+                    <input type="range" id="rangeEmoji" min="0" max="100" value="0" oninput="updateUI()">
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6">
+                <label class="text-xs font-bold text-[#FFB300] uppercase tracking-widest mb-4 block">3. Pro-Modifikatoren (Die Magie)</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    
+                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
+                        <input type="checkbox" id="checkChain" class="power-check" onchange="updateUI()">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Chain of Thought</span>
+                            <span class="text-[10px] text-slate-500">Erst denken, dann antworten</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
+                        <input type="checkbox" id="checkDevil" class="power-check" onchange="updateUI()">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Devil's Advocate</span>
+                            <span class="text-[10px] text-slate-500">Immer Gegenargumente finden</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
+                        <input type="checkbox" id="checkNoYap" class="power-check" checked onchange="updateUI()">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">No-Yapping Protocol</span>
+                            <span class="text-[10px] text-slate-500">Kein "Gerne, hier ist..."</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
+                        <input type="checkbox" id="checkMarkdown" class="power-check" checked onchange="updateUI()">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Format Fetischist</span>
+                            <span class="text-[10px] text-slate-500">Viel Fettgedrucktes, Listen, Tabellen</span>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lg:col-span-5 relative flex flex-col h-full">
+            <div class="absolute inset-0 bg-[#FFB300] opacity-5 blur-3xl rounded-full pointer-events-none"></div>
+
+            <div class="glass-panel rounded-xl p-6 flex flex-col h-full border border-[#FFB300]/20 relative z-10">
+                
+                <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFB300] to-orange-600 flex items-center justify-center text-lg shadow-lg">
+                            🧬
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-white uppercase tracking-wider">System Prompt</h2>
+                            <span class="text-[10px] text-slate-400">Copy & Paste in ChatGPT/Claude</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-grow relative group">
+                    <div class="code-block p-4 rounded-lg text-[10px] md:text-xs leading-relaxed h-[400px] overflow-y-auto w-full custom-scroll" id="outputCode">
+                        </div>
+                    <div class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <span class="text-[10px] bg-black text-white px-2 py-1 rounded">Click button below to copy</span>
+                    </div>
+                </div>
+
+                <button onclick="copyCode()" id="copyBtn" class="mt-4 w-full bg-[#FFB300] hover:bg-[#ffc107] text-[#0f172a] font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:scale-102 active:scale-95">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    <span id="btnText">Persona Kopieren</span>
+                </button>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Presets Data
+        const presets = {
+            analyst: { name: "Dr. Data", role: "Senior Data Analyst", chaos: 10, hard: 80, len: 40, emoji: 0, chain: true, devil: false, yap: true, md: true },
+            creative: { name: "Leo", role: "Viral Creative Director", chaos: 90, hard: 40, len: 70, emoji: 60, chain: false, devil: true, yap: true, md: false },
+            critic: { name: "Judge Judy", role: "Marketing Auditor", chaos: 30, hard: 100, len: 50, emoji: 10, chain: true, devil: true, yap: true, md: true }
+        };
+
+        function setPreset(key) {
+            const p = presets[key];
+            document.getElementById('pName').value = p.name;
+            document.getElementById('pRole').value = p.role;
+            document.getElementById('rangeChaos').value = p.chaos;
+            document.getElementById('rangeHard').value = p.hard;
+            document.getElementById('rangeLen').value = p.len;
+            document.getElementById('rangeEmoji').value = p.emoji;
+            document.getElementById('checkChain').checked = p.chain;
+            document.getElementById('checkDevil').checked = p.devil;
+            document.getElementById('checkNoYap').checked = p.yap;
+            document.getElementById('checkMarkdown').checked = p.md;
+            updateUI();
+        }
+
+        function randomize() {
+            const roles = ["Growth Hacker", "Copywriting Legend", "UX Psychologe", "Code Wizard", "SEO Guru"];
+            const names = ["Alex", "Sora", "Nexus", "Vibe", "Q"];
+            
+            document.getElementById('pName').value = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('pRole').value = roles[Math.floor(Math.random() * roles.length)];
+            
+            document.getElementById('rangeChaos').value = Math.random() * 100;
+            document.getElementById('rangeHard').value = Math.random() * 100;
+            document.getElementById('rangeLen').value = Math.random() * 100;
+            document.getElementById('rangeEmoji').value = Math.random() * 100;
+            
+            // Random checks
+            document.getElementById('checkChain').checked = Math.random() > 0.5;
+            updateUI();
+        }
+
+        function updateUI() {
+            const name = document.getElementById('pName').value || "AI Agent";
+            const role = document.getElementById('pRole').value || "Expert Assistant";
+            
+            // Sliders
+            const chaosVal = document.getElementById('rangeChaos').value;
+            const hardVal = document.getElementById('rangeHard').value;
+            const lenVal = document.getElementById('rangeLen').value;
+            const emojiVal = document.getElementById('rangeEmoji').value;
+
+            // Labels Update
+            const setLabel = (id, val, low, mid, high) => {
+                let txt = mid;
+                if(val < 30) txt = low;
+                if(val > 70) txt = high;
+                document.getElementById(id).innerText = txt;
+                return txt;
+            };
+
+            const chaosTxt = setLabel('valChaos', chaosVal, "Deterministisch (Fakten)", "Ausgewogen", "Wild & Kreativ");
+            const hardTxt = setLabel('valHard', hardVal, "Sanft & Supportiv", "Professionell", "Gnadenlos Ehrlich");
+            const lenTxt = setLabel('valLen', lenVal, "Stichpunkte", "Kompakt", "Ausführlich");
+            
+            let emojiInstr = "Verwende keine Emojis.";
+            if(emojiVal > 20) { document.getElementById('valEmoji').innerText = "Dezent"; emojiInstr = "Nutze Emojis sparsam für Struktur."; }
+            if(emojiVal > 60) { document.getElementById('valEmoji').innerText = "Viel"; emojiInstr = "Nutze viele Emojis, um Emotionen zu zeigen. 😉"; }
+            if(emojiVal <= 20) { document.getElementById('valEmoji').innerText = "Keine"; }
+
+            // Checkboxes
+            const chain = document.getElementById('checkChain').checked;
+            const devil = document.getElementById('checkDevil').checked;
+            const noYap = document.getElementById('checkNoYap').checked;
+            const mark = document.getElementById('checkMarkdown').checked;
+
+            // Construct Prompt
+            let prompt = `### SYSTEM IDENTITY ###
+You are ${name}.
+Role: ${role}.
+Worldview: ${chaosTxt} | Tone: ${hardTxt}
+
+### CORE BEHAVIORS ###
+1. **Verbosity**: ${lenTxt}.
+2. **Emoji Usage**: ${emojiInstr}
+`;
+
+            if(chain) prompt += `3. **Chain of Thought**: Before answering, wrap your reasoning process in <thought> tags. Analyze the request first.\n`;
+            if(devil) prompt += `4. **Devil's Advocate**: Never just agree. Always check for edge cases, logical fallacies, or risks. Challenge the user's assumptions.\n`;
+            if(noYap) prompt += `5. **No-Yapping**: Do not start with "Sure I can help" or "Here is the output". Start directly with the value.\n`;
+            if(mark) prompt += `6. **Formatting**: Use excessive Markdown. Use bolding for key terms, tables for comparisons, and lists for readability.\n`;
+
+            prompt += `\n### INTERACTION STYLE ###
+You are ${hardTxt}. If the user's input is weak, say so. If the idea is brilliant, acknowledge it.
+Do not act like a generic AI assistant. Act like a ${role}.`;
+
+            document.getElementById('outputCode').innerText = prompt;
+        }
+
+        function copyCode() {
+            const code = document.getElementById('outputCode').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const txt = document.getElementById('btnText');
+                const originalBg = btn.style.backgroundColor;
+                
+                btn.style.backgroundColor = '#22c55e';
+                btn.style.color = 'white';
+                txt.innerText = "Kopiert!";
+                
+                setTimeout(() => {
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                    txt.innerText = "Persona Kopieren";
+                    updateUI(); // Reset visual state
+                }, 2000);
+            });
+        }
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>
