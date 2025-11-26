@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tag 13: Das Orakel</title>
+    <title>Tag 13: Das Neurale Orakel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,7 +22,7 @@
             overflow-x: hidden;
         }
 
-        /* --- THE ORB (Reines CSS Magic, kein Bild) --- */
+        /* --- THE ORB --- */
         .orb-container {
             position: relative;
             width: 300px;
@@ -48,7 +48,6 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Der innere Wirbel (Plasma) */
         .plasma {
             position: absolute;
             top: -50%;
@@ -69,7 +68,7 @@
         }
 
         .orb-container.active .plasma {
-            animation-duration: 1s; /* Schneller bei Aktivität */
+            animation-duration: 1s; 
             opacity: 0.6;
         }
 
@@ -105,7 +104,6 @@
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 15px 40px -10px rgba(255, 179, 0, 0.7);
         }
-        .btn-gold:active { transform: scale(0.98); }
         .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* Prediction Card Animation */
@@ -119,12 +117,6 @@
             opacity: 1;
             transform: translateY(0) scale(1);
         }
-
-        .typewriter-text::after {
-            content: '|';
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
 
         /* Behind Scenes */
         .glass-panel {
@@ -151,7 +143,7 @@
     <main class="w-full max-w-xl text-center relative z-10">
         
         <h1 class="text-4xl md:text-5xl font-black mb-2">Das Neurale <span class="text-[#FFB300]">Orakel</span></h1>
-        <p class="text-slate-400 mb-8">2026 Prediction Engine. Powered by randomness.</p>
+        <p class="text-slate-400 mb-8">2026 Prediction Engine. Ich sehe, was auf dich zukommt.</p>
 
         <div class="orb-container" id="orbContainer">
             <div class="orb">
@@ -166,7 +158,7 @@
             <div id="inputStep" class="transition-all duration-300">
                 <div class="mb-4 text-left">
                     <label class="text-xs font-bold text-[#FFB300] uppercase ml-1">Was bereitet dir Sorgen?</label>
-                    <input type="text" id="topicInput" placeholder="z.B. SEO, Mein Job, Budget..." class="glass-input w-full p-4 rounded-xl text-white mt-2 placeholder-slate-600" autocomplete="off">
+                    <input type="text" id="topicInput" placeholder="z.B. Mein Job, SEO, Budget, TikTok..." class="glass-input w-full p-4 rounded-xl text-white mt-2 placeholder-slate-600" autocomplete="off" onkeydown="if(event.key === 'Enter') askOracle()">
                 </div>
                 <button onclick="askOracle()" class="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2">
                     <i data-lucide="sparkles" class="w-5 h-5"></i>
@@ -177,12 +169,17 @@
             <div id="resultStep" class="hidden">
                 
                 <div id="prophecyCard" class="prophecy-card bg-[#0f172a] border border-[#FFB300]/30 rounded-2xl p-8 shadow-2xl relative overflow-hidden text-left">
+                    
                     <div class="absolute top-0 right-0 p-4 opacity-20">
                         <i data-lucide="cpu" class="w-16 h-16 text-[#FFB300]"></i>
                     </div>
                     
                     <div class="relative z-10">
-                        <div class="text-xs font-mono text-[#FFB300] mb-2">PROGNOSE-ID: <span id="predId">8492</span></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-[10px] font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">ID: <span id="predId">8492</span></div>
+                            <div class="text-[10px] font-bold text-[#FFB300] uppercase tracking-widest animate-pulse" id="topicDetected">SCANNING...</div>
+                        </div>
+
                         <h3 class="text-2xl font-bold text-white mb-4 leading-tight" id="predTitle">...</h3>
                         <p class="text-slate-300 leading-relaxed mb-6" id="predText">...</p>
                         
@@ -211,7 +208,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-white text-lg">Behind the Code</h3>
-                        <p class="text-xs text-slate-400">Vibecoding Breakdown: CSS Magic</p>
+                        <p class="text-xs text-slate-400">Vibecoding Breakdown: "Intelligentes" Matching</p>
                     </div>
                 </div>
                 <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
@@ -222,20 +219,24 @@
             <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
                 <div class="grid md:grid-cols-2 gap-8">
                     <div>
-                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Kein Bild, nur Code</h4>
+                        <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Die "Fake-KI" Logik</h4>
                         <p class="text-sm leading-relaxed mb-4">
-                            Die Kugel oben ist kein `.png`. Sie besteht aus CSS <code>radial-gradients</code> und <code>conic-gradients</code>. 
+                            Hier arbeitet kein echtes LLM (wie GPT-4). Das wäre für so einen Gag zu teuer und langsam.
                         </p>
                         <p class="text-sm leading-relaxed">
-                            Der "Nebel" im Inneren entsteht durch zwei übereinanderliegende Divs mit Farbverläufen, die sich mit unterschiedlicher Geschwindigkeit drehen (`animation: spin`). Das erzeugt den organischen, zufälligen Look.
+                            Stattdessen nutzen wir <strong>Keyword-Matching</strong>. Wir scannen deinen Text nach Wörtern wie "Job", "SEO" oder "Geld". 
+                            <br><br>
+                            <code class="text-green-400 bg-black/50 px-1 rounded">if (input.includes("seo")) { ... }</code>
+                            <br><br>
+                            Das fühlt sich für den User magisch an, ist aber eigentlich simpelste Logik. Wenn kein Keyword passt, gibt es eine "Wildcard"-Antwort.
                         </p>
                     </div>
                     <div>
                         <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ Tech Stack</h4>
                         <ul class="space-y-2 text-sm">
-                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Conic Gradients:</strong> Für den Plasma-Effekt.</li>
-                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Timing Functions:</strong> `cubic-bezier` sorgt dafür, dass die Karte am Ende "weich" landet.</li>
-                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Array Logic:</strong> Die Antworten werden zufällig aus einem Javascript-Array gezogen.</li>
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Arrays & Objects:</strong> Die Daten sind in Kategorien (SEO, Career, etc.) gespeichert.</li>
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>LowerCase Normierung:</strong> Damit "SEO" und "seo" gleichermaßen erkannt werden.</li>
+                            <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>CSS Animation:</strong> Der "Scan"-Effekt der Kugel überbrückt die "Denkzeit".</li>
                         </ul>
                     </div>
                 </div>
@@ -252,23 +253,39 @@
     <script>
         lucide.createIcons();
 
-        // --- DATENBANK ---
-        const predictions = [
-            { title: "AIO ist das neue SEO", text: "Suchmaschinen werden Antwort-Maschinen. Deine Keywords sind egal, deine Marken-Autorität ist alles.", action: "Optimiere für Perplexity und ChatGPT, nicht für Google." },
-            { title: "Der Newsletter Renaissance", text: "In einer Welt voll synthetischem Content ist die E-Mail der einzige Algorithmus-freie Raum.", action: "Verdopple dein Budget für E-Mail Marketing." },
-            { title: "Hyper-Personalisierung", text: "Websites sind tot. Dynamische Interfaces, die sich dem User anpassen, übernehmen.", action: "Prüfe Tools für dynamische Landingpages." },
-            { title: "Das Community Comeback", text: "KI kann Content, aber keine Verbindung. Echte Communities werden zum wertvollsten Asset.", action: "Starte einen Discord oder Slack für deine Super-User." },
-            { title: "Video First, Video Only", text: "Text wird von KIs gelesen, Menschen schauen Videos. TikTok Search schlägt Google.", action: "Lerne Kurzvideo-Storytelling oder geh unter." },
-            { title: "Data Privacy Paradox", text: "Kunden geben Daten nur noch an KIs, denen sie vertrauen. Vertrauen wird Währung.", action: "Sei radikal transparent mit Datennutzung." },
-            { title: "Agentic Marketing", text: "Bald kauft nicht mehr der Mensch, sondern sein KI-Agent für ihn ein.", action: "Optimiere deine Produktdaten für Maschinen-Lesbarkeit." }
-        ];
+        // --- DIE DATENBANK (The Brain) ---
+        const database = {
+            seo: [
+                { title: "AIO ist das neue SEO", text: "Suchmaschinen werden Antwort-Maschinen. Keywords sind tot, Entitäten sind alles.", action: "Optimiere für Perplexity und ChatGPT, nicht für Google." },
+                { title: "Zero-Click Future", text: "Die Antwort wird direkt in der Suche angezeigt. Keiner klickt mehr auf deine Website.", action: "Baue eine Marke, die man direkt sucht." }
+            ],
+            job: [
+                { title: "Der Prompt-Psychologe", text: "Dein neuer Job ist nicht Schreiben, sondern KIs zu therapieren, damit sie gut schreiben.", action: "Lerne 'Chain of Thought' Prompting." },
+                { title: "Management by AI", text: "Mittleres Management wird durch KI-Agenten ersetzt. Nur Strategie und Empathie bleiben menschlich.", action: "Schule deine Soft Skills. Jetzt." }
+            ],
+            money: [
+                { title: "Budget Shift", text: "Content-Erstellung kostet fast nichts mehr. Das Budget fließt zu 100% in Distribution.", action: "Investiere in Paid Social & Community Management." },
+                { title: "ROI Explosion", text: "Wer KI richtig nutzt, senkt Kosten um 80%. Wer nicht, geht pleite.", action: "Automatisiere einen manuellen Prozess diese Woche." }
+            ],
+            video: [
+                { title: "Video First, Video Only", text: "Text wird von KIs gelesen, Menschen schauen Videos. TikTok Search schlägt Google.", action: "Lerne Kurzvideo-Storytelling oder geh unter." },
+                { title: "Synthetische Avatare", text: "Du musst nicht mehr selbst vor die Kamera. Dein KI-Zwilling macht das.", action: "Teste HeyGen oder ähnliche Tools." }
+            ],
+            wildcard: [
+                { title: "Der Newsletter Renaissance", text: "In einer Welt voll synthetischem Content ist die E-Mail der einzige Algorithmus-freie Raum.", action: "Verdopple dein Budget für E-Mail Marketing." },
+                { title: "Das Community Comeback", text: "KI kann Content, aber keine Verbindung. Echte Communities werden zum wertvollsten Asset.", action: "Starte einen Discord oder Slack für deine Super-User." },
+                { title: "Data Privacy Paradox", text: "Kunden geben Daten nur noch an KIs, denen sie vertrauen. Vertrauen wird Währung.", action: "Sei radikal transparent mit Datennutzung." }
+            ]
+        };
 
         function askOracle() {
-            const input = document.getElementById('topicInput');
-            if(input.value.trim() === "") {
-                input.placeholder = "Bitte gib erst ein Thema ein!";
-                input.classList.add('border-red-500');
-                setTimeout(() => input.classList.remove('border-red-500'), 1000);
+            const inputField = document.getElementById('topicInput');
+            const inputText = inputField.value.toLowerCase().trim();
+
+            if(inputText === "") {
+                inputField.placeholder = "Bitte gib erst ein Thema ein!";
+                inputField.classList.add('border-red-500');
+                setTimeout(() => inputField.classList.remove('border-red-500'), 1000);
                 return;
             }
 
@@ -278,25 +295,60 @@
             
             // 2. Animation Starten
             const orb = document.getElementById('orbContainer');
-            orb.classList.add('active'); // Glow up
+            orb.classList.add('active');
             
-            // 3. Berechnungs-Zeit simulieren (Spannungsbogen)
+            // 3. Berechnungs-Zeit simulieren & Matchen
             setTimeout(() => {
-                showResult();
+                const result = matchTopic(inputText);
+                showResult(result);
                 orb.classList.remove('active');
             }, 1500);
         }
 
-        function showResult() {
-            // Zufällige Vorhersage wählen
-            const pred = predictions[Math.floor(Math.random() * predictions.length)];
+        function matchTopic(text) {
+            // Keyword Listen
+            const keywords = {
+                seo: ['seo', 'google', 'suche', 'ranking', 'traffic', 'website'],
+                job: ['job', 'arbeit', 'karriere', 'beruf', 'chef', 'kündigung', 'angst'],
+                money: ['geld', 'budget', 'kosten', 'umsatz', 'roi', 'finanzen'],
+                video: ['video', 'tiktok', 'reel', 'youtube', 'film', 'kamera']
+            };
+
+            let detectedCategory = 'wildcard';
+            let displayTopic = 'Allgemeine Prognose';
+
+            // Scan Logic
+            for (const [cat, words] of Object.entries(keywords)) {
+                if (words.some(word => text.includes(word))) {
+                    detectedCategory = cat;
+                    displayTopic = 'Thema erkannt: ' + cat.toUpperCase();
+                    break;
+                }
+            }
+
+            // Zufälliges Item aus der Kategorie wählen
+            const categoryArray = database[detectedCategory] || database.wildcard;
+            const prediction = categoryArray[Math.floor(Math.random() * categoryArray.length)];
+
+            return { ...prediction, topic: displayTopic };
+        }
+
+        function showResult(data) {
             const randomId = Math.floor(Math.random() * 9000) + 1000;
 
-            // Text setzen
             document.getElementById('predId').innerText = randomId;
-            document.getElementById('predTitle').innerText = pred.title;
-            document.getElementById('predText').innerText = pred.text;
-            document.getElementById('predAction').innerText = pred.action;
+            document.getElementById('topicDetected').innerText = data.topic;
+            
+            // Color Coding für Topic
+            if(data.topic.includes('Thema')) {
+                document.getElementById('topicDetected').className = "text-[10px] font-bold text-green-400 uppercase tracking-widest";
+            } else {
+                document.getElementById('topicDetected').className = "text-[10px] font-bold text-slate-500 uppercase tracking-widest";
+            }
+
+            document.getElementById('predTitle').innerText = data.title;
+            document.getElementById('predText').innerText = data.text;
+            document.getElementById('predAction').innerText = data.action;
 
             // Karte einblenden
             document.getElementById('prophecyCard').classList.add('visible');
@@ -311,4 +363,3 @@
     </script>
 </body>
 </html>
-
