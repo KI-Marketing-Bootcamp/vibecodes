@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at top center, #1e293b 0%, var(--ci-darker) 80%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
 
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px -5px rgba(255, 179, 0, 0.3);
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(255, 179, 0, 0.5);
+        }
+        .btn-gold:active { transform: scale(0.98); }
+
+        /* Quote Box Styling */
+        .moderation-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--ci-gold);
+        }
+
+        /* Animation für neue Frage */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Details/Summary für Behind Scenes */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center py-12 px-4">
+
+    <div class="w-full max-w-4xl flex justify-between items-center mb-12">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 14 </div>
+    </div>
+
+    <main class="max-w-3xl w-full">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                Der Meeting<br><span class="text-[#FFB300]">Checkout-Generator</span>
+            </h1>
+            <p class="text-slate-300 text-lg font-light">
+                Schluss mit "Tschüss, bis dann". <br>
+                Hier ist der perfekte Abschluss für deine Calls in der Adventszeit.
+            </p>
+            
+            <div class="mt-4 inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-slate-400">
+                <span>✨ Ein Projekt von <strong>Alexandra Elena Müller</strong></span>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-8 md:p-10 relative">
+            
+            <div class="mb-8 text-slate-300 leading-relaxed">
+                <p>Falls sie jemand noch nicht kennt, die Check-out-Fragen – es handelt sich um eine Frage, die man am Ende eines Termins in die Runde stellt, um einen produktiven, teils vielleicht auch lustigen, Abschluss zu finden.</p>
+            </div>
+
+            <div class="moderation-box p-6 rounded-r-xl mb-8">
+                <div class="text-[#FFB300] text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <i data-lucide="mic"></i> Moderations-Vorschlag
+                </div>
+                <p class="italic text-slate-200 font-medium">
+                    „Bevor wir uns in die freie Zeit verabschieden, machen wir einen kurzen Check-out, um sicherzustellen, dass wir noch keine Roboter geworden sind. Meine Frage an euch...“
+                </p>
+            </div>
+
+            <div class="min-h-[160px] flex items-center justify-center mb-8">
+                <div id="frage-anzeige-box" class="text-xl md:text-2xl font-bold text-center text-white leading-snug">
+                    (Klicke auf den Button, um die erste Frage zu generieren...)
+                </div>
+            </div>
+
+            <button id="frage-button" class="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2 text-lg shadow-xl">
+                <i data-lucide="dices"></i>
+                Los geht's
+            </button>
+
+        </div>
+
+        <div class="mt-16 border-t border-white/10 pt-10">
+            <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+                <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                            <i data-lucide="code-2" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Behind the Code</h3>
+                            <p class="text-xs text-slate-400">Wie Alexandra dieses Tool gebaut hat</p>
+                        </div>
+                    </div>
+                    <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                        <i data-lucide="chevron-down"></i>
+                    </span>
+                </summary>
+                
+                <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Content > Code</h4>
+                            <p class="text-sm leading-relaxed mb-4">
+                                Dieses Projekt zeigt ein wichtiges Vibecoding-Prinzip: <strong>Die Technik ist trivial, der Inhalt ist King.</strong> 
+                            </p>
+                            <p class="text-sm leading-relaxed">
+                                Technisch gesehen ist das hier nur eine simple Liste (Array). Aber der Mehrwert entsteht durch die Kuration der <em>richtigen</em> Fragen für den <em>richtigen</em> Kontext (Weihnachten & KI). Eine KI kann den Code schreiben, aber Alexandra musste die "Vibes" definieren.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ Tech Stack</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Array:</strong> Eine Liste mit ca. 30 Text-Sätzen.</li>
+                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>Math.random():</strong> Eine Standard-Funktion, um eine zufällige Zahl zu würfeln.</li>
+                                <li class="flex gap-2 items-start"><i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i> <strong>DOM Manipulation:</strong> `innerText` tauscht den Text im HTML aus.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+    </main>
+
+    <div class="w-full text-center py-8 mt-8 border-t border-white/10">
+        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
+            Impressum
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentYear = new Date().getFullYear();
+
+            // Die Fragen-Datenbank
+            const questions = [
+                "Wenn du ChatGPT eine Aufgabe für deine Urlaubszeit übergeben könntest – welche wäre das? (Geschenke einpacken, Smalltalk mit Verwandten, Kochen...?)",
+                "Hast du schon mal eine KI benutzt, um einen Text für eine Grußkarte oder Weihnachtsmail zu schreiben?",
+                "Wie würde der perfekte Prompt lauten, um deinen aktuellen Stresslevel zu beschreiben?",
+                "Wenn eine KI dein Festessen/Wintermenü planen würde – basierend auf deinen Daten: Was käme dabei wohl raus? (Pizza oder 5-Gänge-Menü?)",
+                "Würdest du einem Roboter vertrauen, dein Zuhause zu dekorieren, oder machst du das lieber „analog“?",
+                "Glaubst du, eine KI könnte das perfekte Geschenk für deine Liebsten finden, besser als du selbst?",
+                "Welche unangenehme soziale Interaktion an den Feiertagen würdest du am liebsten an einen Avatar outsourcen?",
+                "Wenn dieses Meeting ein KI-generiertes Bild wäre: Welcher „Glitch“ wäre zu sehen? (Jemand mit 7 Fingern, brennender Hintergrund...?)",
+                "Midjourney vs. Realität: Wie sieht dein Traum-Winterurlaub aus – und wie sieht er realistisch aus?",
+                "Wenn wir das Jahr " + currentYear + " als Daten-Set in eine KI füttern: Wäre das Ergebnis eine Komödie, ein Horrorfilm oder eine Doku?",
+                "Stell dir vor, dein Haustier könnte dank KI plötzlich sprechen. Was würde es zum Thema „Winter“ sagen?",
+                "Welchen „Algorithmus“ wendest du an, um an dunklen Wintertagen gute Laune zu bekommen?",
+                "Wenn du eine eigene KI trainieren könntest, nur um eine Sache im Haushalt zu erledigen: Was wäre ihre einzige Funktion?",
+                "Prompt-Challenge: Beschreibe deine Pläne für die freien Tage in nur 3 Schlagworten.",
+                "Was ist eine analoge Tätigkeit, auf die du dich freust und die keine KI jemals ersetzen kann? (Den Duft von Plätzchen riechen, Schnee anfassen...)",
+                "Vorsatz fürs neue Jahr: Mehr KI-Tools nutzen oder öfter mal das Handy weglegen?",
+                "Turing-Test beim Essen: Erkennst du, ob die Plätzchen selbstgebacken oder gekauft (maschinell) sind?",
+                "Was ist das „menschlichste“ Erlebnis, das du dieses Jahr im Team hattest?",
+                "Welche App löschst du (zumindest geistig) für die Zeit zwischen den Jahren?",
+                "Was war deine größte „Halluzination“ dieses Jahr? (Etwas, bei dem du dachtest, es klappt, aber es war total unrealistisch).",
+                "Wenn du dein nächstes Jahr „vorhersagen“ müsstest wie ein Language Model: Welches Wort kommt am wahrscheinlichsten am häufigsten vor?",
+                "Automatisierung 2.0: Welche nervige Gewohnheit möchtest du im nächsten Jahr „wegautomatisieren“?",
+                "Wie lautet dein persönliches System-Update für das neue Jahr? (Version 2.0, Bugfixes oder neues Feature?)",
+                "Glaubst du, wir werden nächstes Jahr um diese Zeit mehr oder weniger arbeiten, dank der ganzen neuen Tools?",
+                "Wenn du dir für das nächste Jahr ein „Feature“ wünschen dürftest (Superkraft, mehr Geduld, etc.), welches wäre das?",
+                "Was nimmst du aus diesem Jahr mit in deinen „Long Term Memory“ Speicher?",
+                "Welches Buzzword (außer KI) kannst du nicht mehr hören und soll im alten Jahr bleiben?",
+                "Out of Office Message: Schreibt die dieses Jahr der Chatbot oder dein ehrliches Ich?"
+            ];
+
+            const btn = document.getElementById('frage-button');
+            const display = document.getElementById('frage-anzeige-box');
+
+            if(btn && display) {
+                btn.addEventListener('click', function() {
+                    
+                    // Animation Reset
+                    display.classList.remove('fade-in');
+                    void display.offsetWidth; // Trigger Reflow
+
+                    // Zufällige Frage wählen
+                    const randomIndex = Math.floor(Math.random() * questions.length);
+                    
+                    display.innerText = questions[randomIndex]; 
+                    display.classList.add('fade-in'); // Animation start
+
+                    // Button Text ändern
+                    if (btn.innerText.includes("Los geht's")) {
+                        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-5 h-5"></i> Nächste Frage';
+                        lucide.createIcons(); // Icons neu rendern
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
