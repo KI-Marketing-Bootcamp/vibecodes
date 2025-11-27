@@ -2,7 +2,7 @@
 📖 Projektbeschreibung
 Der Vibecoding Adventskalender ist ein interaktives Web-Experiment des KI Marketing Bootcamps. Das Projekt dient nicht nur als weihnachtliches Community-Tool, sondern ist selbst ein Proof-of-Concept für "Vibecoding": Das Prototyping von Software durch Marketing-Experten mithilfe von Generativer KI, ohne tiefgreifende Programmierkenntnisse.
 
-Hinter den 24 Türchen verbergen sich KI-Tools, Lerninhalte und eine interaktive Timeline zur Geschichte der KI im Marketing.
+In diesem Kalender findest du 24 Micro-Apps und interaktive Prototypen, die vollständig mit KI generiert wurden.
 
 ✨ Features
 Interaktives Grid: 24 Türchen, die sich basierend auf dem aktuellen Datum öffnen oder gesperrt bleiben.
