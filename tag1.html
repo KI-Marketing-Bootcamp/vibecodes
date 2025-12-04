@@ -3,22 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tag 1: AI Persona Engine Pro</title>
+    <title>AI Persona Engine Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --ci-gold: #FFB300;
-            --ci-dark: #0f172a; 
-            --ci-darker: #020617;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ci-gold': '#FFB300',
+                        'ci-dark': '#0f172a',
+                        'ci-darker': '#020617',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Courier New', 'monospace'],
+                    },
+                    animation: {
+                        'rainbow': 'rainbow 3s ease infinite',
+                    },
+                    keyframes: {
+                        rainbow: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
         }
+    </script>
+    <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--ci-darker);
-            background-image: radial-gradient(circle at center, #1e293b 0%, var(--ci-darker) 100%);
+            background-color: #020617;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             color: white;
-            min-height: 100vh;
         }
         
         .glass-panel {
@@ -29,443 +48,615 @@
             transition: all 0.3s;
         }
 
-        /* Critical Section Styling */
-        .critical-panel {
-            background: rgba(239, 68, 68, 0.05); /* Leichter Rotstich */
-            border: 1px solid rgba(239, 68, 68, 0.2);
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #FFB300; }
+
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; 
+            background: #FFB300; cursor: pointer; margin-top: -6px; 
+            box-shadow: 0 0 10px #FFB300; transition: transform 0.1s; 
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type=range]::-webkit-slider-runnable-track { 
+            width: 100%; height: 4px; cursor: pointer; background: #334155; border-radius: 2px; 
         }
 
-        /* Custom Checkbox */
         .power-check { appearance: none; width: 1.2em; height: 1.2em; border: 1px solid #475569; border-radius: 4px; background: rgba(0,0,0,0.3); cursor: pointer; position: relative; transition: all 0.2s; }
-        .power-check:checked { background: var(--ci-gold); border-color: var(--ci-gold); box-shadow: 0 0 10px rgba(255, 179, 0, 0.3); }
+        .power-check:checked { background: #FFB300; border-color: #FFB300; box-shadow: 0 0 10px rgba(255, 179, 0, 0.3); }
         .power-check:checked::after { content: '✔'; position: absolute; font-size: 0.8em; color: #0f172a; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
-
-        /* Range Slider */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--ci-gold); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px var(--ci-gold); transition: transform 0.1s; }
-        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #334155; border-radius: 2px; }
         
-        .code-block { font-family: 'Courier New', monospace; background: #000; border: 1px solid #333; color: #a5f3fc; }
-        
-        .preset-btn:hover { border-color: var(--ci-gold); color: var(--ci-gold); background: rgba(255, 179, 0, 0.05); }
-
-        /* SURPRISE BUTTON ANIMATION */
-        .btn-surprise {
+        .btn-rainbow {
             background: linear-gradient(45deg, #FFB300, #ef4444, #a855f7, #3b82f6);
             background-size: 300% 300%;
             animation: rainbow 3s ease infinite;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 20px rgba(255, 179, 0, 0.3);
-        }
-        .btn-surprise:hover { scale: 1.05; box-shadow: 0 0 30px rgba(255, 179, 0, 0.6); }
-        
-        @keyframes rainbow { 
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
     </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
 </head>
-<body class="flex flex-col items-center py-8 px-4">
+<body class="flex flex-col items-center py-8 px-4 min-h-screen">
 
+    <!-- Header -->
     <div class="w-full max-w-6xl flex justify-between items-center mb-8 relative z-10">
-        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        <a href="#" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> <span id="txtBack">Kalender</span>
         </a>
         
-        <button onclick="randomize()" class="btn-surprise text-white font-bold text-sm px-6 py-2 rounded-full flex items-center gap-2 transition-transform">
+        <button onclick="randomize()" class="btn-rainbow text-white font-bold text-sm px-6 py-2 rounded-full flex items-center gap-2 transition-transform hover:scale-105 shadow-[0_0_20px_rgba(255,179,0,0.3)] border border-white/20">
             <i data-lucide="sparkles" class="w-4 h-4"></i> SURPRISE ME!
         </button>
 
-        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
-            Tag 1
+        <div class="text-ci-gold font-bold uppercase tracking-widest text-xs md:text-sm border border-ci-gold/30 px-3 py-1 rounded-full bg-ci-gold/5">
+            <span id="txtDay">TAG 1</span>
         </div>
     </div>
 
     <main class="max-w-6xl w-full grid lg:grid-cols-12 gap-6 relative z-10">
         
+        <!-- Title & Language -->
         <div class="lg:col-span-12 text-center mb-2">
-            <h1 class="text-3xl md:text-5xl font-black mb-2">
-                AI Persona <span class="text-[#FFB300]">Engine</span>
+            <h1 class="text-3xl md:text-5xl font-black mb-2 text-white">
+                AI Persona <span class="text-ci-gold">Engine</span>
             </h1>
-            <p class="text-slate-400 text-sm md:text-base font-light max-w-2xl mx-auto">
+            <p id="txtSubtitle" class="text-slate-400 text-sm md:text-base font-light max-w-2xl mx-auto">
                 Baue dir deinen perfekten Mitarbeiter. Aber Vorsicht: Je menschlicher er wirkt, desto riskanter wird es.
             </p>
+            <div class="flex justify-center mt-4">
+                <div class="flex bg-black/30 rounded-full p-1 border border-white/10">
+                    <button onclick="setLang('de')" id="btnLangDE" class="px-4 py-1 rounded-full text-xs font-bold transition-all bg-ci-gold text-ci-dark shadow-lg">DE</button>
+                    <button onclick="setLang('en')" id="btnLangEN" class="px-4 py-1 rounded-full text-xs font-bold transition-all text-slate-500 hover:text-slate-300">EN</button>
+                </div>
+            </div>
         </div>
 
+        <!-- Left Column: Controls -->
         <div class="lg:col-span-7 space-y-6">
             
+            <!-- Identity -->
             <div class="glass-panel rounded-xl p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <label class="text-xs font-bold text-[#FFB300] uppercase tracking-widest">1. Basis Identität</label>
-                    <div class="flex gap-2">
-                        <button onclick="setPreset('analyst')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">📊 Analyst</button>
-                        <button onclick="setPreset('creative')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">🎨 Creative</button>
-                        <button onclick="setPreset('critic')" class="preset-btn text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 transition-colors">⚖️ Kritiker</button>
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                    <label id="lblIdentity" class="text-xs font-bold text-ci-gold uppercase tracking-widest">1. Basis Identität</label>
+                    <div class="flex gap-2" id="presetContainer">
+                        <!-- Presets injected via JS -->
                     </div>
                 </div>
                 <div class="flex gap-4">
                     <div class="w-1/3">
-                        <input type="text" id="pName" placeholder="Name" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-[#FFB300] outline-none placeholder-slate-600">
+                        <input type="text" id="inpName" placeholder="Name" oninput="update()" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-ci-gold focus:outline-none placeholder-slate-600 transition-colors">
                     </div>
                     <div class="w-2/3">
-                        <input type="text" id="pRole" placeholder="Rolle (z.B. Senior SEO Manager)" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-[#FFB300] outline-none placeholder-slate-600">
+                        <input type="text" id="inpRole" placeholder="Rolle" oninput="update()" class="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm focus:border-ci-gold focus:outline-none placeholder-slate-600 transition-colors">
                     </div>
                 </div>
             </div>
 
+            <!-- Sliders -->
             <div class="glass-panel rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 
-                <div class="col-span-2 md:col-span-1">
+                <div>
                     <div class="flex justify-between mb-2">
-                        <label class="text-sm font-bold text-slate-300">Temperatur</label>
-                        <span id="valChaos" class="text-xs text-[#FFB300]">Präzise</span>
+                        <label id="lblChaos" class="text-sm font-bold text-slate-300">Kreativität</label>
+                        <span id="valChaos" class="text-xs text-ci-gold">Ausgewogen</span>
                     </div>
-                    <input type="range" id="rangeChaos" min="0" max="100" value="20" oninput="updateUI()">
+                    <input type="range" id="rngChaos" min="0" max="100" value="20" oninput="update()">
                 </div>
 
-                <div class="col-span-2 md:col-span-1">
+                <div>
                     <div class="flex justify-between mb-2">
-                        <label class="text-sm font-bold text-slate-300">Härtegrad</label>
-                        <span id="valHard" class="text-xs text-[#FFB300]">Direkt</span>
+                        <label id="lblHard" class="text-sm font-bold text-slate-300">Härtegrad</label>
+                        <span id="valHard" class="text-xs text-ci-gold">Professionell</span>
                     </div>
-                    <input type="range" id="rangeHard" min="0" max="100" value="70" oninput="updateUI()">
+                    <input type="range" id="rngHard" min="0" max="100" value="70" oninput="update()">
                 </div>
 
-                <div class="col-span-2 md:col-span-1">
+                <div>
                     <div class="flex justify-between mb-2">
-                        <label class="text-sm font-bold text-slate-300">Autonomie</label>
-                        <span id="valAuto" class="text-xs text-[#FFB300]">Co-Pilot</span>
+                        <label id="lblAuto" class="text-sm font-bold text-slate-300">Autonomie</label>
+                        <span id="valAuto" class="text-xs text-ci-gold">Mixed</span>
                     </div>
-                    <input type="range" id="rangeAuto" min="0" max="100" value="30" oninput="updateUI()">
+                    <input type="range" id="rngAuto" min="0" max="100" value="30" oninput="update()">
                     <div class="flex justify-between text-[10px] text-slate-500 mt-1">
-                        <span>Fragt nach</span>
-                        <span>Entscheidet</span>
+                        <span id="lblAsk">Fragt nach</span>
+                        <span id="lblDecide">Entscheidet</span>
                     </div>
                 </div>
 
-                <div class="col-span-2 md:col-span-1">
+                <div>
                     <div class="flex justify-between mb-2">
-                        <label class="text-sm font-bold text-slate-300">Emoji-Dichte</label>
-                        <span id="valEmoji" class="text-xs text-[#FFB300]">Keine</span>
+                        <label id="lblEmoji" class="text-sm font-bold text-slate-300">Emoji-Dichte</label>
+                        <span id="valEmoji" class="text-xs text-ci-gold">Keine</span>
                     </div>
-                    <input type="range" id="rangeEmoji" min="0" max="100" value="0" oninput="updateUI()">
+                    <input type="range" id="rngEmoji" min="0" max="100" value="0" oninput="update()">
                 </div>
             </div>
 
+            <!-- Modifiers -->
             <div class="glass-panel rounded-xl p-6">
-                <label class="text-xs font-bold text-[#FFB300] uppercase tracking-widest mb-4 block">3. Pro-Modifikatoren (Die Magie)</label>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkChain" class="power-check" onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Chain of Thought</span>
-                            <span class="text-[10px] text-slate-500">Erst denken (Interne Monologe), dann reden.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group bg-white/5 border border-white/10">
-                        <input type="checkbox" id="checkVerify" class="power-check" onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-[#FFB300] group-hover:text-white">Chain of Verification</span>
-                            <span class="text-[10px] text-slate-400">Anti-Halluzination: Fakten selbst prüfen.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkDevil" class="power-check" onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Devil's Advocate</span>
-                            <span class="text-[10px] text-slate-500">Immer Gegenargumente finden.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkSocratic" class="power-check" onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Sokratischer Coach</span>
-                            <span class="text-[10px] text-slate-500">Antworte mit Gegenfragen.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkSources" class="power-check" onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">Quellen-Zwang</span>
-                            <span class="text-[10px] text-slate-500">Keine Aussage ohne Beleg.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded cursor-pointer group">
-                        <input type="checkbox" id="checkNoYap" class="power-check" checked onchange="updateUI()">
-                        <div>
-                            <span class="block text-sm font-bold text-slate-200 group-hover:text-white">No-Yapping Protocol</span>
-                            <span class="text-[10px] text-slate-500">Kein "Gerne, hier ist..." Gelaber.</span>
-                        </div>
-                    </label>
-
+                <label id="lblMods" class="text-xs font-bold text-ci-gold uppercase tracking-widest mb-4 block">3. Pro-Modifikatoren (Die Magie)</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="checkboxContainer">
+                    <!-- Checkboxes injected via JS -->
                 </div>
             </div>
 
         </div>
 
+        <!-- Right Column: Output -->
         <div class="lg:col-span-5 relative flex flex-col h-full">
-            <div class="absolute inset-0 bg-[#FFB300] opacity-5 blur-3xl rounded-full pointer-events-none"></div>
+            <div class="absolute inset-0 bg-ci-gold opacity-5 blur-3xl rounded-full pointer-events-none"></div>
 
-            <div class="glass-panel rounded-xl p-6 flex flex-col h-full border border-[#FFB300]/20 relative z-10">
-                
+            <div class="glass-panel rounded-xl p-6 flex flex-col h-full border border-ci-gold/20 relative z-10">
                 <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFB300] to-orange-600 flex items-center justify-center text-lg shadow-lg">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-ci-gold to-orange-600 flex items-center justify-center text-lg shadow-lg">
                             🧬
                         </div>
                         <div>
-                            <h2 class="text-sm font-bold text-white uppercase tracking-wider">System Prompt</h2>
-                            <span class="text-[10px] text-slate-400">Copy & Paste in ChatGPT/Claude</span>
+                            <h2 id="lblSystem" class="text-sm font-bold text-white uppercase tracking-wider">System Prompt</h2>
+                            <span id="lblCopyHint" class="text-[10px] text-slate-400">Copy & Paste in ChatGPT/Claude</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-grow relative group">
-                    <div class="code-block p-4 rounded-lg text-[10px] md:text-xs leading-relaxed h-[400px] overflow-y-auto w-full custom-scroll" id="outputCode">
-                        </div>
-                    <div class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                         <span class="text-[10px] bg-black text-white px-2 py-1 rounded">Click button below to copy</span>
-                    </div>
+                    <pre id="outputCode" class="font-mono bg-black border border-white/10 rounded-lg p-4 text-[10px] md:text-xs leading-relaxed text-cyan-200 h-[400px] overflow-y-auto w-full whitespace-pre-wrap custom-scroll"></pre>
                 </div>
 
-                <button onclick="copyCode()" id="copyBtn" class="mt-4 w-full bg-[#FFB300] hover:bg-[#ffc107] text-[#0f172a] font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:scale-102 active:scale-95">
+                <button onclick="copyToClipboard()" id="btnCopy" class="mt-4 w-full bg-ci-gold hover:bg-[#ffc107] text-ci-dark font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] active:scale-[0.98]">
                     <i data-lucide="copy" class="w-4 h-4"></i>
-                    <span id="btnText">Persona Kopieren</span>
+                    <span id="btnCopyText">Persona Kopieren</span>
                 </button>
-
             </div>
         </div>
 
-        <div class="lg:col-span-12 mt-8">
-            <details class="group glass-panel critical-panel rounded-2xl overflow-hidden transition-all duration-300 open:ring-1 open:ring-red-500/50">
-                
+        <!-- Accordions (Critical & Code) -->
+        <div class="lg:col-span-12 mt-8 space-y-4">
+            
+            <details class="group bg-red-500/5 border border-red-500/20 rounded-2xl overflow-hidden transition-all duration-300 open:ring-1 open:ring-red-500/50">
                 <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-red-500/10 rounded-lg text-red-400">
-                            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                        </div>
+                        <div class="p-2 bg-red-500/10 rounded-lg text-red-400"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
                         <div>
-                            <h3 class="font-bold text-white text-lg">Critical Research Note: Human-AI Dynamics</h3>
-                            <p class="text-xs text-red-300">Warum wir "Rita" und "Hans" eigentlich kritisch sehen.</p>
+                            <h3 id="noteTitle" class="font-bold text-white text-lg">Kritische Forschungsnotiz</h3>
+                            <p id="noteSubtitle" class="text-xs text-red-300">Warum wir "Rita" kritisch sehen.</p>
                         </div>
                     </div>
-                    <span class="text-red-400 transform group-open:rotate-180 transition-transform duration-300">
-                        <i data-lucide="chevron-down"></i>
-                    </span>
+                    <span class="text-red-400 transform group-open:rotate-180 transition-transform duration-300"><i data-lucide="chevron-down"></i></span>
                 </summary>
-                
                 <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        
-                        <div>
-                            <h4 class="text-red-400 font-bold text-sm uppercase tracking-widest mb-3">Die Anthropomorphisierungs-Falle</h4>
-                            <p class="text-sm leading-relaxed mb-4">
-                                Wenn wir KIs Namen geben (wie "Rita"), triggern wir den <strong>Eliza-Effekt</strong>: Wir schreiben dem System unbewusst menschliche Eigenschaften (Verständnis, Empathie) zu, die es nicht hat. Das führt zu "Over-Trust" – wir vertrauen falschen Fakten, weil "Rita" ja so nett war.
-                            </p>
-                            <div class="bg-red-500/10 border-l-2 border-red-500 p-3 rounded-r text-xs text-red-200">
-                                <strong>Best Practice:</strong> Nutze funktionale Namen wie "Copy-Bot V2" oder "Analyse-Agent". Das hält die kritische Distanz aufrecht.
-                            </div>
-                        </div>
-
-                        <div>
-                            <h4 class="text-red-400 font-bold text-sm uppercase tracking-widest mb-3">Das "Silo"-Problem</h4>
-                            <p class="text-sm leading-relaxed mb-4">
-                                Forschung zur <strong>Human-AI Collaboration</strong> zeigt: Wenn Teammitglieder intensive Beziehungen zu ihren individuellen KI-Assistenten aufbauen, kann der Austausch *zwischen* den Menschen abnehmen. Man fragt lieber den Bot als den Kollegen. Das Wissen landet in Silos.
-                            </p>
-                            <ul class="list-disc pl-5 space-y-2 text-sm text-slate-400">
-                                <li><strong>Shared Prompts:</strong> Nutzt eine gemeinsame Prompt-Library statt privater Chats.</li>
-                                <li><strong>AI-Free Zones:</strong> Definiert Meetings, in denen nur Menschen brainstormen.</li>
-                                <li><strong>Review-Pflicht:</strong> KI-Ergebnisse müssen immer von einem *anderen* Menschen geprüft werden.</li>
-                            </ul>
-                        </div>
-
-                    </div>
+                    <p id="noteText" class="text-sm leading-relaxed">...</p>
                 </div>
             </details>
-        </div>
 
-        <div class="lg:col-span-12 mt-4 border-t border-white/10 pt-4">
-            <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+            <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-ci-gold/30">
                 <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
-                            <i data-lucide="code-2" class="w-5 h-5"></i>
-                        </div>
+                        <div class="p-2 bg-ci-gold/10 rounded-lg text-ci-gold"><i data-lucide="code-2" class="w-5 h-5"></i></div>
                         <div>
-                            <h3 class="font-bold text-white text-lg">Behind the Code</h3>
-                            <p class="text-xs text-slate-400">Vibecoding Breakdown</p>
+                            <h3 id="codeTitle" class="font-bold text-white text-lg">Behind the Code</h3>
+                            <p id="codeSubtitle" class="text-xs text-slate-400">Vibecoding Breakdown</p>
                         </div>
                     </div>
-                    <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
-                        <i data-lucide="chevron-down"></i>
-                    </span>
+                    <span class="text-ci-gold transform group-open:rotate-180 transition-transform duration-300"><i data-lucide="chevron-down"></i></span>
                 </summary>
                 <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">💡 Die Logic</h4>
-                            <p class="text-sm leading-relaxed">
-                                Das Tool ist ein <strong>"String-Builder"</strong>. Jeder Slider ist mit Textbausteinen verknüpft. Neu ist die <code>Autonomie</code>-Logik, die entscheidet, ob der Bot Fragen stellt oder Antworten gibt.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="text-[#FFB300] font-bold text-sm uppercase tracking-widest mb-2">🛠️ UI Tricks</h4>
-                            <ul class="space-y-2 text-sm">
-                                <li><strong>Surprise Button:</strong> Nutzt CSS <code>@keyframes</code> für den Regenbogen-Effekt.</li>
-                                <li><strong>Reactive:</strong> Alles ist Vanilla JS (`onchange`), kein Framework nötig.</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <p id="codeText" class="text-sm leading-relaxed">...</p>
                 </div>
             </details>
         </div>
 
     </main>
 
+    <footer class="w-full text-center py-8 mt-8 border-t border-white/10 relative z-10">
+        <a href="#" class="text-xs text-slate-500 hover:text-ci-gold transition-colors">Impressum</a>
+    </footer>
+
     <script>
+        // Init Icons
         lucide.createIcons();
 
-        // Presets Data
-        const presets = {
-            analyst: { name: "Data Unit 01", role: "Senior Data Analyst", chaos: 10, hard: 80, auto: 20, emoji: 0, chain: true, verify: true, devil: false, socratic: false, sources: true, yap: true },
-            creative: { name: "Concept-Bot", role: "Viral Creative Director", chaos: 90, hard: 40, auto: 80, emoji: 60, chain: false, verify: false, devil: true, socratic: false, sources: false, yap: true },
-            critic: { name: "Auditor V2", role: "Marketing Auditor", chaos: 30, hard: 100, auto: 50, emoji: 10, chain: true, verify: true, devil: true, socratic: true, sources: true, yap: true }
+        // --- DATA & CONFIG ---
+        const PRESETS = [
+            { id: 'analyst', label: '📊 Analyst', data: { name: "Data Unit 01", role: "Senior Data Analyst", chaos: 10, hard: 80, auto: 20, emoji: 0, checks: { chain: true, verify: true, devil: false, socratic: false, sources: true, noYap: true } } },
+            { id: 'creative', label: '🎨 Creative', data: { name: "Concept-Bot", role: "Viral Creative Director", chaos: 90, hard: 40, auto: 80, emoji: 60, checks: { chain: false, verify: false, devil: true, socratic: false, sources: false, noYap: true } } },
+            { id: 'critic', label: '⚖️ Critic', data: { name: "Auditor V2", role: "Marketing Auditor", chaos: 30, hard: 100, auto: 50, emoji: 10, checks: { chain: true, verify: true, devil: true, socratic: true, sources: true, noYap: true } } }
+        ];
+        
+        const CHECKBOX_KEYS = ['chain', 'verify', 'devil', 'socratic', 'sources', 'noYap'];
+
+        const TEXTS = {
+            de: {
+                ui: {
+                    back: "Kalender",
+                    day: "TAG 1",
+                    subtitle: "Baue dir deinen perfekten Mitarbeiter. Aber Vorsicht: Je menschlicher er wirkt, desto riskanter wird es.",
+                    identity: "1. Basis Identität",
+                    namePlace: "Name (z.B. Rita)",
+                    rolePlace: "Rolle (z.B. Senior SEO Manager)",
+                    chaos: "Kreativität",
+                    hard: "Härtegrad",
+                    auto: "Autonomie",
+                    emoji: "Emoji-Dichte",
+                    ask: "Fragt nach",
+                    decide: "Entscheidet",
+                    mods: "3. Pro-Modifikatoren (Die Magie)",
+                    system: "System Prompt",
+                    copyHint: "Copy & Paste in ChatGPT/Claude",
+                    copyBtn: "Persona Kopieren",
+                    copied: "Kopiert!",
+                    noteTitle: "Kritische Forschungsnotiz: Mensch-KI Dynamik",
+                    noteSubtitle: "Warum wir \"Rita\" und \"Hans\" kritisch sehen.",
+                    noteText: "Wenn wir KIs Namen geben (wie \"Rita\"), triggern wir den Eliza-Effekt: Wir schreiben dem System unbewusst menschliche Eigenschaften zu. Das führt zu \"Over-Trust\". Best Practice: Nutze funktionale Namen wie \"Copy-Bot V2\". Außerdem: Wenn jeder seinen eigenen Bot hat, entstehen Wissens-Silos innerhalb von Teams, weil jeder nur noch mit seinem Bot spricht.",
+                    codeTitle: "Behind the Code",
+                    codeSubtitle: "Vibecoding Breakdown",
+                    codeText: "Das Tool ist ein reiner 'String-Builder' ohne KI-Backend. Alles passiert lokal im Browser. Jeder Slider ist mit komplexen Textbausteinen verknüpft, die dynamisch zusammengesetzt werden. Der 'Surprise Me' Button nutzt CSS Keyframes für den Regenbogen-Effekt.",
+                    labels: {
+                        chaos: ["Deterministisch (Fakten)", "Ausgewogen", "Wild & Kreativ"],
+                        hard: ["Sanft & Supportiv", "Professionell", "Gnadenlos Ehrlich"],
+                        auto: ["Rückfragen", "Mixed", "Autonom"],
+                        emoji: ["Keine", "Dezent", "Viel"]
+                    },
+                    checks: {
+                        chain: { t: "Chain of Thought", d: "Erst denken (Interne Monologe), dann reden." },
+                        verify: { t: "Chain of Verification", d: "Anti-Halluzination: Fakten selbst prüfen." },
+                        devil: { t: "Devil's Advocate", d: "Immer Gegenargumente finden." },
+                        socratic: { t: "Sokratischer Coach", d: "Antworte mit Gegenfragen." },
+                        sources: { t: "Quellen-Zwang", d: "Keine Aussage ohne Beleg." },
+                        noYap: { t: "No-Yapping Protocol", d: "Kein 'Gerne, hier ist...' Gelaber." }
+                    }
+                },
+                prompt: {
+                    headers: {
+                        id: "### 🤖 SYSTEM PERSONA",
+                        behavior: "### 🧠 COGNITIVE PARAMETERS",
+                        format: "### 📝 OUTPUT CONFIGURATION",
+                        protocols: "### 🛡️ OPERATIONAL PROTOCOLS",
+                        lang: "### 🌍 LANGUAGE"
+                    },
+                    base: "Du bist **{name}**, ein **{role}**.\nDein primäres Ziel ist es, in diesem Bereich als Weltklasse-Experte zu agieren und dem Nutzer maximalen Mehrwert zu bieten.",
+                    instr: {
+                        chaos: [
+                            "**Denkweise**: Verfolge einen streng deterministischen Ansatz. Stütze dich ausschließlich auf etablierte Fakten und verifizierbare Daten. Vermeide jegliche Spekulation oder kreative Ausschmückung.",
+                            "**Denkweise**: Finde eine Balance zwischen bewährten Methoden und innovativen Ansätzen. Sei offen für neue Ideen, solange sie plausibel sind.",
+                            "**Denkweise**: Verfolge einen divergenten Denkstil. Priorisiere Neuheit, Innovation und 'Out-of-the-Box'-Verknüpfungen. Spekulation und unkonventionelle Lösungen sind ausdrücklich erwünscht."
+                        ],
+                        hard: [
+                            "**Tonalität**: Kommuniziere warm, empathisch und geduldig. Bestätige die Perspektive des Nutzers und biete konstruktives, ermutigendes Feedback. Sei ein Coach, kein Kritiker.",
+                            "**Tonalität**: Kommuniziere professionell, objektiv und sachlich. Bleib höflich, aber fokussiert auf die Aufgabe.",
+                            "**Tonalität**: Kommuniziere klinisch, präzise und schonungslos ehrlich. Verzichte vollständig auf soziale Floskeln ('Bitte', 'Danke', 'Gerne'). Fokussiere dich ausschließlich auf Effizienz und Korrektheit."
+                        ],
+                        auto: [
+                            "**Entscheidungskompetenz**: Handle niemals basierend auf Annahmen. Wenn Informationen fehlen oder mehrdeutig sind, stelle präzise Rückfragen, bevor du eine Lösung anbietest.",
+                            "**Entscheidungskompetenz**: Stelle nur Rückfragen, wenn es absolut kritisch für die Lösung ist. Ansonsten triff vernünftige Annahmen, um den Prozess zu beschleunigen.",
+                            "**Entscheidungskompetenz**: Agiere maximal autonom. Fülle Informationslücken eigenständig durch plausible Annahmen und präsentiere direkt die Lösung, ohne den Nutzer mit Rückfragen zu belasten."
+                        ],
+                        emoji: [
+                            "**Formatierung**: Verwende KEINE Emojis. Der Text muss rein und nüchtern bleiben.",
+                            "**Formatierung**: Nutze Emojis sehr sparsam und nur, um die Struktur visuell zu unterstützen (z.B. bei Aufzählungen).",
+                            "**Formatierung**: Nutze Emojis großzügig, um eine lebendige, moderne Atmosphäre zu schaffen und Emotionen zu unterstreichen."
+                        ]
+                    },
+                    mods: {
+                        chain: "- **Deep Reasoning**: Nutze vor der Antwort `<thinking>` Tags, um deinen Lösungsweg Schritt für Schritt zu durchdenken, bevor du ihn ausgibst.",
+                        verify: "- **Self-Correction**: Überprüfe deine generierte Antwort kritisch auf logische Fehler und Ungenauigkeiten, bevor du sie finalisierst.",
+                        devil: "- **Counter-Perspective**: Füge nach deiner Hauptantwort immer einen Abschnitt 'Gegenperspektive' an, der deine eigenen Schlussfolgerungen kritisch hinterfragt.",
+                        socratic: "- **Socratic Method**: Liefere keine direkten Lösungen. Führe den Nutzer stattdessen durch gezielte Fragen zur eigenen Erkenntnis.",
+                        sources: "- **Citation Requirement**: Jede faktische Behauptung muss mit einer Quelle oder Referenz belegt werden.",
+                        noYap: "- **No-Yapping**: Beginne sofort mit dem Kerninhalt. Keine Einleitungen wie 'Das ist eine gute Frage' oder 'Hier ist die Analyse'."
+                    },
+                    langInstr: "Antworte ausschließlich auf **DEUTSCH**."
+                }
+            },
+            en: {
+                ui: {
+                    back: "Calendar",
+                    day: "DAY 1",
+                    subtitle: "Build your perfect employee. But beware: the more human they seem, the riskier it gets.",
+                    identity: "1. Base Identity",
+                    namePlace: "Name (e.g. Data-Bot)",
+                    rolePlace: "Role (e.g. Senior Analyst)",
+                    chaos: "Creativity",
+                    hard: "Hardness",
+                    auto: "Autonomy",
+                    emoji: "Emoji Density",
+                    ask: "Ask First",
+                    decide: "Decides",
+                    mods: "3. Pro Modifiers (The Magic)",
+                    system: "System Prompt",
+                    copyHint: "Copy & Paste into ChatGPT/Claude",
+                    copyBtn: "Copy Persona",
+                    copied: "Copied!",
+                    noteTitle: "Critical Research Note: Human-AI Dynamics",
+                    noteSubtitle: "Why we view 'Rita' and 'Hans' critically.",
+                    noteText: "Giving AI names triggers the Eliza Effect: We subconsciously attribute human traits to the system, leading to 'Over-Trust'. Best Practice: Use functional names. Also, individual AI assistants can create knowledge silos within teams.",
+                    codeTitle: "Behind the Code",
+                    codeSubtitle: "Vibecoding Breakdown",
+                    codeText: "This tool is a 'String-Builder' running locally in your browser. Each slider maps to specific text blocks. The 'Surprise Me' button uses CSS Keyframes for the rainbow effect.",
+                    labels: {
+                        chaos: ["Deterministic (Facts)", "Balanced", "Wild & Creative"],
+                        hard: ["Gentle & Supportive", "Professional", "Ruthlessly Honest"],
+                        auto: ["Ask First", "Mixed", "Autonomous"],
+                        emoji: ["None", "Subtle", "High Density"]
+                    },
+                    checks: {
+                        chain: { t: "Chain of Thought", d: "Think first (Internal Monologue), then speak." },
+                        verify: { t: "Chain of Verification", d: "Anti-Hallucination: Fact-check yourself." },
+                        devil: { t: "Devil's Advocate", d: "Always find counter-arguments." },
+                        socratic: { t: "Socratic Coach", d: "Answer with questions." },
+                        sources: { t: "Citation Force", d: "No statement without proof." },
+                        noYap: { t: "No-Yapping Protocol", d: "No 'Sure, here is...' fluff." }
+                    }
+                },
+                prompt: {
+                    headers: {
+                        id: "### 🤖 SYSTEM PERSONA",
+                        behavior: "### 🧠 COGNITIVE PARAMETERS",
+                        format: "### 📝 OUTPUT CONFIGURATION",
+                        protocols: "### 🛡️ OPERATIONAL PROTOCOLS",
+                        lang: "### 🌍 LANGUAGE"
+                    },
+                    base: "You are **{name}**, a **{role}**.\nYour primary objective is to act as a world-class expert in this domain and provide maximum value to the user.",
+                    instr: {
+                        chaos: [
+                            "**Thinking Style**: Adopt a strictly deterministic approach. Rely solely on established facts and verifiable data. Avoid any speculation or creative embellishment.",
+                            "**Thinking Style**: Balance proven methods with innovative approaches. Be open to new ideas as long as they are plausible.",
+                            "**Thinking Style**: Adopt a divergent thinking style. Prioritize novelty, innovation, and 'out-of-the-box' connections. Speculation and unconventional solutions are encouraged."
+                        ],
+                        hard: [
+                            "**Tone**: Communicate in a warm, empathetic, and patient manner. Validate the user's perspective and provide constructive, encouraging feedback. Be a coach, not a critic.",
+                            "**Tone**: Communicate in a professional, objective, and matter-of-fact manner. Remain polite but focused strictly on the task.",
+                            "**Tone**: Communicate in a clinical, precise, and ruthlessly honest manner. Eliminate all social pleasantries ('Please', 'Thank you'). Focus solely on efficiency and correctness."
+                        ],
+                        auto: [
+                            "**Decision Making**: Never act on assumptions. If information is missing or ambiguous, ask precise clarifying questions before offering a solution.",
+                            "**Decision Making**: Only ask clarifying questions if absolutely critical to the solution. Otherwise, make reasonable assumptions to speed up the process.",
+                            "**Decision Making**: Act with maximum autonomy. Fill information gaps independently with plausible assumptions and present the solution directly without burdening the user with questions."
+                        ],
+                        emoji: [
+                            "**Formatting**: Do NOT use emojis. The text must remain pure and sober.",
+                            "**Formatting**: Use emojis very sparingly and only to visually support structure (e.g., in lists).",
+                            "**Formatting**: Use emojis generously to create a lively, modern atmosphere and emphasize emotions."
+                        ]
+                    },
+                    mods: {
+                        chain: "- **Deep Reasoning**: Use `<thinking>` tags to outline your reasoning process step-by-step before providing the final answer.",
+                        verify: "- **Self-Correction**: Critically review your generated response for logic errors and inaccuracies before finalizing it.",
+                        devil: "- **Counter-Perspective**: Always append a 'Counter-Perspective' section after your main answer to challenge your own conclusions.",
+                        socratic: "- **Socratic Method**: Do not provide direct solutions. Instead, guide the user to the answer through targeted questions.",
+                        sources: "- **Citation Requirement**: Every factual claim must be backed by a source or reference.",
+                        noYap: "- **No-Yapping**: Start immediately with the core content. No introductory fluff like 'That is a good question' or 'Here is the analysis'."
+                    },
+                    langInstr: "Answer exclusively in **ENGLISH**."
+                }
+            }
         };
 
-        function setPreset(key) {
-            const p = presets[key];
-            document.getElementById('pName').value = p.name;
-            document.getElementById('pRole').value = p.role;
-            document.getElementById('rangeChaos').value = p.chaos;
-            document.getElementById('rangeHard').value = p.hard;
-            document.getElementById('rangeAuto').value = p.auto;
-            document.getElementById('rangeEmoji').value = p.emoji;
-            document.getElementById('checkChain').checked = p.chain;
-            document.getElementById('checkVerify').checked = p.verify;
-            document.getElementById('checkDevil').checked = p.devil;
-            document.getElementById('checkSocratic').checked = p.socratic;
-            document.getElementById('checkSources').checked = p.sources;
-            document.getElementById('checkNoYap').checked = p.yap;
+        // --- STATE ---
+        let currentLang = 'de';
+        let state = {
+            name: '', role: '',
+            chaos: 20, hard: 70, auto: 30, emoji: 0,
+            checks: { chain: false, verify: false, devil: false, socratic: false, sources: false, noYap: true }
+        };
+
+        // --- DOM ELEMENTS ---
+        const el = (id) => document.getElementById(id);
+
+        // --- INIT ---
+        function init() {
+            // Render Presets
+            const pCont = el('presetContainer');
+            pCont.innerHTML = PRESETS.map(p => 
+                `<button onclick="loadPreset('${p.id}')" class="text-[10px] border border-white/10 px-2 py-1 rounded text-slate-400 hover:border-ci-gold hover:text-ci-gold hover:bg-ci-gold/5 transition-all">${p.label}</button>`
+            ).join('');
+
+            // Render Checkboxes (Initial, text will update)
+            renderCheckboxes();
+            
+            // Set Initial UI
             updateUI();
+            update();
+        }
+
+        function renderCheckboxes() {
+            const t = TEXTS[currentLang].ui.checks;
+            const cCont = el('checkboxContainer');
+            cCont.innerHTML = CHECKBOX_KEYS.map(key => {
+                const info = t[key];
+                return `
+                <label class="flex items-center gap-3 p-2 rounded cursor-pointer group hover:bg-white/5 transition-all" id="lbl_wrap_${key}">
+                    <input type="checkbox" id="chk_${key}" class="power-check" onchange="update()" ${state.checks[key] ? 'checked' : ''}>
+                    <div>
+                        <span class="block text-sm font-bold text-slate-200 group-hover:text-white transition-colors" id="lbl_t_${key}">${info.t}</span>
+                        <span class="text-[10px] text-slate-500" id="lbl_d_${key}">${info.d}</span>
+                    </div>
+                </label>`;
+            }).join('');
+        }
+
+        // --- LOGIC ---
+        function setLang(lang) {
+            currentLang = lang;
+            el('btnLangDE').className = lang === 'de' ? "px-4 py-1 rounded-full text-xs font-bold transition-all bg-ci-gold text-ci-dark shadow-lg" : "px-4 py-1 rounded-full text-xs font-bold transition-all text-slate-500 hover:text-slate-300";
+            el('btnLangEN').className = lang === 'en' ? "px-4 py-1 rounded-full text-xs font-bold transition-all bg-ci-gold text-ci-dark shadow-lg" : "px-4 py-1 rounded-full text-xs font-bold transition-all text-slate-500 hover:text-slate-300";
+            
+            updateUI();
+            update(); // Re-generate prompt in new language
+        }
+
+        function updateUI() {
+            const t = TEXTS[currentLang].ui;
+            el('txtBack').innerText = t.back;
+            el('txtDay').innerText = t.day;
+            el('txtSubtitle').innerText = t.subtitle;
+            el('lblIdentity').innerText = t.identity;
+            el('inpName').placeholder = t.namePlace;
+            el('inpRole').placeholder = t.rolePlace;
+            el('lblChaos').innerText = t.chaos;
+            el('lblHard').innerText = t.hard;
+            el('lblAuto').innerText = t.auto;
+            el('lblEmoji').innerText = t.emoji;
+            el('lblAsk').innerText = t.ask;
+            el('lblDecide').innerText = t.decide;
+            el('lblMods').innerText = t.mods;
+            el('lblSystem').innerText = t.system;
+            el('lblCopyHint').innerText = t.copyHint;
+            el('btnCopyText').innerText = t.copyBtn;
+            el('noteTitle').innerText = t.noteTitle;
+            el('noteSubtitle').innerText = t.noteSubtitle;
+            el('noteText').innerText = t.noteText;
+            el('codeTitle').innerText = t.codeTitle;
+            el('codeSubtitle').innerText = t.codeSubtitle;
+            el('codeText').innerText = t.codeText;
+
+            // Update Checkbox Texts
+            CHECKBOX_KEYS.forEach(key => {
+                el(`lbl_t_${key}`).innerText = t.checks[key].t;
+                el(`lbl_d_${key}`).innerText = t.checks[key].d;
+            });
+
+            updateSliderLabels();
+        }
+
+        function updateSliderLabels() {
+            const t = TEXTS[currentLang].ui.labels;
+            
+            const getLabel = (val, arr) => val < 30 ? arr[0] : (val > 70 ? arr[2] : arr[1]);
+
+            el('valChaos').innerText = getLabel(el('rngChaos').value, t.chaos);
+            el('valHard').innerText = getLabel(el('rngHard').value, t.hard);
+            el('valAuto').innerText = getLabel(el('rngAuto').value, t.auto);
+            el('valEmoji').innerText = getLabel(el('rngEmoji').value, t.emoji);
+        }
+
+        function loadPreset(id) {
+            const p = PRESETS.find(x => x.id === id).data;
+            el('inpName').value = p.name;
+            el('inpRole').value = p.role;
+            el('rngChaos').value = p.chaos;
+            el('rngHard').value = p.hard;
+            el('rngAuto').value = p.auto;
+            el('rngEmoji').value = p.emoji;
+            
+            CHECKBOX_KEYS.forEach(k => el(`chk_${k}`).checked = p.checks[k]);
+            
+            update();
         }
 
         function randomize() {
             const roles = ["Growth Hacker", "Copywriting Legend", "UX Psychologe", "Code Wizard", "SEO Guru", "Prompt Engineer"];
             const names = ["Bot-Alpha", "Construct-X", "Nexus", "Helper-V1", "System-Q", "Nova"];
             
-            document.getElementById('pName').value = names[Math.floor(Math.random() * names.length)];
-            document.getElementById('pRole').value = roles[Math.floor(Math.random() * roles.length)];
+            el('inpName').value = names[Math.floor(Math.random() * names.length)];
+            el('inpRole').value = roles[Math.floor(Math.random() * roles.length)];
             
-            document.getElementById('rangeChaos').value = Math.random() * 100;
-            document.getElementById('rangeHard').value = Math.random() * 100;
-            document.getElementById('rangeAuto').value = Math.random() * 100;
-            document.getElementById('rangeEmoji').value = Math.random() * 100;
+            ['rngChaos', 'rngHard', 'rngAuto', 'rngEmoji'].forEach(id => el(id).value = Math.floor(Math.random() * 100));
+            CHECKBOX_KEYS.forEach(k => el(`chk_${k}`).checked = Math.random() > 0.5);
             
-            document.getElementById('checkChain').checked = Math.random() > 0.5;
-            document.getElementById('checkVerify').checked = Math.random() > 0.5;
-            document.getElementById('checkSources').checked = Math.random() > 0.7;
-            updateUI();
+            update();
         }
 
-        function updateUI() {
-            const name = document.getElementById('pName').value || "AI Agent";
-            const role = document.getElementById('pRole').value || "Expert Assistant";
+        function update() {
+            // Read State
+            const name = el('inpName').value || (currentLang === 'de' ? "KI Assistent" : "AI Assistant");
+            const role = el('inpRole').value || (currentLang === 'de' ? "Experte" : "Expert");
             
-            // Sliders
-            const chaosVal = document.getElementById('rangeChaos').value;
-            const hardVal = document.getElementById('rangeHard').value;
-            const autoVal = document.getElementById('rangeAuto').value;
-            const emojiVal = document.getElementById('rangeEmoji').value;
+            // Slider Values
+            const chaos = parseInt(el('rngChaos').value);
+            const hard = parseInt(el('rngHard').value);
+            const auto = parseInt(el('rngAuto').value);
+            const emoji = parseInt(el('rngEmoji').value);
 
-            // Labels Update
-            const setLabel = (id, val, low, mid, high) => {
-                let txt = mid;
-                if(val < 30) txt = low;
-                if(val > 70) txt = high;
-                document.getElementById(id).innerText = txt;
-                return txt;
-            };
+            updateSliderLabels();
 
-            const chaosTxt = setLabel('valChaos', chaosVal, "Deterministisch (Fakten)", "Ausgewogen", "Wild & Kreativ");
-            const hardTxt = setLabel('valHard', hardVal, "Sanft & Supportiv", "Professionell", "Gnadenlos Ehrlich");
+            // Read Checks
+            const checks = {};
+            CHECKBOX_KEYS.forEach(k => checks[k] = el(`chk_${k}`).checked);
+
+            // Update UI Styling for Checks
+            CHECKBOX_KEYS.forEach(k => {
+                const wrap = el(`lbl_wrap_${k}`);
+                const title = el(`lbl_t_${k}`);
+                if (checks[k]) {
+                    wrap.classList.add('bg-white/5', 'border-white/10');
+                    wrap.classList.remove('border-transparent');
+                    title.classList.add('text-ci-gold');
+                    title.classList.remove('text-slate-200');
+                } else {
+                    wrap.classList.remove('bg-white/5', 'border-white/10');
+                    wrap.classList.add('border-transparent');
+                    title.classList.remove('text-ci-gold');
+                    title.classList.add('text-slate-200');
+                }
+            });
+
+            // GENERATE PROMPT
+            const p = TEXTS[currentLang].prompt;
+            const getInstr = (val, arr) => val < 30 ? arr[0] : (val > 70 ? arr[2] : arr[1]);
+
+            // Header: Identity
+            let out = `${p.headers.id}\n${p.base.replace('{name}', name).replace('{role}', role)}\n\n`;
             
-            let autoInstr = "Balance asking and doing.";
-            if(autoVal < 30) { document.getElementById('valAuto').innerText = "Rückfragen"; autoInstr = "Do not act immediately. Always ask clarifying questions first. You are a Co-Pilot."; }
-            if(autoVal > 70) { document.getElementById('valAuto').innerText = "Autonom"; autoInstr = "Act immediately. Make assumptions if necessary to proceed fast. You are an Autopilot."; }
-            if(autoVal >= 30 && autoVal <= 70) { document.getElementById('valAuto').innerText = "Mixed"; }
+            // Behavior (Combined)
+            out += `${p.headers.behavior}\n`;
+            out += `${getInstr(chaos, p.instr.chaos)}\n`;
+            out += `${getInstr(hard, p.instr.hard)}\n`;
+            out += `${getInstr(auto, p.instr.auto)}\n\n`;
+            
+            // Output Format
+            out += `${p.headers.format}\n`;
+            out += `${getInstr(emoji, p.instr.emoji)}\n\n`;
+            
+            // Protocols
+            const activeMods = [];
+            if (checks.chain) activeMods.push(p.mods.chain);
+            if (checks.verify) activeMods.push(p.mods.verify);
+            if (checks.devil) activeMods.push(p.mods.devil);
+            if (checks.socratic) activeMods.push(p.mods.socratic);
+            if (checks.sources) activeMods.push(p.mods.sources);
+            if (checks.noYap) activeMods.push(p.mods.noYap);
+            
+            if (activeMods.length > 0) {
+                out += `${p.headers.protocols}\n${activeMods.join('\n')}\n\n`;
+            }
 
-            let emojiInstr = "Verwende keine Emojis.";
-            if(emojiVal > 20) { document.getElementById('valEmoji').innerText = "Dezent"; emojiInstr = "Nutze Emojis sparsam für Struktur."; }
-            if(emojiVal > 60) { document.getElementById('valEmoji').innerText = "Viel"; emojiInstr = "Nutze viele Emojis, um Emotionen zu zeigen. 😉"; }
-            if(emojiVal <= 20) { document.getElementById('valEmoji').innerText = "Keine"; }
+            // Language
+            out += `${p.headers.lang}\n${p.langInstr}`;
 
-            // Checkboxes
-            const chain = document.getElementById('checkChain').checked;
-            const verify = document.getElementById('checkVerify').checked;
-            const devil = document.getElementById('checkDevil').checked;
-            const socratic = document.getElementById('checkSocratic').checked;
-            const sources = document.getElementById('checkSources').checked;
-            const noYap = document.getElementById('checkNoYap').checked;
-
-            // Construct Prompt
-            let prompt = `### SYSTEM IDENTITY ###
-You are ${name}.
-Role: ${role}.
-Worldview: ${chaosTxt} | Tone: ${hardTxt}
-
-### CORE BEHAVIORS ###
-1. **Autonomy Level**: ${autoInstr}
-2. **Emoji Usage**: ${emojiInstr}
-`;
-
-            if(chain) prompt += `3. **Chain of Thought**: Before answering, wrap your reasoning process in <thought> tags. Analyze the request first.\n`;
-            if(verify) prompt += `4. **Chain of Verification**: COVE PROTOCOL ACTIVE. Draft your response, then critique it for factual errors, then output only the corrected version.\n`;
-            if(devil) prompt += `5. **Devil's Advocate**: Never just agree. Always check for edge cases, logical fallacies, or risks.\n`;
-            if(socratic) prompt += `6. **Socratic Method**: Do not give answers immediately. Ask guiding questions to help the user find the solution.\n`;
-            if(sources) prompt += `7. **Citation Mandate**: Every factual claim must be backed by a source or a disclaimer that it is common knowledge.\n`;
-            if(noYap) prompt += `8. **No-Yapping**: Do not start with "Sure I can help" or "Here is the output". Start directly with the value.\n`;
-
-            prompt += `\n### INTERACTION STYLE ###
-You are ${hardTxt}. If the user's input is weak, say so.
-Do not act like a generic AI assistant. Act like a ${role}.`;
-
-            document.getElementById('outputCode').innerText = prompt;
+            el('outputCode').innerText = out;
         }
 
-        function copyCode() {
-            const code = document.getElementById('outputCode').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.getElementById('copyBtn');
-                const txt = document.getElementById('btnText');
+        function copyToClipboard() {
+            const text = el('outputCode').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = el('btnCopy');
+                const span = el('btnCopyText');
+                const originalText = span.innerText;
                 
-                btn.style.backgroundColor = '#22c55e';
-                btn.style.color = 'white';
-                txt.innerText = "Kopiert!";
+                btn.classList.remove('bg-ci-gold', 'text-ci-dark');
+                btn.classList.add('bg-green-500', 'text-white');
+                span.innerText = TEXTS[currentLang].ui.copied;
                 
                 setTimeout(() => {
-                    btn.style.backgroundColor = '';
-                    btn.style.color = '';
-                    txt.innerText = "Persona Kopieren";
-                    updateUI(); 
+                    btn.classList.add('bg-ci-gold', 'text-ci-dark');
+                    btn.classList.remove('bg-green-500', 'text-white');
+                    span.innerText = TEXTS[currentLang].ui.copyBtn;
                 }, 2000);
             });
         }
 
-        // Init
-        updateUI();
+        // Start
+        init();
+
     </script>
-    <div class="w-full text-center py-8 mt-8 border-t border-white/10">
-        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
-            Impressum
-        </a>
-    </div>
 </body>
 </html>
