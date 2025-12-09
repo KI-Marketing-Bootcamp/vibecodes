@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 16: Buzzword Bingo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at top right, #1e293b 0%, var(--ci-darker) 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            aspect-ratio: 1/1;
+        }
+
+        .bingo-cell {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            word-break: break-word;
+            hyphens: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .bingo-cell { font-size: 0.85rem; padding: 8px; }
+            .bingo-grid { gap: 12px; }
+        }
+
+        .bingo-cell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .bingo-cell.active {
+            background: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 900;
+            border-color: var(--ci-gold);
+            box-shadow: 0 0 15px rgba(255, 179, 0, 0.4);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .bingo-cell.joker {
+            background: rgba(255, 179, 0, 0.2);
+            color: var(--ci-gold);
+            border-color: var(--ci-gold);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(255, 179, 0, 0.3); }
+
+        /* Win Animation Overlay */
+        #winOverlay {
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #winOverlay.visible { opacity: 1; }
+    </style>
+</head>
+<body class="flex flex-col items-center py-8 px-4">
+
+    <div class="w-full max-w-4xl flex justify-between items-center mb-8 relative z-20">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 16
+        </div>
+    </div>
+
+    <main class="w-full max-w-lg text-center relative z-10">
+        
+        <div class="mb-8">
+            <h1 class="text-4xl font-black mb-2 text-white">Buzzword <span class="text-[#FFB300]">Bingo</span></h1>
+            <p class="text-slate-400 text-sm">Für das nächste Meeting. Klicke die Begriffe an, die fallen.<br>Bei 5 in einer Reihe gibt's Konfetti.</p>
+        </div>
+
+        <div class="glass-panel p-4 rounded-xl mb-8 relative">
+            <div id="grid" class="bingo-grid">
+                </div>
+            
+            <div id="winOverlay" class="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-xl z-20">
+                <div class="transform rotate-12 bg-[#FFB300] text-[#0f172a] font-black text-6xl px-8 py-4 shadow-2xl border-4 border-white">
+                    BINGO!
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 justify-center">
+            <button onclick="initGame()" class="btn-gold px-8 py-3 rounded-xl flex items-center gap-2 shadow-lg">
+                <i data-lucide="shuffle"></i> Neue Runde
+            </button>
+        </div>
+
+    </main>
+
+    <div class="w-full max-w-4xl mt-16 border-t border-white/10 pt-10">
+        <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                        <i data-lucide="code-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Behind the Code</h3>
+                        <p class="text-xs text-slate-400">Array Shuffling & Win Logic</p>
+                    </div>
+                </div>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down"></i>
+                </span>
+            </summary>
+            
+            <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6 text-sm">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">Die Logik</h4>
+                        <p class="leading-relaxed mb-4">
+                            1. Ein Array mit 50 typischen Buzzwords wird gemischt (Fisher-Yates Shuffle).<br>
+                            2. Die ersten 24 Wörter werden ins Grid geladen.<br>
+                            3. Die Mitte (Index 12) ist immer der "JOKER".
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">Win Condition</h4>
+                        <p class="leading-relaxed">
+                            Bei jedem Klick prüft das Skript alle möglichen Gewinnreihen (Horizontal, Vertikal, Diagonal). Wenn eine Reihe komplett "active" ist -> Konfetti 🎉
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // DIE WOERTER-DATENBANK
+        const buzzwords = [
+            "Synergie", "Low Hanging Fruit", "Deep Dive", "Quick Win", "KPIs", 
+            "Onboarding", "Journey", "Touchpoint", "Silos aufbrechen", "Gamechanger",
+            "Disruptiv", "Paradigm Shift", "Mindset", "Commitment", "Alignment",
+            "Stakeholder", "Best Practice", "MVP", "Skalieren", "Agil",
+            "Learnings", "Pain Points", "Holistisch", "Value Add", "Q4",
+            "Budget", "Resource", "Asset", "Leverage", "Big Picture",
+            "Hands-on", "Customer Centric", "Ecosystem", "Streamline", "ASAP",
+            "Benchmark", "Use Case", "Insight", "Wrap-up", "Ping mich an",
+            "KI-gestützt", "Automatisierung", "Next Level", "Performance", "Solution"
+        ];
+
+        let gridState = []; // Speichert Status der Zellen
+
+        function initGame() {
+            const grid = document.getElementById('grid');
+            const overlay = document.getElementById('winOverlay');
+            
+            // Reset
+            grid.innerHTML = '';
+            overlay.classList.remove('visible');
+            gridState = new Array(25).fill(false);
+            gridState[12] = true; // Joker ist immer an
+
+            // Shuffle und nimm 24 Wörter
+            const shuffled = [...buzzwords].sort(() => 0.5 - Math.random());
+            const selectedWords = shuffled.slice(0, 24);
+
+            // Grid bauen (5x5 = 25 Zellen)
+            let wordIndex = 0;
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('bingo-cell');
+                cell.dataset.index = i;
+
+                if (i === 12) {
+                    // MITTE = JOKER
+                    cell.innerHTML = '<i data-lucide="star" class="w-6 h-6"></i>';
+                    cell.classList.add('active', 'joker');
+                } else {
+                    cell.innerText = selectedWords[wordIndex];
+                    wordIndex++;
+                    cell.onclick = () => toggleCell(cell, i);
+                }
+                
+                grid.appendChild(cell);
+            }
+            lucide.createIcons();
+        }
+
+        function toggleCell(cell, index) {
+            // Toggle State
+            if (gridState[index]) {
+                cell.classList.remove('active');
+                gridState[index] = false;
+            } else {
+                cell.classList.add('active');
+                gridState[index] = true;
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            // Alle Gewinnkombinationen (Indizes)
+            const winConditions = [
+                // Horizontal
+                [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
+                // Vertikal
+                [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
+                // Diagonal
+                [0,6,12,18,24], [4,8,12,16,20]
+            ];
+
+            const hasWon = winConditions.some(combination => {
+                return combination.every(index => gridState[index]);
+            });
+
+            if (hasWon) {
+                triggerWin();
+            }
+        }
+
+        function triggerWin() {
+            const overlay = document.getElementById('winOverlay');
+            if (!overlay.classList.contains('visible')) {
+                overlay.classList.add('visible');
+                fireConfetti();
+                
+                // Overlay nach 3 Sekunden wieder weg, damit man weiterspielen kann
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                }, 3000);
+            }
+        }
+
+        function fireConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+            var random = function(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#FFB300', '#ffffff', '#eab308']
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#FFB300', '#ffffff', '#eab308']
+                }));
+            }, 250);
+        }
+
+        // Start beim Laden
+        initGame();
+
+    </script>
+</body>
+</html>
