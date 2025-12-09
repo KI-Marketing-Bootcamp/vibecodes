@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 15: Der LinkedInagizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, var(--ci-darker) 90%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+        }
+        .glass-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: var(--ci-gold);
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.1);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 10px 30px -10px rgba(255, 179, 0, 0.4);
+            transition: all 0.2s;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px -10px rgba(255, 179, 0, 0.6);
+        }
+
+        /* Animation für Output */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="flex flex-col items-center py-12 px-4">
+
+    <div class="w-full max-w-4xl flex justify-between items-center mb-12 relative z-10">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 15
+        </div>
+    </div>
+
+    <main class="w-full max-w-2xl text-center relative z-10">
+        
+        <div class="mb-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                Der <span class="text-[#FFB300]">LinkedInagizer</span>
+            </h1>
+            <p class="text-slate-400 text-lg">
+                Verwandle normalen Text in virales "Broetry". <br>
+                Mehr Drama. Mehr Absätze. Mehr Reichweite.
+            </p>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-1 md:p-2 shadow-2xl">
+            <div class="bg-[#020617]/50 rounded-xl p-6 md:p-8">
+                
+                <div class="mb-6 text-left">
+                    <label class="text-xs font-bold text-[#FFB300] uppercase ml-1 mb-2 block">Dein langweiliger Gedanke:</label>
+                    <textarea id="inputText" rows="3" class="glass-input w-full p-4 rounded-xl text-white placeholder-slate-600 resize-none" placeholder="Ich habe heute gelernt, dass KI Prozesse beschleunigt. Das Team war erst skeptisch, aber jetzt läuft es super."></textarea>
+                </div>
+
+                <div class="flex gap-4 mb-6">
+                    <button onclick="cringify()" class="btn-gold flex-1 py-4 rounded-xl flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                        Viral gehen
+                    </button>
+                </div>
+
+                <div id="outputContainer" class="hidden text-left border-t border-white/10 pt-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-green-400 uppercase ml-1">✨ Viral-Resultat:</label>
+                        <button onclick="copyText()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
+                            <i data-lucide="copy" class="w-3 h-3"></i> Kopieren
+                        </button>
+                    </div>
+                    
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-[#FFB300] to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative bg-slate-900 rounded-lg p-6 border border-white/10">
+                            <pre id="outputText" class="font-sans text-slate-300 whitespace-pre-wrap leading-relaxed"></pre>
+                        </div>
+                    </div>
+                    
+                    <p class="text-[10px] text-slate-500 mt-4 text-center italic">
+                        Warnung: Nutzung auf eigene Gefahr. Könnte zu erhöhtem Augenverdrehen bei Kollegen führen.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div class="w-full max-w-4xl mt-20 border-t border-white/10 pt-10">
+        <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                        <i data-lucide="code-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Behind the Code</h3>
+                        <p class="text-xs text-slate-400">Vibecoding: String Manipulation</p>
+                    </div>
+                </div>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down"></i>
+                </span>
+            </summary>
+            
+            <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6 text-sm">
+                <p>
+                    Hier wird keine KI benutzt. Es ist ein simpler Algorithmus, der Textstrukturen aufbricht.
+                    <br><br>
+                    1. Der Text wird an Satzzeichen (<code>. ! ?</code>) gesplittet.<br>
+                    2. Jeder Satz wird zu einer neuen Zeile mit doppeltem Absatz (<code>\n\n</code>).<br>
+                    3. Zufalls-Hooks ("Lies das nochmal.") werden via <code>Math.random()</code> eingestreut.<br>
+                    4. Das Ergebnis wirkt "tiefgründig", ist aber technisch trivial.
+                </p>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function cringify() {
+            const input = document.getElementById('inputText').value;
+            if(!input) return;
+
+            // 1. Split sentences
+            // Regex splittet bei . ! ? und behält das Satzzeichen
+            const sentences = input.match( /[^\.!\?]+[\.!\?]+/g ) || [input];
+
+            let output = "";
+            const dramaPhrases = [
+                "Lies das nochmal. 👇",
+                "Denk mal drüber nach.",
+                "Das ändert alles.",
+                "Die Wahrheit ist:",
+                "Und weißt du was?",
+                "Real Talk:"
+            ];
+            const endPhrases = [
+                "Agree? 👇",
+                "Thoughts?",
+                "Wer stimmt zu?",
+                "#mindset #growth #linkedin"
+            ];
+
+            // 2. Process
+            sentences.forEach((sentence, index) => {
+                let s = sentence.trim();
+                
+                // Add Emoji randomly
+                if(Math.random() > 0.7) s += " 🚀";
+                else if(Math.random() > 0.8) s = "👉 " + s;
+
+                // Add Drama Phrase randomly before sentence
+                if(index > 0 && Math.random() > 0.8) {
+                    output += "\n\n" + dramaPhrases[Math.floor(Math.random() * dramaPhrases.length)];
+                }
+
+                output += "\n\n" + s;
+            });
+
+            // 3. Add Ending
+            output += "\n\n" + endPhrases[Math.floor(Math.random() * endPhrases.length)];
+
+            // 4. Render
+            const outContainer = document.getElementById('outputContainer');
+            const outText = document.getElementById('outputText');
+            
+            outText.innerText = output.trim();
+            outContainer.classList.remove('hidden');
+            outContainer.classList.add('animate-slide-up');
+        }
+
+        function copyText() {
+            const text = document.getElementById('outputText').innerText;
+            navigator.clipboard.writeText(text);
+            
+            // Visual Feedback
+            const btn = document.querySelector('button[onclick="copyText()"]');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-3 h-3 text-green-400"></i> Kopiert!';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                lucide.createIcons();
+            }, 2000);
+        }
+    </script>
+
+    <div class="w-full text-center py-8 mt-8 border-t border-white/10">
+        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
+            Impressum
+        </a>
+    </div>
+</body>
+</html>
