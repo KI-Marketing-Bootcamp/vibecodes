@@ -17,6 +17,7 @@
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--ci-darker);
+            /* Behörden-Look Streifen */
             background-image: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 1px, transparent 0, transparent 50%);
             background-size: 20px 20px;
             color: white;
@@ -24,13 +25,12 @@
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
 
-        /* Ticket Look CSS */
         .ticket-visual {
             background-image: radial-gradient(circle at left center, transparent 10px, #ffffff 10px),
                               radial-gradient(circle at right center, transparent 10px, #ffffff 10px);
@@ -76,7 +76,6 @@
             100% { top: 100%; opacity: 0; }
         }
         
-        /* Details/Summary Styles */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -98,9 +97,13 @@
             <h1 class="text-4xl md:text-6xl font-black mb-4">
                 BAPO<span class="text-[#FFB300]">KAKO</span>
             </h1>
-            <p class="text-slate-400 text-sm md:text-base font-mono bg-black/30 inline-block px-4 py-2 rounded border border-white/10">
-                Bahn-Post-Kategorien-Kodiersystem - basierend auf der Grundlagenarbeit von Prof. Dr. Carsten C. Schermuly
-            </p>
+            <div class="inline-block text-left bg-black/40 border border-white/10 p-4 rounded-xl max-w-2xl">
+                <p class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-1">Offizielle Bezeichnung:</p>
+                <p class="text-slate-300 font-mono text-sm leading-relaxed">
+                    Bahn-Post-Kategorien-Kodiersystem<br>
+                    <span class="text-slate-500 italic">basierend auf der Grundlagenarbeit von Prof. Dr. Carsten C. Schermuly</span>
+                </p>
+            </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
@@ -109,9 +112,9 @@
                 <div class="scan-line"></div>
                 
                 <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block flex items-center gap-2">
-                    <i data-lucide="search"></i> LinkedIn-Post einfügen
+                    <i data-lucide="search"></i> LinkedIn-Post Analyse
                 </label>
-                <textarea id="inputText" rows="12" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#FFB300] transition-colors resize-none code-display leading-relaxed" placeholder="Hier den Rant über Verspätungen, Rucksäcke oder den Untergang des Abendlandes einfügen..."></textarea>
+                <textarea id="inputText" rows="12" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#FFB300] transition-colors resize-none code-display leading-relaxed" placeholder="Füge hier den Text ein (z.B. über Verspätungen, Rucksäcke, nette Zugbegleiter oder den Untergang des Abendlandes)..."></textarea>
                 
                 <button onclick="analyzePost()" class="btn-gold w-full py-3 mt-4 rounded-xl flex items-center justify-center gap-2">
                     <i data-lucide="qr-code"></i> Kodierung berechnen
@@ -125,7 +128,7 @@
                     <div class="border-b-2 border-dashed border-slate-300 pb-4 mb-4 flex justify-between items-end">
                         <div>
                             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">System</span>
-                            <span class="font-black text-xl tracking-tighter">BAPOKAKO v1.0</span>
+                            <span class="font-black text-xl tracking-tighter">BAPOKAKO v2.1</span>
                         </div>
                         <div class="text-right">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Datum</span>
@@ -135,7 +138,7 @@
 
                     <div class="mb-6">
                         <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ermittelter Code</span>
-                        <div class="text-4xl font-black text-[#F01D1D] code-display" id="resultCode">---</div>
+                        <div class="text-3xl md:text-4xl font-black text-[#F01D1D] code-display break-words" id="resultCode">---</div>
                     </div>
 
                     <div class="mb-6">
@@ -171,8 +174,8 @@
                         <i data-lucide="book-open" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-white text-lg">Kodierschlüssel Referenz</h3>
-                        <p class="text-xs text-slate-400">Amtliche Tabelle (Auto-Generated)</p>
+                        <h3 class="font-bold text-white text-lg">Basis-Schlüssel Referenz</h3>
+                        <p class="text-xs text-slate-400">Das System kombiniert diese Bausteine automatisch.</p>
                     </div>
                 </div>
                 <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
@@ -194,7 +197,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-white text-lg">Behind the Code</h3>
-                        <p class="text-xs text-slate-400">Vibecoding Breakdown: Scoring-Algorithmen</p>
+                        <p class="text-xs text-slate-400">Vibecoding Breakdown: Dynamische Kombinatorik</p>
                     </div>
                 </div>
                 <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
@@ -205,29 +208,21 @@
             <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6 text-sm">
                 <div class="grid md:grid-cols-2 gap-8">
                     <div>
-                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">💡 Keine KI, nur Mathe</h4>
-                        <p class="leading-relaxed mb-4">
-                            Dieses Tool wirkt intelligent, zählt aber eigentlich nur Wörter. Jede Kategorie (z.B. "A2-") hat eine Liste von Trigger-Wörtern (Array).
-                        </p>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🔄 Von Hardcoded zu Dynamisch</h4>
+                        
                         <p class="leading-relaxed">
-                            Das Skript scannt den Text und vergibt Punkte. Die Kategorie mit den meisten "Hits" gewinnt. Das nennt man <strong>Keyword Density Analysis</strong>.
+                            Genutzt wird ein <strong>dynamischer Stacker</strong>. Das Skript prüft <em>alle</em> Kategorien gleichzeitig. Wenn es Treffer für "A2" (Verspätung) UND "M4" (Abschied) findet, baut es den Code <strong>A2-M4</strong> einfach selbst zusammen.
                         </p>
                     </div>
                     <div>
-                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🛠️ Die "Kombi-Falle"</h4>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🤖 Ironie-Logik</h4>
                         <p class="leading-relaxed mb-4">
-                            Die komplexen Codes (z.B. A1-A3-A4) werden <em>zuerst</em> abgefragt.
+                            Der Code <strong>IRO-99</strong> wird ausgelöst, wenn ein "Positives Sentiment" (Danke, Super) auf einen "Negativen Kontext" (Verspätung, Kalt) trifft.
                         </p>
                         <div class="bg-black/40 p-3 rounded font-mono text-xs text-green-400 border border-white/10">
-                            if (match(A1) && match(A3)) {<br>
-                            &nbsp;&nbsp;return "Kombi-Code";<br>
-                            } else {<br>
-                            &nbsp;&nbsp;countPoints();<br>
-                            }
+                            const activeCodes = taxonomy.filter(t => hits(t) > 0);<br>
+                            const finalCode = activeCodes.map(c => c.code).join("-");
                         </div>
-                        <p class="mt-2 text-xs text-slate-500">
-                            So stellen wir sicher, dass der "Super-GAU" nicht einfach als normale "Verspätung" klassifiziert wird.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -237,135 +232,81 @@
     <script>
         lucide.createIcons();
 
-        // --- DIE BAPOKAKO LOGIK (ERWEITERT) ---
+        // --- BAPOKAKO DATENBANK ---
         const taxonomy = [
             {
                 code: "A1-",
                 title: "Untergang des Abendlandes",
-                desc: "DB dient als Metapher für Staatsversagen. Hohe Polemik.",
-                keywords: [
-                    "deutschland", "republik", "untergang", "armutszeugnis", "schande", 
-                    "abstieg", "kaputt", "systemversagen", "bananenrepublik", "standortfaktor",
-                    "wirtschaftsstandort", "digitalisierungswüste", "infrastruktur", "kaputtgespart",
-                    "steuergelder", "marode", "peinlich", "weltmarktführer", "verkehrswende", 
-                    "gescheitert", "dritte welt", "entwicklungshilfe", "trauerspiel", "bankrott"
-                ]
+                desc: "DB dient als Metapher für Staatsversagen.",
+                keywords: ["deutschland", "republik", "untergang", "armutszeugnis", "schande", "abstieg", "kaputt", "systemversagen", "bananenrepublik", "infrastruktur", "marode", "peinlich", "verkehrswende", "bankrott", "dritte welt"]
             },
             {
                 code: "A2-",
-                title: "Der Verspätungspost",
-                desc: "Emotionale Enttäuschung über Zeitmanagement. Fokus auf 'DB', nicht Staat.",
-                keywords: [
-                    "verspätung", "zu spät", "minuten", "anschluss", "ausfall", "warten", 
-                    "gleis", "typisch bahn", "nie wieder", "stellwerk", "störung", 
-                    "oberleitung", "personalmangel", "umgekehrte wagenreihung", "notarzteinsatz",
-                    "bordbistro", "kalt", "heizung", "klimaanlage", "waggon fehlt", "reservierung",
-                    "db navigator", "verbindung weg", "alternativlos", "auto kaufen", "odyssee",
-                    "gestrandet", "irrfahrt", "bahnhofsmission", "frieren", "baustelle", "signalstörung"
-                ]
+                title: "Verspätungspost",
+                desc: "Enttäuschung über Zeitmanagement.",
+                keywords: ["verspätung", "zu spät", "minuten", "anschluss", "ausfall", "warten", "gleis", "typisch bahn", "nie wieder", "stellwerk", "störung", "oberleitung", "personalmangel", "umgekehrte wagenreihung", "kalt", "heizung", "db navigator", "auto kaufen", "odyssee"]
             },
             {
                 code: "A3-",
-                title: "Der Rucksack-Egoist",
-                desc: "Sozialkritik an Mitreisenden. Fokus auf blockierte Ressourcen (Sitzplatz).",
-                keywords: [
-                    "rucksack", "tasche", "sitz", "platz", "blockiert", "egoist", 
-                    "neben mir", "voll", "stehen", "koffer", "gepäck", "rücksichtslos",
-                    "manspreading", "ellbogen", "alleinunterhalter", "füße", "schuhe",
-                    "belegt", "reserviert", "handtasche", "blockierer", "asozial", "kinderstube"
-                ]
+                title: "Rucksack-Egoist",
+                desc: "Sozialkritik an Mitreisenden (Sitzplatz).",
+                keywords: ["rucksack", "tasche", "sitz", "platz", "blockiert", "egoist", "neben mir", "voll", "stehen", "koffer", "gepäck", "rücksichtslos", "manspreading", "füße", "schuhe", "belegt", "reserviert"]
             },
             {
                 code: "A4-",
                 title: "DSGVO-Verstoß",
-                desc: "Beschwerde über diskrete Inhalte in öffentlichem Raum (Anwälte, Berater).",
-                keywords: [
-                    "anwalt", "telefonat", "laut", "ruhebereich", "vertrag", "klient", 
-                    "vertraulich", "geheimnis", "business", "meeting", "call", "teams", 
-                    "zoom", "headset", "schreien", "diskretion", "datenschutz", "projekt",
-                    "millionen", "umsatz", "ceo", "telefonieren", "ruheabteil", "ruhewagen",
-                    "geschäftlich", "mandant", "gehalt", "kündigung", "vorstand", "nda"
-                ]
+                desc: "Beschwerde über Indiskretion.",
+                keywords: ["anwalt", "telefonat", "laut", "ruhebereich", "vertrag", "klient", "vertraulich", "geheimnis", "business", "meeting", "call", "teams", "zoom", "schreien", "diskretion", "datenschutz", "projekt", "umsatz", "ceo"]
             },
             {
                 code: "A5-",
                 title: "Moral-Spektakel",
-                desc: "Nutzung vulnerabler Gruppen zur moralischen Überlegenheit.",
-                keywords: [
-                    "oma", "senior", "soldat", "uniform", "boden", "sitzen", "gang", 
-                    "alt", "polizist", "bundeswehr", "schwangere", "kind", "rollstuhl",
-                    "anstand", "erziehung", "jugend", "werte", "respekt", "aufgestanden",
-                    "platz gemacht", "held", "zivilcourage", "arm", "frieren", "alte dame"
-                ]
+                desc: "Vulnerable Gruppen (Oma, Soldat) im Fokus.",
+                keywords: ["oma", "senior", "soldat", "uniform", "boden", "sitzen", "gang", "alt", "polizist", "bundeswehr", "schwangere", "kind", "rollstuhl", "anstand", "erziehung", "werte", "respekt", "held", "zivilcourage"]
             },
             {
                 code: "B1+",
-                title: "Barmherziger Samariter",
-                desc: "Positive Ausnahmeerfahrung. Menschlichkeit trotz Systemfehler.",
-                keywords: [
-                    "kaffee", "geschenkt", "geholfen", "nett", "geld", "ausgeholfen", 
-                    "danke", "mitfahrer", "geteilt", "schokolade", "wasser", "spender",
-                    "solidarität", "gemeinschaft", "leidensgenossen", "gespräch", "unterhaltung",
-                    "fremde", "begegnung", "wärme", "menschlichkeit", "powerbank"
-                ]
+                title: "Samariter",
+                desc: "Menschlichkeit trotz Systemfehler.",
+                keywords: ["kaffee", "geschenkt", "geholfen", "nett", "geld", "ausgeholfen", "danke", "mitfahrer", "geteilt", "schokolade", "wasser", "spender", "solidarität", "gemeinschaft", "gespräch", "begegnung"]
             },
             {
                 code: "B2+",
                 title: "Personal-Mitleid",
-                desc: "Passiv-aggressive Solidarität mit Zugbegleitern gegen den Konzern.",
-                keywords: [
-                    "zugbegleiter", "personal", "leid tun", "arme", "stress", "schaffner", 
-                    "freundlich geblieben", "können nichts dafür", "blitzableiter", "front",
-                    "durchsage", "humor", "galgenhumor", "kontolleur", "servicekraft", 
-                    "überstunden", "unterbezahlt", "respekt", "ruhig geblieben", "bemüht"
-                ]
+                desc: "Solidarität mit Zugbegleitern.",
+                keywords: ["zugbegleiter", "personal", "leid tun", "arme", "stress", "schaffner", "freundlich geblieben", "können nichts dafür", "blitzableiter", "front", "durchsage", "humor", "kontolleur", "überstunden", "bemüht"]
             },
             {
                 code: "B3+",
                 title: "Anti-Bashing",
                 desc: "Metakritik an der Kritikerkultur.",
-                keywords: [
-                    "bashing", "meckern", "immer nur", "nervt", "dankbar", "auto", "stau",
-                    "klimawandel", "umwelt", "privileg", "first world problems", "jammern",
-                    "hohes niveau", "flugzeug", "autobahn", "stressfreier", "lesen", "arbeiten"
-                ]
+                keywords: ["bashing", "meckern", "immer nur", "nervt", "dankbar", "auto", "stau", "klimawandel", "umwelt", "privileg", "first world problems", "jammern", "hohes niveau", "flugzeug", "autobahn", "lesen"]
             },
             {
                 code: "D1+",
                 title: "Lobeshymne",
-                desc: "Reine positive Bestätigung. Seltenes Phänomen.",
-                keywords: [
-                    "pünktlich", "top", "super", "entspannt", "liebe db", "danke team", 
-                    "ice", "sprinter", "komfort", "wlan", "funktioniert", "sauber", 
-                    "überpünktlich", "planmäßig", "genossen", "produktiv", "bistro", "lecker"
-                ]
+                desc: "Positive Bestätigung.",
+                keywords: ["pünktlich", "top", "super", "entspannt", "liebe db", "danke team", "ice", "sprinter", "komfort", "wlan", "funktioniert", "sauber", "überpünktlich", "planmäßig", "genossen", "produktiv"]
             },
             {
                 code: "M4+",
                 title: "Der Abschied",
-                desc: "LinkedIn-Karriere-Post im Bahn-Kontext.",
-                keywords: [
-                    "letzter tag", "neue herausforderung", "abschied", "next chapter", 
-                    "danke für alles", "kollegen", "team", "reise", "journey", "db team",
-                    "konzern", "karriere", "wechsel", "dankbar", "lernen", "zeit", "alumni"
-                ]
+                desc: "Karriere-Post im Bahn-Kontext.",
+                keywords: ["letzter tag", "neue herausforderung", "abschied", "next chapter", "danke für alles", "kollegen", "team", "reise", "journey", "db team", "konzern", "karriere", "wechsel", "alumni"]
             },
             {
                 code: "Z1",
                 title: "Der MacGyver",
-                desc: "Fahrgast erklärt, wie er den Konzern retten würde.",
-                keywords: [
-                    "lösung", "idee", "management", "vorstand", "christian", "vorschlag", 
-                    "hätte", "müsste", "einfach", "prozess", "optimierung", "effizienz",
-                    "digitalisierung", "app", "besser machen", "ceo", "lutz", "boni",
-                    "bahncard 100", "vielfahrer", "senator", "status", "privatisierung"
-                ]
+                desc: "Fahrgast rettet den Konzern.",
+                keywords: ["lösung", "idee", "management", "vorstand", "christian", "vorschlag", "hätte", "müsste", "einfach", "prozess", "optimierung", "effizienz", "digitalisierung", "app", "besser machen", "bahncard 100", "status"]
             }
         ];
 
         // RENDER LEGEND
         function renderLegend() {
             const container = document.getElementById('taxonomyContainer');
+            
+            // Normale Items
             container.innerHTML = taxonomy.map(item => `
                 <div class="flex gap-3 p-2 rounded hover:bg-white/5 transition-colors">
                     <span class="font-bold text-[#FFB300] whitespace-nowrap">${item.code}</span>
@@ -376,19 +317,35 @@
                 </div>
             `).join('');
             
-            // Add Special Kombi Note
+            // Special Items (Ironie & Kombi Info)
             container.innerHTML += `
-                <div class="flex gap-3 p-2 rounded bg-red-500/10 border border-red-500/20 col-span-full mt-2">
-                    <span class="font-bold text-red-400 whitespace-nowrap">KOMBI</span>
+                <div class="flex gap-3 p-2 rounded bg-purple-500/10 border border-purple-500/20 col-span-full mt-2">
+                    <span class="font-bold text-purple-400 whitespace-nowrap">IRO-99</span>
                     <div>
-                        <span class="block font-bold text-white text-xs uppercase">Multi-Faktor-Eskalation</span>
-                        <span class="text-xs text-slate-400 leading-tight">Das System erkennt automatisch Kombinationen (z.B. A1 + A3 = Untergang durch Rucksack).</span>
+                        <span class="block font-bold text-white text-xs uppercase">Sarkasmus-Alarm</span>
+                        <span class="text-xs text-slate-400 leading-tight">Erkennt Widersprüche ("Super" + "Verspätung").</span>
                     </div>
                 </div>
             `;
         }
 
-        // --- ANALYZER LOGIK ---
+        // --- IRONIE LOGIK ---
+        function detectIrony(text) {
+            const positiveWords = ["super", "toll", "klasse", "danke", "genial", "besten dank", "liebe db", "highlight", "freude", "weltklasse", "top"];
+            const negativeContext = ["verspätung", "ausfall", "kalt", "frieren", "stunde", "warten", "chaos", "signalstörung", "gestrandet", "kaputt", "weg"];
+            const ironySignals = ["natürlich", "wieder mal", "klassiker", "läuft", "🙄", "🙃", "👏", "danke für nichts", "typisch", "wie immer"];
+
+            let score = 0;
+            const hasPositive = positiveWords.some(w => text.includes(w));
+            const hasNegative = negativeContext.some(w => text.includes(w));
+            
+            if (hasPositive && hasNegative) score += 5;
+            ironySignals.forEach(signal => { if (text.includes(signal)) score += 3; });
+
+            return score >= 3; 
+        }
+
+        // --- HAUPT LOGIK (DYNAMISCH) ---
         function analyzePost() {
             const input = document.getElementById('inputText').value.toLowerCase();
             const panel = document.getElementById('inputPanel');
@@ -396,24 +353,21 @@
 
             if(!input.trim()) return;
 
-            // 1. Animation Start
+            // Animation
             panel.classList.add('scanning');
             ticket.style.opacity = '0.5';
             ticket.style.filter = 'blur(4px)';
             ticket.style.transform = 'rotate(1deg) scale(0.95)';
 
             setTimeout(() => {
-                // 2. Logic Calculation
                 const result = calculateCode(input);
                 
-                // 3. Render Result
                 const today = new Date().toLocaleDateString('de-DE');
                 document.getElementById('ticketDate').innerText = today;
                 document.getElementById('resultCode').innerText = result.code;
                 document.getElementById('resultTitle').innerText = result.title;
-                document.getElementById('resultDesc').innerText = result.desc;
+                document.getElementById('resultDesc').innerHTML = result.desc; // innerHTML allows breaks
 
-                // 4. Animation End
                 panel.classList.remove('scanning');
                 ticket.style.opacity = '1';
                 ticket.style.filter = 'blur(0)';
@@ -422,62 +376,66 @@
         }
 
         function calculateCode(text) {
-            // Helper: Check if code category matches at least one keyword
-            const matches = (code) => {
-                const cat = taxonomy.find(t => t.code === code);
-                return cat && cat.keywords.some(k => text.includes(k));
-            };
-
-            // --- KOMBI-LOGIK (Priorität!) ---
-            
-            // A1-A3-A4 (Der Super-GAU: Untergang + Rucksack + Anwalt)
-            if (matches("A1-") && matches("A3-") && matches("A4-")) {
+            // 1. Ironie Check
+            if (detectIrony(text)) {
                 return {
-                    code: "A1-A3-A4",
-                    title: "Der Super-GAU",
-                    desc: "Anwalt redet über Klienten, Rucksack auf Sitz, Deutschland am Ende. Maximale Eskalationsstufe."
+                    code: "IRO-99",
+                    title: "Sarkasmus-Alarm",
+                    desc: "Widerspruch erkannt. Der Autor meint vermutlich das Gegenteil."
                 };
             }
 
-            // A3-A1 (Rucksack führt zu Staatskrise)
-            if (matches("A3-") && matches("A1-")) {
-                return {
-                    code: "A3-A1",
-                    title: "Gesellschafts-Verrohung",
-                    desc: "Deutschland geht den Bach runter, weil jemand den Rucksack auf den freien Sitz gestellt hat."
-                };
-            }
-
-            // --- EINZEL-LOGIK ---
-            // Wir suchen den Match mit den meisten Keywords im Text für Genauigkeit
-            let bestMatch = null;
-            let maxHits = 0;
+            // 2. Dynamisches Stacking
+            // Wir prüfen jede Kategorie auf Treffer
+            let matches = [];
 
             taxonomy.forEach(cat => {
-                let hits = 0;
-                cat.keywords.forEach(k => {
-                    if(text.includes(k)) hits++;
-                });
-
-                if(hits > maxHits) {
-                    maxHits = hits;
-                    bestMatch = cat;
+                const hits = cat.keywords.filter(k => text.includes(k)).length;
+                if (hits > 0) {
+                    matches.push({ ...cat, hits: hits }); // Speichern mit Anzahl Treffer
                 }
             });
 
-            if (bestMatch && maxHits > 0) {
-                return bestMatch;
+            // Wenn keine Treffer
+            if (matches.length === 0) {
+                return {
+                    code: "UNKNOWN",
+                    title: "Nicht klassifizierbar",
+                    desc: "Zu wenig Buzzwords. Standardannahme: <strong>A2-</strong> (Verspätung)."
+                };
             }
 
-            // Fallback
+            // Sortieren nach Treffern (wichtigste zuerst)
+            matches.sort((a, b) => b.hits - a.hits);
+
+            // Top 3 Ergebnisse nehmen für den Kombi-Code (damit es nicht zu lang wird)
+            const topMatches = matches.slice(0, 3);
+            
+            // Code zusammenbauen (z.B. A2-M4)
+            const combinedCode = topMatches.map(m => m.code).join("");
+            
+            // Titel & Desc generieren
+            let finalTitle = "";
+            let finalDesc = "";
+
+            if (topMatches.length === 1) {
+                // Single Match
+                finalTitle = topMatches[0].title;
+                finalDesc = topMatches[0].desc;
+            } else {
+                // Kombi Match
+                finalTitle = "Komplexe Situation";
+                finalDesc = "Kombination aus:<br>" + topMatches.map(m => `• ${m.title}`).join("<br>");
+            }
+
             return {
-                code: "UNKNOWN",
-                title: "Nicht klassifizierbar",
-                desc: "Text enthält zu wenig Buzzwords. Wahrscheinlich 'A2-' (Verspätung) als Default."
+                code: combinedCode,
+                title: finalTitle,
+                desc: finalDesc
             };
         }
 
-        // Init Legend on Load
+        // Init Legend
         renderLegend();
     </script>
     <div class="w-full text-center py-8 mt-8 border-t border-white/10">
