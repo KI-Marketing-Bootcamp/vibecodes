@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 17: BAPOKAKO Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+            --db-red: #F01D1D; /* DB Rot als Akzent */
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 1px, transparent 0, transparent 50%);
+            background-size: 20px 20px;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .ticket-visual {
+            background-image: radial-gradient(circle at left center, transparent 10px, #ffffff 10px),
+                              radial-gradient(circle at right center, transparent 10px, #ffffff 10px);
+            background-position: 0 0, 100% 0;
+            background-size: 50% 100%;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .code-display {
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.4);
+        }
+
+        /* Scan Line Animation */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--ci-gold);
+            opacity: 0.5;
+            box-shadow: 0 0 10px var(--ci-gold);
+            animation: scan 1.5s linear infinite;
+            display: none;
+        }
+        .scanning .scan-line { display: block; }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center py-12 px-4">
+
+    <div class="w-full max-w-4xl flex justify-between items-center mb-12 relative z-10">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 17
+        </div>
+    </div>
+
+    <main class="w-full max-w-3xl relative z-10">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                BAPO<span class="text-[#FFB300]">KAKO</span>
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base font-mono bg-black/30 inline-block px-4 py-2 rounded border border-white/10">
+                Bundesweites Analyse-Portal für Oberflächliche Kommunikations-Analyse Korrelierender Objektbeschwerden
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <div class="glass-panel p-6 rounded-2xl relative overflow-hidden" id="inputPanel">
+                <div class="scan-line"></div>
+                
+                <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block flex items-center gap-2">
+                    <i data-lucide="search"></i> LinkedIn-Post einfügen
+                </label>
+                <textarea id="inputText" rows="12" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#FFB300] transition-colors resize-none code-display leading-relaxed" placeholder="Hier den Rant über Verspätungen, Rucksäcke oder den Untergang des Abendlandes einfügen..."></textarea>
+                
+                <button onclick="analyzePost()" class="btn-gold w-full py-3 mt-4 rounded-xl flex items-center justify-center gap-2">
+                    <i data-lucide="qr-code"></i> Kodierung berechnen
+                </button>
+            </div>
+
+            <div class="relative flex flex-col justify-center">
+                
+                <div id="resultTicket" class="ticket-visual bg-white text-slate-900 p-8 rounded-sm shadow-2xl transform rotate-1 transition-all duration-500 opacity-50 scale-95 blur-sm">
+                    
+                    <div class="border-b-2 border-dashed border-slate-300 pb-4 mb-4 flex justify-between items-end">
+                        <div>
+                            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">System</span>
+                            <span class="font-black text-xl tracking-tighter">BAPOKAKO v1.0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-[10px] font-bold text-slate-400 uppercase">Datum</span>
+                            <span class="font-mono text-sm" id="ticketDate">--.--.----</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ermittelter Code</span>
+                        <div class="text-4xl font-black text-[#F01D1D] code-display" id="resultCode">---</div>
+                    </div>
+
+                    <div class="mb-6">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kategorie</span>
+                        <div class="text-sm font-bold leading-tight" id="resultTitle">Warten auf Eingabe...</div>
+                    </div>
+
+                    <div class="bg-slate-100 p-3 rounded border border-slate-200">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Analyse-Ergebnis</span>
+                        <p class="text-xs text-slate-600 leading-relaxed" id="resultDesc">Bitte Text eingeben.</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t-2 border-slate-900 flex justify-between items-center">
+                        <div class="flex gap-1">
+                            <div class="h-8 w-1 bg-black"></div><div class="h-8 w-2 bg-black"></div><div class="h-8 w-1 bg-black"></div><div class="h-8 w-3 bg-black"></div>
+                            <div class="h-8 w-1 bg-black"></div><div class="h-8 w-2 bg-black"></div>
+                        </div>
+                        <span class="text-[10px] font-mono">VALID</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div class="w-full max-w-4xl mt-16 border-t border-white/10 pt-10">
+        <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Kodierschlüssel Referenz</h3>
+                        <p class="text-xs text-slate-400">Auszug aus der amtlichen Tabelle</p>
+                    </div>
+                </div>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down"></i>
+                </span>
+            </summary>
+            
+            <div class="px-6 pb-8 text-slate-300 space-y-4 border-t border-white/5 pt-6 text-sm">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <ul class="space-y-2">
+                        <li><strong class="text-[#FFB300]">A1-</strong> Deutschland geht den Bach runter</li>
+                        <li><strong class="text-[#FFB300]">A2-</strong> Verspätungspost (Klassiker)</li>
+                        <li><strong class="text-[#FFB300]">A3-</strong> Rucksack auf Sitzplatz</li>
+                        <li><strong class="text-[#FFB300]">A4-</strong> DSGVO / Anwalt im Ruhebereich</li>
+                        <li><strong class="text-[#FFB300]">A5-</strong> Moralpost (Oma auf Boden)</li>
+                    </ul>
+                    <ul class="space-y-2">
+                        <li><strong class="text-[#FFB300]">B1+</strong> Barmherziger Samariter</li>
+                        <li><strong class="text-[#FFB300]">B3+</strong> Anti-Bashing Post</li>
+                        <li><strong class="text-[#FFB300]">Z1</strong> Der MacGyver (Ich löse die Bahn)</li>
+                        <li><strong class="text-[#FFB300]">M4+</strong> "Heute ist mein letzter Tag..."</li>
+                        <li><strong class="text-red-400">KOMBI</strong> Multi-Faktor-Beschwerde</li>
+                    </ul>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- DIE BAPOKAKO LOGIK ---
+        // Definition der Kategorien und ihrer Trigger-Wörter
+        const taxonomy = [
+            {
+                code: "A1-",
+                title: "Untergang des Abendlandes",
+                desc: "DB dient als Metapher für Staatsversagen. Hohe Polemik. Bezug auf 'Deutschland', 'Republik', 'Armutszeugnis'.",
+                keywords: ["deutschland", "republik", "untergang", "armutszeugnis", "schande", "abstieg", "kaputt", "systemversagen"]
+            },
+            {
+                code: "A2-",
+                title: "Der Verspätungspost",
+                desc: "Emotionale Enttäuschung über Zeitmanagement. Fokus auf 'DB', nicht Staat. Klassiker.",
+                keywords: ["verspätung", "zu spät", "minuten", "anschluss", "ausfall", "warten", "gleis", "typisch bahn", "nie wieder"]
+            },
+            {
+                code: "A3-",
+                title: "Der Rucksack-Egoist",
+                desc: "Sozialkritik an Mitreisenden. Fokus auf blockierte Ressourcen (Sitzplatz).",
+                keywords: ["rucksack", "tasche", "sitz", "platz", "blockiert", "egoist", "neben mir", "voll", "stehen"]
+            },
+            {
+                code: "A4-",
+                title: "DSGVO-Verstoß",
+                desc: "Beschwerde über diskrete Inhalte in öffentlichem Raum (Anwälte, Berater).",
+                keywords: ["anwalt", "telefonat", "laut", "ruhebereich", "vertrag", "klient", "vertraulich", "geheimnis", "business"]
+            },
+            {
+                code: "A5-",
+                title: "Moral-Spektakel",
+                desc: "Nutzung vulnerabler Gruppen (Oma, Soldat) zur moralischen Überlegenheit.",
+                keywords: ["oma", "senior", "soldat", "uniform", "boden", "sitzen", "gang", "alt", "polizist"]
+            },
+            {
+                code: "B1+",
+                title: "Barmherziger Samariter",
+                desc: "Positive Ausnahmeerfahrung. Menschlichkeit trotz Systemfehler.",
+                keywords: ["kaffee", "geschenkt", "geholfen", "nett", "geld", "ausgeholfen", "danke"]
+            },
+            {
+                code: "B2+",
+                title: "Personal-Mitleid",
+                desc: "Passiv-aggressive Solidarität mit Zugbegleitern gegen den Konzern.",
+                keywords: ["zugbegleiter", "personal", "leid tun", "arme", "stress", "schaffner", "freundlich geblieben"]
+            },
+            {
+                code: "B3+",
+                title: "Anti-Bashing",
+                desc: "Metakritik an der Kritikerkultur.",
+                keywords: ["bashing", "meckern", "immer nur", "nervt", "dankbar", "auto", "stau"]
+            },
+            {
+                code: "D1+",
+                title: "Lobeshymne",
+                desc: "Reine positive Bestätigung. Seltenes Phänomen.",
+                keywords: ["pünktlich", "top", "super", "entspannt", "liebe db", "danke team", "ice"]
+            },
+            {
+                code: "M4+",
+                title: "Der Abschied",
+                desc: "LinkedIn-Karriere-Post im Bahn-Kontext.",
+                keywords: ["letzter tag", "neue herausforderung", "abschied", "next chapter", "danke für alles", "kollegen"]
+            },
+            {
+                code: "Z1",
+                title: "Der MacGyver",
+                desc: "Fahrgast erklärt, wie er den Konzern retten würde. Management-Attitüde.",
+                keywords: ["lösung", "idee", "management", "vorstand", "christian", "vorschlag", "hätte", "müsste", "einfach"]
+            }
+        ];
+
+        function analyzePost() {
+            const input = document.getElementById('inputText').value.toLowerCase();
+            const panel = document.getElementById('inputPanel');
+            const ticket = document.getElementById('resultTicket');
+
+            if(!input.trim()) return;
+
+            // 1. Animation Start
+            panel.classList.add('scanning');
+            ticket.style.opacity = '0.5';
+            ticket.style.filter = 'blur(4px)';
+            ticket.style.transform = 'rotate(1deg) scale(0.95)';
+
+            setTimeout(() => {
+                // 2. Logic Calculation
+                const result = calculateCode(input);
+                
+                // 3. Render Result
+                const today = new Date().toLocaleDateString('de-DE');
+                document.getElementById('ticketDate').innerText = today;
+                document.getElementById('resultCode').innerText = result.code;
+                document.getElementById('resultTitle').innerText = result.title;
+                document.getElementById('resultDesc').innerText = result.desc;
+
+                // 4. Animation End
+                panel.classList.remove('scanning');
+                ticket.style.opacity = '1';
+                ticket.style.filter = 'blur(0)';
+                ticket.style.transform = 'rotate(0deg) scale(1)';
+            }, 800);
+        }
+
+        function calculateCode(text) {
+            // Helper: Check if code category matches
+            const matches = (code) => {
+                const cat = taxonomy.find(t => t.code === code);
+                return cat && cat.keywords.some(k => text.includes(k));
+            };
+
+            // --- KOMBI-LOGIK (Priorität!) ---
+            
+            // A1-A3-A4 (Der Super-GAU: Untergang + Rucksack + Anwalt)
+            if (matches("A1-") && matches("A3-") && matches("A4-")) {
+                return {
+                    code: "A1-A3-A4",
+                    title: "Der Super-GAU",
+                    desc: "Anwalt redet über Klienten, Rucksack auf Sitz, Deutschland am Ende. Maximale Eskalationsstufe."
+                };
+            }
+
+            // A3-A1 (Rucksack führt zu Staatskrise)
+            if (matches("A3-") && matches("A1-")) {
+                return {
+                    code: "A3-A1",
+                    title: "Gesellschafts-Verrohung",
+                    desc: "Deutschland geht den Bach runter, weil jemand den Rucksack auf den freien Sitz gestellt hat."
+                };
+            }
+
+            // --- EINZEL-LOGIK ---
+            // Wir suchen den Match mit den meisten Keywords im Text für Genauigkeit
+            let bestMatch = null;
+            let maxHits = 0;
+
+            taxonomy.forEach(cat => {
+                let hits = 0;
+                cat.keywords.forEach(k => {
+                    if(text.includes(k)) hits++;
+                });
+
+                if(hits > maxHits) {
+                    maxHits = hits;
+                    bestMatch = cat;
+                }
+            });
+
+            if (bestMatch && maxHits > 0) {
+                return bestMatch;
+            }
+
+            // Fallback
+            return {
+                code: "UNKNOWN",
+                title: "Nicht klassifizierbar",
+                desc: "Text enthält zu wenig Buzzwords oder ist einfach nur wirres Zeug. Wahrscheinlich 'A2-' (Verspätung) als Default."
+            };
+        }
+    </script>
+    <div class="w-full text-center py-8 mt-8 border-t border-white/10">
+        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
+            Impressum
+        </a>
+    </div>
+</body>
+</html>
