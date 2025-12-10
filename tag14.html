@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tag 17: BAPOKAKO Analyzer</title>
+    <title>Tag 14: BAPOKAKO Analyzer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -24,7 +24,7 @@
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -88,7 +88,7 @@
             <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
         </a>
         <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
-            Tag 17
+            Tag 14
         </div>
     </div>
 
@@ -164,6 +164,28 @@
     </main>
 
     <div class="w-full max-w-4xl mt-16 border-t border-white/10 pt-10">
+        <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30" open>
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Kodierschlüssel Referenz</h3>
+                        <p class="text-xs text-slate-400">Amtliche Tabelle (Auto-Generated)</p>
+                    </div>
+                </div>
+                <span class="text-[#FFB300] transform group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down"></i>
+                </span>
+            </summary>
+            
+            <div id="taxonomyContainer" class="px-6 pb-8 text-slate-300 grid md:grid-cols-2 gap-4 border-t border-white/5 pt-6 text-sm">
+                </div>
+        </details>
+    </div>
+
+    <div class="w-full max-w-4xl mt-4">
         <details class="group glass-panel rounded-2xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
             <summary class="flex justify-between items-center p-6 cursor-pointer list-none select-none">
                 <div class="flex items-center gap-3">
@@ -220,7 +242,7 @@
             {
                 code: "A1-",
                 title: "Untergang des Abendlandes",
-                desc: "DB dient als Metapher für Staatsversagen. Hohe Polemik. Bezug auf Standort D.",
+                desc: "DB dient als Metapher für Staatsversagen. Hohe Polemik.",
                 keywords: [
                     "deutschland", "republik", "untergang", "armutszeugnis", "schande", 
                     "abstieg", "kaputt", "systemversagen", "bananenrepublik", "standortfaktor",
@@ -331,7 +353,7 @@
             {
                 code: "Z1",
                 title: "Der MacGyver",
-                desc: "Fahrgast erklärt, wie er den Konzern retten würde. Management-Attitüde.",
+                desc: "Fahrgast erklärt, wie er den Konzern retten würde.",
                 keywords: [
                     "lösung", "idee", "management", "vorstand", "christian", "vorschlag", 
                     "hätte", "müsste", "einfach", "prozess", "optimierung", "effizienz",
@@ -341,6 +363,32 @@
             }
         ];
 
+        // RENDER LEGEND
+        function renderLegend() {
+            const container = document.getElementById('taxonomyContainer');
+            container.innerHTML = taxonomy.map(item => `
+                <div class="flex gap-3 p-2 rounded hover:bg-white/5 transition-colors">
+                    <span class="font-bold text-[#FFB300] whitespace-nowrap">${item.code}</span>
+                    <div>
+                        <span class="block font-bold text-white text-xs uppercase">${item.title}</span>
+                        <span class="text-xs text-slate-500 leading-tight">${item.desc}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add Special Kombi Note
+            container.innerHTML += `
+                <div class="flex gap-3 p-2 rounded bg-red-500/10 border border-red-500/20 col-span-full mt-2">
+                    <span class="font-bold text-red-400 whitespace-nowrap">KOMBI</span>
+                    <div>
+                        <span class="block font-bold text-white text-xs uppercase">Multi-Faktor-Eskalation</span>
+                        <span class="text-xs text-slate-400 leading-tight">Das System erkennt automatisch Kombinationen (z.B. A1 + A3 = Untergang durch Rucksack).</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ANALYZER LOGIK ---
         function analyzePost() {
             const input = document.getElementById('inputText').value.toLowerCase();
             const panel = document.getElementById('inputPanel');
@@ -425,9 +473,12 @@
             return {
                 code: "UNKNOWN",
                 title: "Nicht klassifizierbar",
-                desc: "Text enthält zu wenig Buzzwords oder ist einfach nur wirres Zeug. Wahrscheinlich 'A2-' (Verspätung) als Default."
+                desc: "Text enthält zu wenig Buzzwords. Wahrscheinlich 'A2-' (Verspätung) als Default."
             };
         }
+
+        // Init Legend on Load
+        renderLegend();
     </script>
     <div class="w-full text-center py-8 mt-8 border-t border-white/10">
         <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">
