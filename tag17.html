@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 17: AI Phrasen-Drescher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ci-gold: #FFB300;
+            --ci-dark: #0f172a; 
+            --ci-darker: #020617;
+            --neon-red: #ff3366;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--ci-darker);
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFB300' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: white;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Bingo Grid Styling */
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .bingo-cell {
+            aspect-ratio: 1/1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.7rem;
+            line-height: 1.2;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            word-break: break-word;
+        }
+        
+        .bingo-cell:hover {
+            border-color: var(--ci-gold);
+            transform: translateY(-2px);
+        }
+
+        /* Active State (Detected) */
+        .bingo-cell.detected {
+            background: var(--ci-gold);
+            color: var(--ci-darker);
+            font-weight: 800;
+            border-color: var(--ci-gold);
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.4);
+            transform: scale(1.05);
+        }
+
+        .bingo-cell.detected::after {
+            content: '⚠️';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* Input Area Transition */
+        #scanner-area {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #scanner-area.open {
+            max-height: 400px;
+            opacity: 1;
+            margin-bottom: 2rem;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FFB300, #eab308);
+            color: #020617;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(255, 179, 0, 0.4); }
+
+        /* Meter */
+        .meter-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+            position: relative;
+        }
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Win Overlay */
+        #winOverlay {
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #winOverlay.visible { opacity: 1; }
+    </style>
+</head>
+<body class="flex flex-col items-center py-10 px-4">
+
+    <div class="w-full max-w-2xl flex justify-between items-center mb-8 relative z-20">
+        <a href="index.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender
+        </a>
+        <div class="text-[#FFB300] font-bold uppercase tracking-widest text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">
+            Tag 17
+        </div>
+    </div>
+
+    <main class="w-full max-w-2xl relative z-10">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-black mb-2 text-white">
+                Der LLM <span class="text-[#FFB300]">Phrasen-Drescher</span>
+            </h1>
+            <p class="text-slate-400 text-sm">
+                Erkennt Texte, die "auf ein neues Level gehoben" wurden, schneller als du "Synergie" sagen kannst.
+            </p>
+        </div>
+
+        <div class="flex justify-center gap-4 mb-6">
+            <button onclick="toggleScanner()" class="px-4 py-2 rounded-full border border-white/20 text-xs font-bold uppercase hover:bg-white/10 transition-colors flex items-center gap-2">
+                <i data-lucide="scan-line" class="w-4 h-4"></i> Text-Scanner öffnen
+            </button>
+            <button onclick="resetGame()" class="px-4 py-2 rounded-full border border-white/20 text-xs font-bold uppercase hover:bg-white/10 transition-colors flex items-center gap-2">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
+            </button>
+        </div>
+
+        <div id="scanner-area" class="glass-panel rounded-xl p-4">
+            <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block">Verdächtigen Text einfügen:</label>
+            <textarea id="textInput" rows="4" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#FFB300] transition-colors resize-none mb-3" placeholder="Hier den Text reinkopieren (z.B. 'In der heutigen, sich schnell wandelnden digitalen Landschaft...')."></textarea>
+            <button onclick="autoScan()" class="btn-gold w-full py-2 rounded-lg flex items-center justify-center gap-2 text-sm">
+                <i data-lucide="search"></i>
+                Auf Bullshit scannen
+            </button>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl relative" id="mainCard">
+            
+            <div class="flex justify-between items-end mb-4">
+                <div>
+                    <span class="text-xs text-slate-500 uppercase font-bold tracking-widest">Synthetic Score</span>
+                    <div class="text-2xl font-black text-white" id="scoreValue">0%</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-500 uppercase font-bold tracking-widest">Diagnose</span>
+                    <div class="text-sm font-bold text-[#FFB300]" id="diagnosis">Menschlich</div>
+                </div>
+            </div>
+            
+            <div class="meter-container mb-6">
+                <div id="meterBar" class="meter-fill"></div>
+            </div>
+
+            <div id="bingoGrid" class="bingo-grid">
+                </div>
+
+            <div id="winOverlay" class="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl z-20">
+                <div class="transform -rotate-6 bg-[#FFB300] text-[#0f172a] font-black text-4xl px-8 py-4 shadow-2xl border-4 border-white text-center">
+                    BINGO! <br><span class="text-sm font-normal uppercase tracking-widest">Reine KI-Poesie</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="w-full max-w-2xl mt-12 border-t border-white/10 pt-8">
+        <details class="group glass-panel rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+                    <span class="font-bold text-white text-sm">Behind the Code</span>
+                </div>
+                <i data-lucide="chevron-down" class="text-[#FFB300] w-4 h-4 transform group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <div class="px-4 pb-6 text-slate-400 text-xs leading-relaxed border-t border-white/5 pt-4">
+                <p class="mb-2"><strong class="text-[#FFB300]">Scanner-Optimierung:</strong> Wir nutzen `text.replace(/[^\w\s]/gi, '')`, um Satzzeichen zu entfernen, damit "Synergie," (mit Komma) trotzdem als "Synergie" erkannt wird. Emojis bleiben erhalten.</p>
+                <p class="mb-2"><strong class="text-[#FFB300]">Win-Logik:</strong> Nach jedem Klick (manuell oder durch den Scanner) prüfen wir alle horizontalen, vertikalen und diagonalen Reihen. Bei einem Treffer feuert `canvas-confetti`.</p>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- DATABASE OF DOOM ---
+        const phrases = [
+            "auf ein neues level", "heutige welt", "digitale landschaft", "nicht nur sondern auch",
+            "maßgeschneidert", "nahtlos integrieren", "potenzial entfalten", "gamechanger",
+            "synergien nutzen", "unabdingbar", "schlüsselrolle", "einblicke gewähren",
+            "revolutionieren", "zusammenfassend", "wichtig zu beachten", "ai first",
+            "tauche ein", "dynamisches umfeld", "innovative lösungen", "nachhaltig steigern",
+            "im zeitalter von", "umfassend", "effizienz steigern", "datengetrieben",
+            "bestmögliche", "transformativ", "paradigmenwechsel", "holistisch",
+            "leverage", "state-of-the-art", 
+            // EMOJI FRAKTION
+            "🚀", "💡", "🤖", "✨", "👇", "🔥", "🧠", "✅", "🎓", "📈", "🌐", "👀"
+        ];
+
+        let currentGridPhrases = [];
+        let gridState = new Array(16).fill(false); // 4x4 Grid State
+
+        function initGrid() {
+            const grid = document.getElementById('bingoGrid');
+            grid.innerHTML = '';
+            gridState.fill(false);
+            
+            document.getElementById('winOverlay').classList.remove('visible');
+            updateScore(0);
+
+            // Shuffle and pick 16 items
+            currentGridPhrases = [...phrases].sort(() => 0.5 - Math.random()).slice(0, 16);
+
+            currentGridPhrases.forEach((phrase, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'bingo-cell';
+                cell.innerText = phrase;
+                cell.onclick = () => toggleCell(cell, index);
+                cell.id = `cell-${index}`;
+                grid.appendChild(cell);
+            });
+        }
+
+        function toggleCell(cell, index) {
+            // Wenn bereits aktiv, ausschalten (Toggle-Verhalten für manuelle Klicks)
+            if (gridState[index]) {
+                cell.classList.remove('detected');
+                gridState[index] = false;
+            } else {
+                cell.classList.add('detected');
+                gridState[index] = true;
+            }
+            
+            // Score updaten
+            const activeCount = gridState.filter(Boolean).length;
+            updateScore(activeCount);
+            
+            // Check Bingo
+            if (checkBingo()) {
+                triggerWin();
+            }
+        }
+
+        // Spezielle Funktion für den Scanner (nur aktivieren, nicht toggeln)
+        function activateCell(cell, index) {
+            if (!gridState[index]) {
+                cell.classList.add('detected');
+                gridState[index] = true;
+                
+                const activeCount = gridState.filter(Boolean).length;
+                updateScore(activeCount);
+
+                if (checkBingo()) {
+                    triggerWin();
+                }
+            }
+        }
+
+        function triggerWin() {
+            fireConfetti();
+            document.getElementById('winOverlay').classList.add('visible');
+            setTimeout(() => {
+                document.getElementById('winOverlay').classList.remove('visible');
+            }, 3000);
+        }
+
+        function checkBingo() {
+            // Indizes für 4x4 Grid (0-15)
+            const wins = [
+                [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15], // Rows
+                [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15], // Cols
+                [0,5,10,15], [3,6,9,12] // Diagonals
+            ];
+
+            return wins.some(combo => combo.every(idx => gridState[idx]));
+        }
+
+        function updateScore(activeCount) {
+            // Etwas großzügigere Berechnung: 8 Treffer sind schon 100%
+            const percentage = Math.min(100, Math.round((activeCount / 16) * 100 * 2)); 
+            
+            document.getElementById('scoreValue').innerText = percentage + "%";
+            document.getElementById('meterBar').style.width = percentage + "%";
+
+            const diagLabel = document.getElementById('diagnosis');
+            if (percentage < 10) { diagLabel.innerText = "Menschlich"; diagLabel.className = "text-sm font-bold text-green-400"; }
+            else if (percentage < 40) { diagLabel.innerText = "Verdächtig"; diagLabel.className = "text-sm font-bold text-[#FFB300]"; }
+            else if (percentage < 70) { diagLabel.innerText = "GPT-3.5 Vibe"; diagLabel.className = "text-sm font-bold text-orange-500"; }
+            else { diagLabel.innerText = "VOLL-SYNTHETISCH"; diagLabel.className = "text-sm font-bold text-red-500 animate-pulse"; }
+        }
+
+        function toggleScanner() {
+            const area = document.getElementById('scanner-area');
+            area.classList.toggle('open');
+        }
+
+        function autoScan() {
+            let rawText = document.getElementById('textInput').value.toLowerCase();
+            if(!rawText) return;
+
+            // Reset visual state only (behalte die Phrases im Grid)
+            document.querySelectorAll('.bingo-cell').forEach(c => c.classList.remove('detected'));
+            gridState.fill(false);
+            updateScore(0);
+            
+            let matchCount = 0;
+
+            // Check phrases
+            currentGridPhrases.forEach((phrase, index) => {
+                // Wir säubern beide Seiten für den Vergleich
+                // 1. Input Text (Satzzeichen weg)
+                const cleanInput = rawText; 
+                
+                // 2. Phrase (Satzzeichen weg, falls welche drin wären)
+                const cleanPhrase = phrase.toLowerCase(); 
+
+                if (cleanInput.includes(cleanPhrase)) {
+                    matchCount++;
+                    // Verzögerter Effekt für Coolness
+                    setTimeout(() => {
+                        const cell = document.getElementById(`cell-${index}`);
+                        if(cell) {
+                            activateCell(cell, index);
+                        }
+                    }, matchCount * 100);
+                }
+            });
+
+            // Wenn wir Treffer hatten, zum Grid scrollen
+            if (matchCount > 0) {
+                setTimeout(() => {
+                    document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+            }
+        }
+
+        function resetGame() {
+            initGrid();
+            document.getElementById('textInput').value = '';
+        }
+
+        function fireConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+            var random = function(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#FFB300', '#ffffff', '#ff3366']
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#FFB300', '#ffffff', '#ff3366']
+                }));
+            }, 250);
+        }
+
+        // Start
+        initGrid();
+
+    </script>
+    <div class="w-full text-center py-4 mt-4">
+        <a href="impressum.html" class="text-xs text-slate-500 hover:text-[#FFB300] transition-colors">Impressum</a>
+    </div>
+</body>
+</html>
