@@ -129,6 +129,9 @@
             transition: opacity 0.5s;
         }
         #winOverlay.visible { opacity: 1; }
+        
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="flex flex-col items-center py-10 px-4">
@@ -202,17 +205,57 @@
     </main>
 
     <div class="w-full max-w-2xl mt-12 border-t border-white/10 pt-8">
-        <details class="group glass-panel rounded-xl overflow-hidden">
+        <details class="group glass-panel rounded-xl overflow-hidden transition-all duration-300 open:bg-white/5 open:ring-1 open:ring-[#FFB300]/30">
             <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]"><i data-lucide="code-2" class="w-4 h-4"></i></div>
-                    <span class="font-bold text-white text-sm">Behind the Code</span>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Behind the Code</h3>
+                        <p class="text-xs text-slate-400">Vibecoding Breakdown</p>
+                    </div>
                 </div>
                 <i data-lucide="chevron-down" class="text-[#FFB300] w-4 h-4 transform group-open:rotate-180 transition-transform"></i>
             </summary>
-            <div class="px-4 pb-6 text-slate-400 text-xs leading-relaxed border-t border-white/5 pt-4">
-                <p class="mb-2"><strong class="text-[#FFB300]">Scanner-Optimierung:</strong> Wir nutzen `text.replace(/[^\w\s]/gi, '')`, um Satzzeichen zu entfernen, damit "Synergie," (mit Komma) trotzdem als "Synergie" erkannt wird. Emojis bleiben erhalten.</p>
-                <p class="mb-2"><strong class="text-[#FFB300]">Win-Logik:</strong> Nach jedem Klick (manuell oder durch den Scanner) prüfen wir alle horizontalen, vertikalen und diagonalen Reihen. Bei einem Treffer feuert `canvas-confetti`.</p>
+            
+            <div class="px-6 pb-8 text-slate-300 space-y-6 border-t border-white/5 pt-6 text-sm">
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🧹 Die "Waschmaschine" (Regex)</h4>
+                        <p class="leading-relaxed mb-4">
+                            Damit der Scanner nicht verwirrt ist, wenn "Synergie" am Satzende steht ("Synergie."), jagen wir den Input durch eine Normalisierung.
+                        </p>
+                        <div class="bg-black/40 p-3 rounded font-mono text-xs text-green-400 border border-white/10 mb-2">
+                            text.replace(/[^\w\s]/gi, '')
+                        </div>
+                        <p class="text-xs text-slate-500">
+                            Dieser Befehl entfernt alle Satzzeichen und lässt nur Buchstaben, Zahlen und Emojis übrig. Danach wird alles in <code>.toLowerCase()</code> umgewandelt. So finden wir Begriffe immer.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🎲 Die Win-Matrix</h4>
+                        <p class="leading-relaxed mb-4">
+                            Wie erkennt das Tool eine Reihe? Wir definieren alle möglichen Gewinnlinien als Indizes in einem Array:
+                        </p>
+                        <ul class="list-disc pl-4 space-y-1 text-xs text-slate-400">
+                            <li>Horizontal: <code>[0,1,2,3], [4,5,6,7]...</code></li>
+                            <li>Vertikal: <code>[0,4,8,12], [1,5,9,13]...</code></li>
+                            <li>Diagonal: <code>[0,5,10,15], [3,6,9,12]</code></li>
+                        </ul>
+                        <p class="mt-2 text-xs">
+                            Bei jedem Klick prüft <code>wins.some()</code>, ob eine dieser Gruppen komplett aktiv ist.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                    <h4 class="text-[#FFB300] font-bold text-xs uppercase tracking-widest mb-2">🚀 Emoji Handling</h4>
+                    <p class="leading-relaxed">
+                        Für JavaScript sind Emojis wie 🚀 oder 🧠 einfach nur Text-Strings (Unicode). Wir müssen sie nicht gesondert behandeln. Sie liegen im selben Array wie "Gamechanger" und werden vom Scanner identisch gefunden.
+                    </p>
+                </div>
+
             </div>
         </details>
     </div>
@@ -345,13 +388,14 @@
             // Check phrases
             currentGridPhrases.forEach((phrase, index) => {
                 // Wir säubern beide Seiten für den Vergleich
-                // 1. Input Text (Satzzeichen weg)
-                const cleanInput = rawText; 
+                // 1. Input Text (Satzzeichen weg für Wort-Matching)
+                const cleanInput = rawText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
                 
-                // 2. Phrase (Satzzeichen weg, falls welche drin wären)
-                const cleanPhrase = phrase.toLowerCase(); 
+                // 2. Phrase (Satzzeichen weg)
+                const cleanPhrase = phrase.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 
-                if (cleanInput.includes(cleanPhrase)) {
+                // Check: Enthält der Text die Phrase ODER ist es ein Emoji (Emojis überleben den Regex nicht immer gut, daher Check im RawText)
+                if (cleanInput.includes(cleanPhrase) || rawText.includes(phrase)) {
                     matchCount++;
                     // Verzögerter Effekt für Coolness
                     setTimeout(() => {
