@@ -53,18 +53,18 @@
     <main class="w-full max-w-2xl relative z-10">
         <div class="text-center mb-10">
             <h1 class="text-4xl md:text-6xl font-black mb-4">Corporate <span class="text-[#FFB300]">Clapback</span></h1>
-            <p class="text-slate-400">Der Dolmetscher für Wutausbrüche. <br>Verwandelt "F*ck dich" in "Best regards".</p>
+            <p class="text-slate-400">Der Dolmetscher für DEINE Wutausbrüche. <br>Sag jemandem "F*ck dich" – aber so, dass HR nichts machen kann.</p>
         </div>
 
         <div class="bg-[#0f172a]/80 backdrop-blur border border-white/10 p-6 md:p-8 rounded-3xl mb-8 shadow-2xl">
-            <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block tracking-widest">Dein interner Monolog (Unzensiert):</label>
-            <textarea id="rawInput" rows="3" class="glass-input w-full rounded-xl p-4 mb-8 text-lg placeholder-slate-600" placeholder="Lass es raus: 'Dieser Idiot hat keine Ahnung und soll die Fresse halten...'"></textarea>
+            <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block tracking-widest">Was du ihm/ihr eigentlich sagen willst:</label>
+            <textarea id="rawInput" rows="3" class="glass-input w-full rounded-xl p-4 mb-8 text-lg placeholder-slate-600" placeholder="z.B. Du nervst, halt die Klappe und mach deinen Scheiß alleine!"></textarea>
             
             <div class="mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
                 <div class="flex justify-between text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest">
                     <span>😇 Diplomatisch</span>
                     <span id="aggroLabel" class="text-[#FFB300]">Level: Passiv-Aggressiv</span>
-                    <span>😈 Eiskalt</span>
+                    <span>😈 Eiskalt (Karriere-Killer)</span>
                 </div>
                 <input type="range" id="aggroSlider" min="0" max="2" step="1" value="1" class="w-full" oninput="updateLabel()">
             </div>
@@ -77,7 +77,7 @@
 
         <div id="resultArea" class="hidden clapback-card p-8 rounded-r-2xl border border-white/10 bg-[#0f172a]">
             <div class="flex justify-between items-start mb-4">
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Sende das hier:</p>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Sende das hier (Copy & Paste):</p>
                 <span class="text-xs font-mono text-[#FFB300] bg-[#FFB300]/10 px-2 py-1 rounded" id="detectedTopic">Topic: General</span>
             </div>
             <p id="outputText" class="text-xl md:text-2xl text-white font-medium leading-relaxed mb-6">...</p>
@@ -100,14 +100,16 @@
                     <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]"><i data-lucide="code-2" class="w-4 h-4"></i></div>
                     <div>
                         <h3 class="font-bold text-white text-sm">Behind the Code</h3>
-                        <p class="text-[10px] text-slate-400">Keyword Mapping Logic</p>
+                        <p class="text-[10px] text-slate-400">Sender-Perspective Logic</p>
                     </div>
                 </div>
                 <i data-lucide="chevron-down" class="text-[#FFB300] w-4 h-4 transform group-open:rotate-180 transition-transform"></i>
             </summary>
             <div class="px-4 pb-6 text-slate-400 text-xs leading-relaxed border-t border-white/5 pt-4">
-                <p class="mb-2">Dieses Tool ist ein <strong>Sanitizer</strong>. Es filtert emotionale Sprache ("Fick dich") und mappt sie auf vordefinierte, sichere Business-Phrasen.</p>
-                <p>Das Skript durchsucht deinen Text nach über 100 Trigger-Wörtern in Kategorien wie <em>Insult, Refusal, Incompetence</em> und wählt dann per Zufall eine politisch korrekte (aber inhaltlich klare) Antwort aus.</p>
+                <p class="mb-2">Hier arbeitet <strong>keine KI</strong>. Das Tool nutzt eine "Active-Sender" Logik.</p>
+                <p class="mb-2">1. Der Input wird gescannt ("Fick dich").</p>
+                <p>2. Das Tool versteht das als <em>deinen Wunsch</em>, die Beziehung zu beenden oder Dominanz zu zeigen.</p>
+                <p>3. Es wählt eine Phrase, die genau das ausdrückt – aber in HR-sicherer Sprache ("Ich sehe keine Basis für eine Zusammenarbeit").</p>
             </div>
         </details>
     </div>
@@ -115,70 +117,56 @@
     <script>
         lucide.createIcons();
 
-        // --- DIE MASSIVE DATENBANK (Uncensored Inputs -> Safe Outputs) ---
+        // --- DIE ACTIVE-SENDER DATENBANK (Deine Gedanken -> Dein Business-Sprech) ---
         const dictionary = {
             insult: {
-                keywords: ["fick dich", "arschloch", "wichser", "hurensohn", "bastard", "schlampe", "missgeburt", "spast", "idiot", "depp", "trottel", "verpiss dich", "halt die fresse", "schnauze", "kotzbrocken", "penner", "fotze", "dreck", "scheißkerl"],
-                topic: "Konstruktives Miteinander",
-                0: ["Ich schlage vor, wir kehren zu einer sachlichen Diskussionsebene zurück.", "Lass uns versuchen, die Emotionen hier etwas rauszunehmen."],
-                1: ["Ich bin mir nicht sicher, ob dieser Tonfall zielführend für unser Projekt ist.", "Ich nehme deine Anmerkungen zur Kenntnis, teile aber die Form der Äußerung nicht."],
-                2: ["Diese Art der Kommunikation entspricht nicht unseren Corporate Values. Ich beende das Gespräch an dieser Stelle.", "Ich verweise auf die internen Guidelines zum respektvollen Miteinander."]
+                keywords: ["fick dich", "arschloch", "wichser", "hurensohn", "bastard", "schlampe", "missgeburt", "spast", "idiot", "depp", "trottel", "verpiss dich", "geh sterben", "kotzbrocken", "penner", "fotze", "dreck", "scheißkerl"],
+                topic: "Beziehungsstatus",
+                0: ["Ich denke, wir sollten unsere Kommunikation auf das rein Geschäftliche beschränken.", "Unsere Arbeitsweisen scheinen hier nicht kompatibel zu sein."],
+                1: ["Ich wünsche dir für deinen weiteren beruflichen Weg alles Gute.", "Ich sehe hier keine Basis für eine weitere konstruktive Zusammenarbeit."],
+                2: ["Ich betrachte diesen Austausch als beendet.", "Bitte entferne mich aus dem Verteiler für zukünftige Korrespondenz zu diesem Thema."]
             },
             shut_up: {
-                keywords: ["halt s maul", "maul halten", "fresse halten", "sei still", "nerv nicht", "laber nicht", "quatsch nicht", "klappe", "ruhe", "schnauze halten"],
-                topic: "Redeanteil & Fokus",
-                0: ["Danke für den Beitrag. Ich würde gerne wieder auf die Kernagenda zurückkommen.", "Lass uns den Fokus wieder auf das Wesentliche richten."],
-                1: ["Ich denke, dieser Punkt wurde nun ausreichend beleuchtet.", "Wir drehen uns hier im Kreis."],
-                2: ["Bitte fasse dich kurz. Wir müssen auf die Timebox achten.", "Ich denke, dazu ist alles gesagt."]
+                keywords: ["halt s maul", "maul halten", "fresse halten", "sei still", "nerv nicht", "laber nicht", "quatsch nicht", "klappe", "ruhe", "schnauze", "unterbrech mich nicht"],
+                topic: "Redeanteil",
+                0: ["Darf ich meinen Gedanken kurz zu Ende führen?", "Danke für den Einwurf, ich würde gerne im Kontext bleiben."],
+                1: ["Ich denke, dein Punkt ist angekommen. Lassen wir es dabei.", "Ich würde die Diskussion an dieser Stelle gerne abkürzen."],
+                2: ["Ich möchte dich bitten, meinen Ausführungen bis zum Ende zu folgen.", "Diese Diskussion führt zu nichts, ich breche das hier ab."]
             },
             refusal: {
-                keywords: ["leck mich", "am arsch", "kannst mich mal", "vergiss es", "träum weiter", "einen scheiß werde ich", "fick dich ins knie", "ohne mich", "sicher nicht", "no way", "nein"],
-                topic: "Ressourcen-Verfügbarkeit",
-                0: ["Das passt leider gerade gar nicht in meinen Zeitplan.", "Ich sehe da aktuell keine Kapazitäten, um das abzubilden."],
-                1: ["Ich werde das angesichts meiner aktuellen KPIs nicht priorisieren können.", "Das liegt bedauerlicherweise außerhalb meines Scopes."],
-                2: ["Das wird so nicht passieren.", "Betrachte das bitte als final abgelehnt."]
+                keywords: ["leck mich", "am arsch", "kannst mich mal", "vergiss es", "träum weiter", "einen scheiß werde ich", "fick dich ins knie", "ohne mich", "sicher nicht", "no way", "nein", "mach deinen scheiß alleine"],
+                topic: "Arbeitsverweigerung",
+                0: ["Das kann ich in meinem aktuellen Zeitplan leider nicht unterbringen.", "Da bin ich leider der falsche Ansprechpartner."],
+                1: ["Ich werde das angesichts meiner Prioritäten nicht abbilden können.", "Das liegt bedauerlicherweise komplett außerhalb meines Scopes."],
+                2: ["Ich stehe für dieses Vorhaben nicht zur Verfügung.", "Betrachte das bitte als finale Absage meinerseits."]
             },
             incompetence: {
-                keywords: ["unfähig", "kannst nix", "versager", "dilettant", "nullinger", "keine ahnung", "dumm", "blöd", "bescheuert", "hirnlos", "inkompetent", "falsch", "fail", "verkackt"],
-                topic: "Qualitätsmanagement",
-                0: ["Ich sehe hier noch deutliches Optimierungspotenzial in der Ausführung.", "Das entspricht noch nicht ganz unseren Qualitätsstandards."],
-                1: ["Ich bin mir nicht sicher, ob wir hier über das gleiche Skill-Set verfügen.", "Das Ergebnis weicht signifikant von der Zielsetzung ab."],
-                2: ["Ich empfehle hier ein gezieltes Upskilling.", "In dieser Form ist das Deliverable für uns nicht verwertbar."]
+                keywords: ["unfähig", "kannst nix", "versager", "dilettant", "nullinger", "keine ahnung", "dumm", "blöd", "bescheuert", "hirnlos", "inkompetent", "falsch", "fail", "verkackt", "scheiße gebaut"],
+                topic: "Qualitäts-Feedback",
+                0: ["Ich sehe hier noch deutliches Optimierungspotenzial.", "Das entspricht noch nicht ganz meinen Erwartungen an das Ergebnis."],
+                1: ["Ich bin mir nicht sicher, ob wir hier das gleiche Verständnis von Qualität haben.", "Das Ergebnis weicht signifikant vom Briefing ab."],
+                2: ["In dieser Form ist das Deliverable für mich nicht verwertbar.", "Es fällt mir schwer, hier die nötige professionelle Sorgfalt zu erkennen."]
             },
             bullshit: {
-                keywords: ["bullshit", "schwachsinn", "quatsch", "scheiße", "kacke", "müll", "mist", "gülle", "dreck", "sinnlos", "verarsche"],
-                topic: "Strategische Ausrichtung",
-                0: ["Das ist ein interessanter Ansatz, den wir sicher noch schärfen können.", "Ich glaube, wir müssen das Konzept noch einmal validieren."],
-                1: ["Ich sehe hier keinen strategischen Fit.", "Die Argumentation erscheint mir an einigen Stellen noch etwas dünn."],
-                2: ["Hinsichtlich der Relevanz sehe ich hier noch erheblichen Klärungsbedarf.", "Das zahlt nicht auf unsere übergeordneten Ziele ein."]
-            },
-            time: {
-                keywords: ["keine zeit", "stress", "voll", "später", "nervig", "beschäftigt", "land unter", "überstunden", "burnout"],
-                topic: "Kapazitätsplanung",
-                0: ["Lass uns schauen, wie wir das realistisch in den Zeitplan integrieren.", "Ich muss erst meine aktuellen To-Dos priorisieren."],
-                1: ["Angesichts meiner aktuellen Prioritäten wird das diese Woche eng.", "Meine Bandbreite ist derzeit komplett ausgeschöpft."],
-                2: ["Meine Kapazitäten sind vollständig für Business-Critical Tasks gebunden.", "Dafür sehe ich im aktuellen Sprint keinen Raum."]
+                keywords: ["bullshit", "schwachsinn", "quatsch", "scheiße", "kacke", "müll", "mist", "gülle", "dreck", "sinnlos", "verarsche", "lüge"],
+                topic: "Inhaltliche Bewertung",
+                0: ["Ich habe da eine etwas andere Sicht auf die Dinge.", "Ich glaube, wir müssen die Faktenlage noch einmal prüfen."],
+                1: ["Ich kann deiner Argumentation an dieser Stelle nicht folgen.", "Die Herleitung erscheint mir doch sehr spekulativ."],
+                2: ["Diese Aussage entbehrt für mich jeder faktischen Grundlage.", "Das deckt sich in keiner Weise mit meinen Informationen."]
             },
             late: {
-                keywords: ["wann", "spät", "wo bleibt", "deadline", "trödeln", "langsam", "warte", "nichts passiert", "schneckentempo"],
-                topic: "Verzögerung",
-                0: ["Wann darf ich denn ca. mit dem Input rechnen?", "Gibt es schon ein Update zum Status?"],
-                1: ["Wie im letzten Jour Fixe besprochen, warte ich noch auf dein Feedback.", "Wir laufen Gefahr, den Zeitplan zu gefährden."],
-                2: ["Um das Projektziel nicht zu gefährden, benötige ich die Unterlagen umgehend.", "Dies ist ein Blocker für den weiteren Prozess."]
-            },
-            expensive: {
-                keywords: ["teuer", "geld", "kosten", "budget", "zu viel", "bezahlen", "pleite", "finanzen", "wucher"],
-                topic: "Budget-Allokation",
-                0: ["Lass uns die Kosten-Nutzen-Rechnung dazu nochmal prüfen.", "Gibt es dazu eine Budget-Freigabe?"],
-                1: ["Das scheint mir den aktuellen Rahmen etwas zu sprengen.", "Haben wir dafür Budget allokiert?"],
-                2: ["Budgetär ist das im aktuellen Fiscal Year nicht abbildbar.", "Aus Kostensicht sehe ich da keine Realisierungschance."]
+                keywords: ["wann", "spät", "wo bleibt", "deadline", "trödeln", "langsam", "warte", "nichts passiert", "schneckentempo", "beweg deinen arsch"],
+                topic: "Eskalation",
+                0: ["Wann darf ich denn ca. mit dem Input rechnen?", "Ich warte noch auf dein Feedback."],
+                1: ["Wir laufen Gefahr, den Zeitplan ernsthaft zu gefährden.", "Ich benötige das jetzt."],
+                2: ["Dies ist ein Blocker. Ich werde das im Steering Committee eskalieren müssen.", "Ich erwarte die Lieferung bis EOB, ohne Ausnahme."]
             },
             generic: {
                 keywords: [],
-                topic: "Allgemeines Corporate",
-                0: ["Vielen Dank für den Input. Ich nehme das mal mit.", "Interessanter Punkt."],
-                1: ["Wir sollten das im Auge behalten.", "Lass uns das parken."],
-                2: ["Ich denke, wir sollten hier noch einmal einen Schritt zurücktreten und das Big Picture betrachten.", "Das adressieren wir im nächsten QBR."]
+                topic: "Allgemeine Ablehnung",
+                0: ["Vielen Dank für den Input. Ich nehme das mal mit.", "Interessant."],
+                1: ["Ich nehme das zur Kenntnis.", "Lass uns das bei Gelegenheit vertiefen (oder auch nicht)."],
+                2: ["Ich denke, dazu ist von meiner Seite alles gesagt.", "Ich sehe keinen Mehrwert darin, diese Diskussion fortzuführen."]
             }
         };
 
@@ -199,26 +187,21 @@
             let bestMatch = dictionary.generic;
             let maxHits = 0;
 
-            // Find best matching category based on keywords
             for (const key in dictionary) {
                 if (key === 'generic') continue;
                 const category = dictionary[key];
                 const hits = category.keywords.filter(word => input.includes(word)).length;
-                
-                // Prioritize 'harder' categories (insult > bullshit) if hits are equal
                 if (hits > maxHits) {
                     maxHits = hits;
                     bestMatch = category;
                 }
             }
 
-            // Select random phrase from the level array
             const phrases = bestMatch[level];
             const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
 
-            document.getElementById('detectedTopic').innerText = "Topic: " + bestMatch.topic;
+            document.getElementById('detectedTopic').innerText = "Kategorie: " + bestMatch.topic;
             
-            // Animation for new text
             const outputEl = document.getElementById('outputText');
             outputEl.style.opacity = 0;
             setTimeout(() => {
