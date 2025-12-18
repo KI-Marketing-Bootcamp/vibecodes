@@ -3,139 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tag 18: Budget Burner</title>
+    <title>Tag 19: Corporate Clapback</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root { --ci-gold: #FFB300; --ci-darker: #020617; }
+        :root { --ci-gold: #FFB300; --ci-dark: #0f172a; --ci-darker: #020617; }
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--ci-darker);
+            background-image: radial-gradient(circle at top right, #1e293b 0%, var(--ci-darker) 100%);
             color: white;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .digital-display {
-            font-family: 'JetBrains Mono', monospace;
-            text-shadow: 0 0 20px rgba(255, 179, 0, 0.3);
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #FFB300, #eab308);
-            color: #020617;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.2s;
-        }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -5px rgba(255, 179, 0, 0.4); }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white; transition: all 0.3s;
         }
+        .glass-input:focus { border-color: var(--ci-gold); outline: none; background: rgba(255, 255, 255, 0.1); }
+        
+        .clapback-card {
+            border-left: 4px solid var(--ci-gold);
+            background: linear-gradient(90deg, rgba(255, 179, 0, 0.05) 0%, rgba(0,0,0,0) 100%);
+            animation: slideIn 0.4s ease-out;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Slider Styling */
         input[type=range] { -webkit-appearance: none; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #FFB300; margin-top: -6px; cursor: pointer; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; 
+            background: var(--ci-gold); margin-top: -10px; cursor: pointer; 
+            transition: transform 0.2s; box-shadow: 0 0 15px rgba(255, 179, 0, 0.5);
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #334155; border-radius: 2px; }
         
-        .pulse-red { animation: pulseRed 2s infinite; color: #ef4444; text-shadow: 0 0 30px rgba(239, 68, 68, 0.6); }
-        @keyframes pulseRed { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        /* Behind Code Details */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="py-12 px-4">
-
     <div class="w-full max-w-2xl flex justify-between items-center mb-12">
         <a href="index.html" class="text-slate-400 hover:text-white flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kalender</a>
-        <div class="text-[#FFB300] font-bold uppercase text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">Tag 18</div>
+        <div class="text-[#FFB300] font-bold uppercase text-sm border border-[#FFB300]/30 px-3 py-1 rounded-full bg-[#FFB300]/5">Tag 19</div>
     </div>
 
-    <main class="w-full max-w-lg text-center">
-        <h1 class="text-4xl font-black mb-2">Budget <span class="text-[#FFB300]">Burner</span></h1>
-        <p class="text-slate-400 text-sm mb-8">Das Meeting-Taxameter. Sieh dem Geld beim Verschwinden zu.</p>
+    <main class="w-full max-w-2xl relative z-10">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">Corporate <span class="text-[#FFB300]">Clapback</span></h1>
+            <p class="text-slate-400">Der Übersetzer für ehrliche Gefühle ins "Business-Deutsch".<br>Wähle dein Eskalations-Level.</p>
+        </div>
 
-        <div class="glass-panel p-8 rounded-2xl mb-8">
-            <div class="mb-8">
-                <div class="text-6xl md:text-7xl font-black text-white digital-display tracking-tighter" id="display">0.00€</div>
-                <div class="text-xs font-mono text-slate-500 mt-2 uppercase tracking-widest" id="statusLine">Meeting gestoppt</div>
+        <div class="bg-[#0f172a]/80 backdrop-blur border border-white/10 p-6 md:p-8 rounded-3xl mb-8 shadow-2xl">
+            <label class="text-xs font-bold text-[#FFB300] uppercase mb-2 block tracking-widest">Was du eigentlich sagen willst (Rohtext):</label>
+            <textarea id="rawInput" rows="3" class="glass-input w-full rounded-xl p-4 mb-8 text-lg placeholder-slate-600" placeholder="z.B. Das ist eine dumme Idee, ich hab keinen Bock und es ist viel zu teuer."></textarea>
+            
+            <div class="mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
+                <div class="flex justify-between text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest">
+                    <span>😇 Diplomatisch</span>
+                    <span id="aggroLabel" class="text-[#FFB300]">Level: Passiv-Aggressiv</span>
+                    <span>😈 Eiskalt</span>
+                </div>
+                <input type="range" id="aggroSlider" min="0" max="2" step="1" value="1" class="w-full" oninput="updateLabel()">
             </div>
 
-            <div class="space-y-6 text-left mb-8">
-                <div>
-                    <div class="flex justify-between text-sm mb-2"><label>Teilnehmer</label><span id="valPart" class="text-[#FFB300]">4 Personen</span></div>
-                    <input type="range" id="rngPart" min="1" max="20" value="4" class="w-full" oninput="updateSettings()">
-                </div>
-                <div>
-                    <div class="flex justify-between text-sm mb-2"><label>Ø Stundensatz (Intern + Overhead)</label><span id="valRate" class="text-[#FFB300]">80 €</span></div>
-                    <input type="range" id="rngRate" min="30" max="300" step="10" value="80" class="w-full" oninput="updateSettings()">
-                </div>
-            </div>
-
-            <button id="btnToggle" onclick="toggleTimer()" class="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2 text-lg shadow-lg">
-                <i data-lucide="play"></i> Meeting Starten
+            <button onclick="translateText()" class="w-full bg-white/10 hover:bg-white/20 hover:text-[#FFB300] text-white font-bold py-4 rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2 group">
+                <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i> 
+                Professionell übersetzen
             </button>
-            <button onclick="resetTimer()" class="mt-4 text-xs text-slate-500 hover:text-white underline">Reset</button>
+        </div>
+
+        <div id="resultArea" class="hidden clapback-card p-8 rounded-r-2xl border border-white/10 bg-[#0f172a]">
+            <div class="flex justify-between items-start mb-4">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Offizielle Kommunikation:</p>
+                <span class="text-xs font-mono text-[#FFB300] bg-[#FFB300]/10 px-2 py-1 rounded" id="detectedTopic">Thema: Allgemein</span>
+            </div>
+            <p id="outputText" class="text-xl md:text-2xl text-white font-medium leading-relaxed mb-6">...</p>
+            
+            <div class="flex gap-4">
+                <button onclick="copyResult()" class="text-slate-400 hover:text-white text-xs flex items-center gap-2 transition-colors uppercase font-bold tracking-widest">
+                    <i data-lucide="copy" class="w-4 h-4"></i> Kopieren
+                </button>
+                <button onclick="retry()" class="text-slate-400 hover:text-[#FFB300] text-xs flex items-center gap-2 transition-colors uppercase font-bold tracking-widest">
+                    <i data-lucide="shuffle" class="w-4 h-4"></i> Neue Variante
+                </button>
+            </div>
         </div>
     </main>
 
+    <div class="w-full max-w-2xl mt-12 border-t border-white/10 pt-8">
+        <details class="group glass-input rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none hover:bg-white/5 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#FFB300]/10 rounded-lg text-[#FFB300]"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+                    <div>
+                        <h3 class="font-bold text-white text-sm">Behind the Code</h3>
+                        <p class="text-[10px] text-slate-400">Vibecoding: Keyword Mapping</p>
+                    </div>
+                </div>
+                <i data-lucide="chevron-down" class="text-[#FFB300] w-4 h-4 transform group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <div class="px-4 pb-6 text-slate-400 text-xs leading-relaxed border-t border-white/5 pt-4">
+                <p class="mb-2">Hier arbeitet <strong>keine KI</strong>. Das Tool nutzt eine riesige, handgepflegte Datenbank ("Dictionary").</p>
+                <p class="mb-2">1. Der Input wird nach Schlüsselwörtern gescannt (z.B. "dumm", "teuer", "nervt").</p>
+                <p>2. Basierend auf dem Fund (Topic) und der Slider-Position (Level 0-2) wird ein vorgefertigter Satz aus dem Array gezogen. Das ist sicherer als echte KI, weil das Ergebnis 100% kontrollierbar und immer "Corporate Safe" ist.</p>
+            </div>
+        </details>
+    </div>
+
     <script>
         lucide.createIcons();
-        let timer = null;
-        let currentCost = 0;
-        let startTime = 0;
-        
-        function updateSettings() {
-            document.getElementById('valPart').innerText = document.getElementById('rngPart').value + " Personen";
-            document.getElementById('valRate').innerText = document.getElementById('rngRate').value + " €";
-        }
 
-        function toggleTimer() {
-            const btn = document.getElementById('btnToggle');
-            const display = document.getElementById('display');
-            const status = document.getElementById('statusLine');
-
-            if (timer) {
-                // STOP
-                clearInterval(timer);
-                timer = null;
-                btn.innerHTML = '<i data-lucide="play"></i> Weiter gehts';
-                btn.classList.remove('bg-red-500', 'text-white'); // Reset style if needed
-                status.innerText = "Pausiert. Zeit zum Durchatmen.";
-                lucide.createIcons();
-            } else {
-                // START
-                const participants = parseInt(document.getElementById('rngPart').value);
-                const hourlyRate = parseInt(document.getElementById('rngRate').value);
-                const costPerSecond = (participants * hourlyRate) / 3600;
-
-                btn.innerHTML = '<i data-lucide="pause"></i> Stoppen (Geld sparen)';
-                status.innerText = "🔥 Geld verbrennt...";
-                
-                timer = setInterval(() => {
-                    currentCost += costPerSecond;
-                    display.innerText = currentCost.toFixed(2) + "€";
-                    
-                    // Visual Panic Mode
-                    if(currentCost > 100) display.classList.add('text-[#FFB300]');
-                    if(currentCost > 500) {
-                        display.classList.remove('text-[#FFB300]');
-                        display.classList.add('pulse-red');
-                        status.innerText = "Das hätte eine E-Mail sein können!";
-                    }
-                }, 1000); // Update every second
-                lucide.createIcons();
+        // --- DIE GROSSE DATABASE ---
+        const dictionary = {
+            stupid: {
+                keywords: ["dumm", "blöd", "schwachsinn", "bullshit", "quatsch", "sinnlos", "bescheuert", "wozu", "idiotisch", "kacke", "scheiße"],
+                topic: "Kritik an der Idee",
+                0: ["Das ist ein interessanter Ansatz, den wir sicher noch schärfen können.", "Danke für den Impuls, lass uns das noch einmal durchdenken."],
+                1: ["Ich bin mir nicht sicher, ob dieser Weg uns aktuell zum Ziel führt.", "Mutiger Vorschlag."],
+                2: ["Hinsichtlich der strategischen Ausrichtung sehe ich hier noch erheblichen Klärungsbedarf.", "Ich sehe hier keinen strategischen Fit."]
+            },
+            notmyjob: {
+                keywords: ["nicht mein job", "mach du", "warum ich", "zuständig", "dein problem", "selber machen", "kein bock", "faul"],
+                topic: "Zuständigkeit",
+                0: ["Lass uns kurz klären, wer hier den Hut auf hat.", "Können wir die Rollenverteilung nochmal schärfen?"],
+                1: ["Das scheint mir thematisch eher in deinem Bereich verortet zu sein.", "Das liegt leider etwas außerhalb meines Scopes."],
+                2: ["Bitte kläre die Zuständigkeiten, bevor wir fortfahren.", "Ressourcen-seitig kann ich das nicht abbilden."]
+            },
+            time: {
+                keywords: ["keine zeit", "stress", "voll", "später", "nerv nicht", "beschäftigt", "land unter", "überstunden"],
+                topic: "Ressourcen-Engpass",
+                0: ["Lass uns schauen, wie wir das realistisch in den Zeitplan integrieren.", "Ich muss erst meine aktuellen To-Dos priorisieren."],
+                1: ["Angesichts meiner aktuellen Prioritäten wird das diese Woche eng.", "Meine Bandbreite ist derzeit komplett ausgeschöpft."],
+                2: ["Meine Kapazitäten sind derzeit vollständig für Business-Critical Tasks gebunden.", "Dafür sehe ich im aktuellen Sprint keinen Raum."]
+            },
+            late: {
+                keywords: ["wann", "spät", "wo bleibt", "deadline", "trödeln", "langsam", "warte", "nichts passiert"],
+                topic: "Verzögerung",
+                0: ["Wann darf ich denn ca. mit dem Input rechnen?", "Gibt es schon ein Update zum Status?"],
+                1: ["Wie im letzten Jour Fixe besprochen, warte ich noch auf dein Feedback.", "Wir laufen Gefahr, den Zeitplan zu gefährden."],
+                2: ["Um das Projektziel nicht zu gefährden, benötige ich die Unterlagen umgehend.", "Dies ist ein Blocker für den weiteren Prozess."]
+            },
+            email: {
+                keywords: ["steht da", "email", "lesen", "blind", "anhang", "bereits geschickt", "wer lesen kann"],
+                topic: "Lesekompetenz",
+                0: ["Die Details findest du im Anhang.", "Ich glaube, das stand schon in meiner letzten Mail."],
+                1: ["Siehe unten.", "Wie bereits schriftlich fixiert:"],
+                2: ["Wie meiner vorangegangenen Korrespondenz zu entnehmen ist...", "Bitte konsultiere die Dokumentation."]
+            },
+            expensive: {
+                keywords: ["teuer", "geld", "kosten", "budget", "zu viel", "bezahlen", "pleite", "finanzen"],
+                topic: "Budget-Fragen",
+                0: ["Lass uns die Kosten-Nutzen-Rechnung dazu nochmal prüfen.", "Gibt es dazu eine Budget-Freigabe?"],
+                1: ["Das scheint mir den aktuellen Rahmen etwas zu sprengen.", "Haben wir dafür Budget allokiert?"],
+                2: ["Budgetär ist das im aktuellen Fiscal Year nicht abbildbar.", "Aus Kostensicht sehe ich da keine Realisierungschance."]
+            },
+            meeting: {
+                keywords: ["meeting", "call", "reden", "besprechen", "termin", "telefonieren", "labern"],
+                topic: "Abstimmungsbedarf",
+                0: ["Lass uns dazu kurz synchronisieren.", "Wollen wir das kurz persönlich besprechen?"],
+                1: ["Bitte stell dazu einen Termin ein.", "Lass uns das offline nehmen."],
+                2: ["Das sollten wir bilateral klären.", "Bitte sende mir vorab eine Agenda."]
+            },
+            nonsense: {
+                keywords: ["egal", "weiß nicht", "keine ahnung", "verwirrt", "hä", "versteh ich nicht"],
+                topic: "Unklarheit",
+                0: ["Kannst du mich da kurz abholen?", "Ich bräuchte da noch etwas mehr Kontext."],
+                1: ["Die Stoßrichtung ist mir noch nicht ganz klar.", "Können wir das konkretisieren?"],
+                2: ["Mir fehlt hier das Big Picture.", "Die strategische Relevanz erschließt sich mir nicht."]
+            },
+            generic: {
+                keywords: [],
+                topic: "Allgemeines Corporate",
+                0: ["Vielen Dank für den Input. Ich nehme das mal mit.", "Interessanter Punkt."],
+                1: ["Wir sollten das im Auge behalten.", "Lass uns das parken."],
+                2: ["Ich denke, wir sollten hier noch einmal einen Schritt zurücktreten und das Big Picture betrachten.", "Das adressieren wir im nächsten QBR."]
             }
+        };
+
+        function updateLabel() {
+            const val = document.getElementById('aggroSlider').value;
+            const labels = ["😇 Level: Diplomatisch", "😐 Level: Passiv-Aggressiv", "😈 Level: Eiskalt"];
+            const labelEl = document.getElementById('aggroLabel');
+            labelEl.innerText = labels[val];
+            
+            if(val == 0) labelEl.className = "text-green-400";
+            if(val == 1) labelEl.className = "text-[#FFB300]";
+            if(val == 2) labelEl.className = "text-red-500 font-bold";
         }
 
-        function resetTimer() {
-            if(timer) toggleTimer();
-            currentCost = 0;
-            document.getElementById('display').innerText = "0.00€";
-            document.getElementById('display').className = "text-6xl md:text-7xl font-black text-white digital-display tracking-tighter";
-            document.getElementById('statusLine').innerText = "Neues Meeting, neues Glück.";
-            document.getElementById('btnToggle').innerHTML = '<i data-lucide="play"></i> Meeting Starten';
-            lucide.createIcons();
+        function translateText() {
+            const input = document.getElementById('rawInput').value.toLowerCase();
+            const level = document.getElementById('aggroSlider').value;
+            let bestMatch = dictionary.generic;
+            let maxHits = 0;
+
+            // Find best matching category
+            for (const key in dictionary) {
+                if (key === 'generic') continue;
+                const category = dictionary[key];
+                const hits = category.keywords.filter(word => input.includes(word)).length;
+                if (hits > maxHits) {
+                    maxHits = hits;
+                    bestMatch = category;
+                }
+            }
+
+            // Select random phrase from the level array
+            const phrases = bestMatch[level];
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+            document.getElementById('detectedTopic').innerText = "Topic: " + bestMatch.topic;
+            
+            // Animation for new text
+            const outputEl = document.getElementById('outputText');
+            outputEl.style.opacity = 0;
+            setTimeout(() => {
+                outputEl.innerText = randomPhrase;
+                outputEl.style.opacity = 1;
+            }, 200);
+
+            document.getElementById('resultArea').classList.remove('hidden');
+        }
+
+        function retry() {
+            translateText();
+        }
+
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('outputText').innerText);
+            // Visual feedback could be added here
         }
     </script>
 </body>
